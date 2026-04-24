@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Méthode ATTRACTOR — Guide Offert — Mr Attractor</title>
+<meta name="description" content="7 étapes simples pour bâtir l'entreprise qui tourne même quand vous n'êtes pas là. Téléchargez le guide offert.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--gold-dim:#8a6f2e;--gold-l:rgba(201,168,76,0.1);--black:#0A0A0A;--card:#161616;--card2:#1E1E1E;--border:rgba(201,168,76,0.18);--text:#F2EDE4;--muted:#888;--green:#3DDC84;--red:#FF6B6B;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(201,168,76,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(ellipse,rgba(201,168,76,0.06) 0%,transparent 70%);pointer-events:none;z-index:0;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(10,10,10,0.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--black);}
+.nav-name{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;}
+.nav-back{font-size:12px;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.nav-back:hover{color:var(--gold);}
+
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:4rem;padding:100px 5rem 80px;position:relative;z-index:1;max-width:1200px;margin:0 auto;}
+.hero-left{}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--gold-l);border:1px solid var(--border);border-radius:3px;padding:4px 14px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.8rem;}
+.tag-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-kicker{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.8rem;}
+.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.4rem);font-weight:900;line-height:1.05;letter-spacing:-0.02em;margin-bottom:1.2rem;}
+.hero-h1 em{font-style:italic;font-weight:400;color:var(--gold);}
+.hero-p{font-size:1rem;color:var(--muted);line-height:1.8;max-width:480px;margin-bottom:2rem;}
+.hero-p strong{color:var(--text);font-weight:500;}
+
+/* STATS */
+.hero-stats{display:flex;gap:2rem;margin-bottom:2rem;}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--gold);line-height:1;}
+.stat-lbl{font-size:11px;color:var(--muted);margin-top:3px;}
+
+/* FORM */
+.form-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2rem;position:relative;overflow:hidden;}
+.form-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);}
+.form-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:6px;}
+.form-title em{font-style:italic;color:var(--gold);}
+.form-sub{font-size:12px;color:var(--muted);margin-bottom:1.5rem;line-height:1.6;}
+.form-group{margin-bottom:1rem;}
+.form-label{display:block;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;}
+.form-input{width:100%;background:var(--card2);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:11px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
+.form-input:focus{border-color:var(--gold);}
+.form-input.error{border-color:var(--red);}
+.form-input::placeholder{color:rgba(136,136,136,0.5);}
+.captcha{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:10px 14px;margin-bottom:1rem;}
+.captcha-box{width:18px;height:18px;border:1px solid var(--muted);border-radius:3px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all 0.15s;}
+.captcha-box.checked{background:var(--gold);border-color:var(--gold);color:var(--black);}
+.captcha-lbl{font-size:12px;color:var(--muted);}
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);border:none;border-radius:6px;padding:14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;margin-bottom:8px;}
+.btn-submit:hover{box-shadow:0 8px 24px rgba(201,168,76,0.3);transform:translateY(-1px);}
+.btn-submit:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.form-mention{text-align:center;font-size:11px;color:var(--muted);}
+.rgpd{font-size:10px;color:rgba(136,136,136,0.4);margin-top:10px;line-height:1.6;text-align:center;}
+
+/* APERÇU PDF */
+.hero-right{display:flex;align-items:center;justify-content:center;}
+.pdf-preview{position:relative;max-width:340px;width:100%;}
+.pdf-cover{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:10px;padding:2.5rem 2rem;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(201,168,76,0.1);transform:rotate(-2deg);transition:transform 0.3s;}
+.pdf-cover:hover{transform:rotate(0deg);}
+.pdf-badge{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;background:var(--gold-l);border:1px solid var(--border);border-radius:3px;padding:3px 10px;display:inline-block;}
+.pdf-icon{font-size:3rem;margin-bottom:1rem;}
+.pdf-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;margin-bottom:6px;line-height:1.3;}
+.pdf-title em{font-style:italic;color:var(--gold);}
+.pdf-sub{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:1.5rem;}
+.pdf-pages{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);border-top:1px solid var(--border);padding-top:1rem;}
+.pdf-shadow{position:absolute;top:8px;left:8px;right:-8px;bottom:-8px;background:var(--card2);border-radius:10px;z-index:-1;border:1px solid rgba(255,255,255,0.04);}
+
+/* SOMMAIRE */
+.sommaire{background:linear-gradient(135deg,rgba(201,168,76,0.06),rgba(201,168,76,0.02));border:1px solid var(--border);border-radius:8px;padding:1.2rem 1.5rem;margin-top:1.5rem;}
+.som-title{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;}
+.som-item{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.som-item::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0;}
+
+/* CONFIRMATION */
+.confirm{display:none;position:fixed;inset:0;background:var(--black);z-index:500;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;}
+.confirm.show{display:flex;}
+.confirm-icon{font-size:4rem;margin-bottom:1.5rem;animation:bounce 0.5s ease;}
+@keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+.confirm-h2{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;margin-bottom:1rem;}
+.confirm-h2 em{font-style:italic;color:var(--gold);}
+.confirm-p{font-size:14px;color:var(--muted);line-height:1.75;max-width:520px;margin-bottom:2rem;}
+.confirm-dl{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:700;font-size:14px;margin-bottom:1rem;}
+.confirm-next{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.2rem 1.5rem;margin-top:1.5rem;max-width:500px;text-align:left;}
+.cn-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;}
+.cn-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted);margin-bottom:8px;}
+.cn-item::before{content:'→';color:var(--gold);flex-shrink:0;}
+
+.toast{position:fixed;bottom:2rem;right:2rem;z-index:999;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 18px;font-size:13px;transform:translateY(80px);opacity:0;transition:all 0.4s;pointer-events:none;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.error{background:rgba(255,107,107,0.12);border-color:rgba(255,107,107,0.3);color:var(--red);}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding:90px 1.5rem 60px;gap:2rem;}
+  .hero-right{order:-1;}
+  .pdf-cover{transform:rotate(0);}
+  nav{padding:0.8rem 1.2rem;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">
+    <div class="nav-mark">MA</div>
+    <div><div class="nav-name">Mr Attractor</div></div>
+  </a>
+  <a href="/" class="nav-back">← Retour au site</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-tag"><div class="tag-dot"></div>Guide Offert — Méthode ATTRACTOR</div>
+    <div class="hero-kicker">7 étapes. 1 semaine. 1 entreprise libérée.</div>
+    <h1 class="hero-h1">Comment organiser<br>et piloter votre<br>entreprise sans<br><em>vous épuiser.</em></h1>
+    <p class="hero-p"><strong>L'histoire de Koffi vous ressemble probablement.</strong> Il travaillait 14h/jour, gérait dans l'urgence, et sa femme Awa lui a dit : "Tu es absent même quand tu es là." Ce guide raconte comment tout a changé en 7 jours.</p>
+    <div class="hero-stats">
+      <div><div class="stat-num">18h</div><div class="stat-lbl">Récupérées / semaine</div></div>
+      <div><div class="stat-num">7</div><div class="stat-lbl">Jours pour changer</div></div>
+      <div><div class="stat-num">32</div><div class="stat-lbl">Pages · Offert</div></div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="pdf-preview">
+      <div class="pdf-shadow"></div>
+      <div class="pdf-cover">
+        <div class="pdf-badge">OFFERT</div>
+        <div class="pdf-icon">📖</div>
+        <div class="pdf-title">Méthode<br><em>ATTRACTOR</em></div>
+        <div class="pdf-sub">Comment organiser et piloter votre entreprise sans vous épuiser.</div>
+        <div class="pdf-pages">32 pages · 7 chapitres · Plan 7 jours</div>
+      </div>
+      <div class="sommaire">
+        <div class="som-title">Ce que vous allez apprendre</div>
+        <div class="som-item">Les 4 pièges du fondateur épuisé</div>
+        <div class="som-item">Les 3 fuites qui vous coûtent chaque mois</div>
+        <div class="som-item">Comment créer votre manuel de procédures</div>
+        <div class="som-item">Installer votre assistant invisible</div>
+        <div class="som-item">Le plan 7 jours pour transformer votre organisation</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORM (intégré dans la hero-left côté mobile) -->
+<div style="position:fixed;bottom:0;left:0;right:0;z-index:100;background:rgba(10,10,10,0.98);border-top:1px solid var(--border);padding:1rem 2rem;display:none;" id="mobileForm">
+</div>
+
+<!-- FORM DESKTOP — injecté dans hero-left -->
+<script>
+// Le formulaire est rendu dans la page dynamiquement
+</script>
+
+<!-- FORMULAIRE PRINCIPAL -->
+<div style="position:relative;z-index:1;max-width:500px;margin:-40px auto 60px;padding:0 1.5rem;" id="formWrap">
+  <div class="form-card">
+    <div class="form-title">Recevoir le guide <em>gratuitement</em></div>
+    <div class="form-sub">Entrez votre email — vous recevez le PDF immédiatement + le Challenge 7 Jours dans les prochains jours.</div>
+    <div class="form-group">
+      <label class="form-label">Prénom <span style="color:var(--red)">*</span></label>
+      <input class="form-input" id="f-prenom" type="text" placeholder="Koffi">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email <span style="color:var(--red)">*</span></label>
+      <input class="form-input" id="f-email" type="email" placeholder="koffi@monentreprise.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">WhatsApp (optionnel)</label>
+      <input class="form-input" id="f-wa" type="tel" placeholder="+225 07 00 00 00 00">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Secteur d'activité</label>
+      <select class="form-input" id="f-secteur" style="appearance:none;cursor:pointer;">
+        <option value="">Sélectionner</option>
+        <option>Commerce / Vente</option>
+        <option>Restauration / Food</option>
+        <option>Mode / Textile</option>
+        <option>Services / Consulting</option>
+        <option>Beauté / Esthétique</option>
+        <option>Santé / Bien-être</option>
+        <option>Autre</option>
+      </select>
+    </div>
+    <div class="captcha">
+      <div class="captcha-box" id="captchaBox" onclick="toggleCaptcha()"></div>
+      <div class="captcha-lbl">Je confirme ne pas être un robot et accepte de recevoir des emails de l'Agence Mr Attractor.</div>
+    </div>
+    <button class="btn-submit" id="btnSubmit" onclick="submitLead()">
+      📖 Recevoir mon guide gratuit →
+    </button>
+    <div class="form-mention">Gratuit · Sans engagement · PDF envoyé immédiatement</div>
+    <div class="rgpd">Vos données sont utilisées uniquement dans le cadre de la relation avec l'Agence Mr Attractor. Non revendues. <a href="/consulting" style="color:var(--gold);text-decoration:none;">RGPD</a></div>
+  </div>
+</div>
+
+<!-- CONFIRMATION -->
+<div class="confirm" id="confirmScreen">
+  <div class="confirm-icon">🎉</div>
+  <h2 class="confirm-h2">Le guide est en route,<br><em>vérifiez votre email.</em></h2>
+  <p class="confirm-p">Vous recevez le PDF dans quelques minutes sur votre email. Dans les prochains jours, vous allez recevoir le <strong style="color:var(--gold);">Challenge 7 Jours</strong> — pour passer de la lecture à l'action.</p>
+  <a href="LEAD_MAGNET_SYSTEME_ATTRACTOR.pdf" download class="confirm-dl">
+    📥 Télécharger maintenant aussi
+  </a>
+  <div class="confirm-next">
+    <div class="cn-label">Ce qui arrive ensuite</div>
+    <div class="cn-item">Email immédiat avec votre PDF en pièce jointe</div>
+    <div class="cn-item">Dans 3 jours : lancement du Challenge 7 Jours</div>
+    <div class="cn-item">7 étapes pratiques — 1 exercice par jour</div>
+    <div class="cn-item">Au bout de 7 jours : une session de coaching offerte avec Mac Arthur</div>
+  </div>
+  <a href="/" style="display:inline-block;margin-top:1.5rem;font-size:12px;color:var(--muted);text-decoration:none;">← Retour au site</a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const APPS_SCRIPT_LEAD = "https://script.google.com/macros/s/AKfycbyItv3-uaZvyE1lD4O4e5bIXJBhTdlm3nnY-896CEJkD7R5DtReq_i9i-MeWHVHm2oJAw/exec";
+let captchaChecked = false;
+
+function toggleCaptcha(){
+  captchaChecked = !captchaChecked;
+  const box = document.getElementById('captchaBox');
+  box.classList.toggle('checked', captchaChecked);
+  box.textContent = captchaChecked ? '✓' : '';
+}
+
+function showToast(msg, type){
+  const t = document.getElementById('toast');
+  t.className = 'toast ' + (type||'');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3500);
+}
+
+async function submitLead(){
+  if(!captchaChecked){ showToast('Confirmez que vous n\'êtes pas un robot', 'error'); return; }
+  const prenom = document.getElementById('f-prenom').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  if(!prenom){ document.getElementById('f-prenom').classList.add('error'); showToast('Entrez votre prénom','error'); return; }
+  if(!email || !email.includes('@')){ document.getElementById('f-email').classList.add('error'); showToast('Entrez un email valide','error'); return; }
+
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = true; btn.textContent = '⏳ Envoi en cours…';
+
+  const payload = {
+    prenom, email,
+    whatsapp: document.getElementById('f-wa').value.trim(),
+    secteur: document.getElementById('f-secteur').value,
+    source: 'lead-magnet',
+    formule: 'Lead Magnet — Méthode ATTRACTOR'
+  };
+
+  try {
+    const params = new URLSearchParams(payload).toString();
+    await fetch(APPS_SCRIPT_LEAD + '?' + params, {method:'GET', mode:'no-cors'});
+    await new Promise(r => setTimeout(r, 1500));
+    document.getElementById('confirmScreen').classList.add('show');
+  } catch(err) {
+    showToast('Erreur — téléchargez directement ci-dessous', 'error');
+    window.open('LEAD_MAGNET_SYSTEME_ATTRACTOR.pdf', '_blank');
+    btn.disabled = false; btn.textContent = '📖 Recevoir mon guide gratuit →';
+  }
+}
+</script>
+</body>
+</html>
