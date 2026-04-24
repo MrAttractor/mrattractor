@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Votre devis — Agence Mr Attractor</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:#0a0a0a;
+  --dark:#111;
+  --card:#161616;
+  --card2:#1e1e1e;
+  --border:rgba(201,168,76,0.15);
+  --border2:rgba(255,255,255,0.07);
+  --gold:#c9a84c;
+  --gold-dim:#8a6f2e;
+  --gold-light:rgba(201,168,76,0.1);
+  --text:#f2ede4;
+  --muted:#888;
+  --green:#3ddc84;
+  --red:#ff6b6b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(201,168,76,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.03) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(10,10,10,0.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.nav-brand{display:flex;align-items:center;gap:10px;}
+.nav-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--black);}
+.nav-name{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;}
+.nav-sub{font-size:10px;color:var(--muted);}
+.nav-rdv{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);font-size:11px;font-weight:700;padding:8px 18px;border-radius:4px;text-decoration:none;letter-spacing:0.06em;}
+
+/* HERO */
+.hero{max-width:780px;margin:0 auto;padding:4rem 2rem 2rem;text-align:center;position:relative;z-index:1;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--gold-light);border:1px solid var(--border);border-radius:3px;padding:4px 14px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5rem;}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-h{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;line-height:1.1;margin-bottom:0.8rem;}
+.hero-h em{font-style:italic;font-weight:400;color:var(--gold);}
+.hero-p{font-size:14px;color:var(--muted);line-height:1.7;max-width:520px;margin:0 auto 1.5rem;}
+
+/* COMPTE À REBOURS */
+.timer-wrap{display:inline-flex;align-items:center;gap:6px;background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.2);border-radius:6px;padding:8px 16px;margin-bottom:3rem;}
+.timer-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--red);letter-spacing:0.1em;text-transform:uppercase;font-weight:700;}
+.timer-digits{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--red);}
+.timer-note{font-size:11px;color:rgba(255,107,107,0.6);}
+
+/* LAYOUT PRINCIPAL */
+.main{max-width:1100px;margin:0 auto;padding:0 1.5rem 6rem;display:grid;grid-template-columns:1fr 340px;gap:2rem;position:relative;z-index:1;}
+@media(max-width:768px){.main{grid-template-columns:1fr;}}
+
+/* SECTIONS */
+.section{margin-bottom:2rem;}
+.section-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.section-h{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;margin-bottom:1.2rem;}
+
+/* CARTES MODULES */
+.modules-grid{display:flex;flex-direction:column;gap:10px;}
+.module-card{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:1rem 1.25rem;display:flex;align-items:center;gap:1rem;cursor:pointer;transition:all 0.2s;user-select:none;}
+.module-card:hover{border-color:rgba(201,168,76,0.3);background:var(--card2);}
+.module-card.selected{border-color:var(--gold);background:rgba(201,168,76,0.05);}
+.module-toggle{width:22px;height:22px;border-radius:5px;border:1.5px solid rgba(255,255,255,0.15);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;transition:all 0.2s;}
+.module-card.selected .module-toggle{background:var(--gold);border-color:var(--gold);color:var(--black);}
+.module-info{flex:1;}
+.module-name{font-size:14px;font-weight:500;margin-bottom:2px;}
+.module-desc{font-size:11px;color:var(--muted);line-height:1.4;}
+.module-price{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--gold);flex-shrink:0;}
+
+/* REMISE */
+.remise-banner{background:rgba(61,220,132,0.06);border:1px solid rgba(61,220,132,0.2);border-radius:8px;padding:0.875rem 1.25rem;display:flex;align-items:center;gap:12px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;}
+.remise-banner:hover{border-color:rgba(61,220,132,0.4);}
+.remise-banner.active{background:rgba(61,220,132,0.1);border-color:var(--green);}
+.remise-check{width:22px;height:22px;border-radius:5px;border:1.5px solid rgba(61,220,132,0.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;transition:all 0.2s;}
+.remise-banner.active .remise-check{background:var(--green);border-color:var(--green);color:var(--black);}
+.remise-text{flex:1;font-size:13px;color:var(--text);}
+.remise-text span{color:var(--green);font-weight:600;}
+.remise-amount{font-family:'Space Mono',monospace;font-size:12px;color:var(--green);font-weight:700;}
+
+/* BOTS */
+.bots-grid{display:flex;flex-direction:column;gap:10px;}
+.bot-card{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:1rem 1.25rem;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.bot-card:hover{border-color:rgba(201,168,76,0.3);}
+.bot-card.selected{border-color:var(--gold);background:rgba(201,168,76,0.05);}
+.bot-card.featured{border-color:rgba(201,168,76,0.25);}
+.bot-badge{position:absolute;top:0;right:16px;background:var(--gold);color:var(--black);font-family:'Space Mono',monospace;font-size:8px;font-weight:700;padding:3px 10px;border-radius:0 0 5px 5px;letter-spacing:0.08em;}
+.bot-head{display:flex;align-items:center;gap:1rem;margin-bottom:6px;}
+.bot-radio{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.bot-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:transparent;transition:background 0.2s;}
+.bot-card.selected .bot-radio{border-color:var(--gold);}
+.bot-card.selected .bot-radio::after{background:var(--gold);}
+.bot-name{font-size:14px;font-weight:500;flex:1;}
+.bot-price{font-family:'Space Mono',monospace;font-size:13px;color:var(--gold);font-weight:700;}
+.bot-desc{font-size:11px;color:var(--muted);line-height:1.4;padding-left:26px;}
+.bot-recurrent{font-size:10px;color:rgba(136,136,136,0.7);margin-top:4px;padding-left:26px;}
+
+/* SITES */
+.sites-grid{display:flex;flex-direction:column;gap:10px;}
+.site-card{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:1rem 1.25rem;cursor:pointer;transition:all 0.2s;}
+.site-card:hover{border-color:rgba(201,168,76,0.3);}
+.site-card.selected{border-color:var(--gold);background:rgba(201,168,76,0.05);}
+.site-head{display:flex;align-items:center;gap:1rem;}
+.site-radio{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);flex-shrink:0;transition:all 0.2s;display:flex;align-items:center;justify-content:center;}
+.site-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:transparent;transition:background 0.2s;}
+.site-card.selected .site-radio{border-color:var(--gold);}
+.site-card.selected .site-radio::after{background:var(--gold);}
+.site-name{font-size:14px;font-weight:500;flex:1;}
+.site-price{font-family:'Space Mono',monospace;font-size:13px;color:var(--gold);font-weight:700;}
+.site-desc{font-size:11px;color:var(--muted);line-height:1.4;margin-top:4px;padding-left:26px;}
+
+/* PANIER STICKY */
+.panier{position:sticky;top:80px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;height:fit-content;}
+.panier-title{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.25rem;}
+.panier-empty{font-size:13px;color:var(--muted);text-align:center;padding:1.5rem 0;line-height:1.6;}
+.panier-items{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem;min-height:40px;}
+.panier-item{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border2);font-size:12px;}
+.panier-item:last-child{border-bottom:none;}
+.panier-item-name{color:var(--muted);flex:1;}
+.panier-item-price{font-family:'Space Mono',monospace;font-size:11px;color:var(--gold);font-weight:700;}
+.panier-item-rm{width:16px;height:16px;border-radius:3px;background:rgba(255,107,107,0.1);border:none;color:var(--red);font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:8px;flex-shrink:0;}
+.panier-sep{height:1px;background:var(--border);margin:1rem 0;}
+.panier-subtotal{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px;}
+.panier-remise-line{display:flex;justify-content:space-between;font-size:12px;color:var(--green);margin-bottom:6px;}
+.panier-total-row{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;}
+.panier-total-label{font-size:13px;font-weight:500;}
+.panier-total-price{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--gold);}
+.panier-recurrent{font-size:11px;color:var(--muted);text-align:right;margin-top:2px;}
+.panier-min{font-size:10px;color:rgba(255,107,107,0.7);margin-top:8px;display:none;}
+.btn-rdv{display:block;width:100%;margin-top:1.25rem;padding:14px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;letter-spacing:0.04em;transition:all 0.2s;}
+.btn-rdv:hover{box-shadow:0 8px 24px rgba(201,168,76,0.3);transform:translateY(-1px);}
+.btn-rdv:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none;}
+.panier-note{font-size:10px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.5;}
+.call-offert{background:rgba(61,220,132,0.06);border:1px solid rgba(61,220,132,0.15);border-radius:6px;padding:10px 12px;margin-top:12px;text-align:center;}
+.call-offert-label{font-family:'Space Mono',monospace;font-size:8px;color:var(--green);letter-spacing:0.12em;text-transform:uppercase;font-weight:700;margin-bottom:3px;}
+.call-offert-text{font-size:12px;color:var(--text);}
+.call-offert-val{font-size:10px;color:var(--muted);}
+
+/* FORMATION INFO */
+.info-box{background:rgba(61,220,132,0.04);border:1px solid rgba(61,220,132,0.12);border-radius:8px;padding:1rem 1.25rem;margin-bottom:1rem;}
+.info-box-title{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:var(--green);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.6rem;}
+.info-row{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid rgba(61,220,132,0.07);}
+.info-row:last-child{border:none;}
+.info-row span:first-child{color:var(--muted);}
+.info-val-free{color:var(--green);font-weight:500;}
+
+/* FOOTER */
+footer{text-align:center;padding:2rem;border-top:1px solid var(--border2);font-size:11px;color:var(--muted);position:relative;z-index:1;}
+footer a{color:var(--gold);text-decoration:none;}
+
+/* ANIMATIONS */
+@keyframes slideIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.panier-item{animation:slideIn 0.2s ease;}
+
+@media(max-width:480px){
+  .hero{padding:2.5rem 1.2rem 1.5rem;}
+  .panier{border-radius:8px;}
+  nav{padding:0.875rem 1.2rem;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">
+    <div class="nav-mark">MA</div>
+    <div>
+      <div class="nav-name">Mr Attractor</div>
+      <div class="nav-sub">Agence & Consultance</div>
+    </div>
+  </div>
+  <a href="#rdv" class="nav-rdv">Prendre rendez-vous →</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag"><div class="hero-dot"></div>Devis personnalisé</div>
+  <h1 class="hero-h">Composez votre <em>solution</em> sur mesure</h1>
+  <p class="hero-p">Sélectionnez les modules qui correspondent à vos besoins. Le tarif se calcule en temps réel. Aucun engagement — on en discute ensemble lors de votre call gratuit.</p>
+  <div class="timer-wrap">
+    <span class="timer-label">Offre valable encore</span>
+    <span class="timer-digits" id="timer">72:00:00</span>
+    <span class="timer-note">— tarif bloqué pour vous</span>
+  </div>
+</div>
+
+<div class="main">
+  <div class="left-col">
+
+    <!-- MODULES ASSISTANT IA PRO -->
+    <div class="section">
+      <div class="section-label">Assistant IA Pro</div>
+      <h2 class="section-h">Modules à la carte</h2>
+
+      <div class="remise-banner" id="remise-banner" onclick="toggleRemise()">
+        <div class="remise-check" id="remise-check">✓</div>
+        <div class="remise-text">Tout sélectionner — <span>−20% sur les modules</span></div>
+        <div class="remise-amount" id="remise-amount">économisez 0€</div>
+      </div>
+
+      <div class="modules-grid">
+        <div class="module-card" onclick="toggleModule(this,'agenda','Agenda & Briefing quotidien',80,false)" data-id="agenda">
+          <div class="module-toggle">✓</div>
+          <div class="module-info">
+            <div class="module-name">Agenda & Briefing quotidien</div>
+            <div class="module-desc">Organisation de la journée, rappels de tâches, priorités dictables à la voix</div>
+          </div>
+          <div class="module-price">80€</div>
+        </div>
+        <div class="module-card" onclick="toggleModule(this,'clients','Suivi clients & Relances',80,false)" data-id="clients">
+          <div class="module-toggle">✓</div>
+          <div class="module-info">
+            <div class="module-name">Suivi clients & Relances</div>
+            <div class="module-desc">Messages de relance, base clients en session, qui relancer et quand</div>
+          </div>
+          <div class="module-price">80€</div>
+        </div>
+        <div class="module-card" onclick="toggleModule(this,'finances','Tableau de bord finances',100,false)" data-id="finances">
+          <div class="module-toggle">✓</div>
+          <div class="module-info">
+            <div class="module-name">Tableau de bord finances</div>
+            <div class="module-desc">Suivi entrées/sorties, CA du mois, alerte si objectif en danger</div>
+          </div>
+          <div class="module-price">100€</div>
+        </div>
+        <div class="module-card" onclick="toggleModule(this,'assistantes','Gestion assistantes',150,false)" data-id="assistantes">
+          <div class="module-toggle">✓</div>
+          <div class="module-info">
+            <div class="module-name">Gestion assistantes</div>
+            <div class="module-desc">Instructions claires, comptes-rendus, coordination d'équipe</div>
+          </div>
+          <div class="module-price">150€</div>
+        </div>
+        <div class="module-card" onclick="toggleModule(this,'reseaux','Contenu réseaux sociaux',100,false)" data-id="reseaux">
+          <div class="module-toggle">✓</div>
+          <div class="module-info">
+            <div class="module-name">Contenu réseaux sociaux</div>
+            <div class="module-desc">Posts adaptés à votre secteur, idées de contenus, ton personnalisé</div>
+          </div>
+          <div class="module-price">100€</div>
+        </div>
+        <div class="module-card" onclick="toggleModule(this,'whatsapp','Automatisation WhatsApp',200,false)" data-id="whatsapp">
+          <div class="module-toggle">✓</div>
+          <div class="module-info">
+            <div class="module-name">Automatisation WhatsApp</div>
+            <div class="module-desc">Réponses automatiques, scénarios de vente, relances programmées</div>
+          </div>
+          <div class="module-price">200€</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHATBOTS -->
+    <div class="section">
+      <div class="section-label">Chatbot Clients</div>
+      <h2 class="section-h">Bot qui répond à votre place</h2>
+      <div class="bots-grid">
+        <div class="bot-card" onclick="selectBot(this,'bot-texte','Bot Texte',350,0)" data-id="bot-texte">
+          <div class="bot-head">
+            <div class="bot-radio"></div>
+            <div class="bot-name">Bot Texte</div>
+            <div class="bot-price">350€</div>
+          </div>
+          <div class="bot-desc">Prompt bot sur mesure configuré dans Claude.ai — lien partageable à vos clients, formation 45 min incluse</div>
+        </div>
+        <div class="bot-card featured" onclick="selectBot(this,'bot-connecte','Bot Connecté',900,80)" data-id="bot-connecte">
+          <div class="bot-badge">Recommandé</div>
+          <div class="bot-head">
+            <div class="bot-radio"></div>
+            <div class="bot-name">Bot Connecté — WhatsApp & Instagram</div>
+            <div class="bot-price">900€</div>
+          </div>
+          <div class="bot-desc">Déploiement automatique — le bot répond seul 24h/24, vous ne voyez que les cas complexes</div>
+          <div class="bot-recurrent">+ 80€/mois maintenance</div>
+        </div>
+        <div class="bot-card" onclick="selectBot(this,'bot-mesure','Bot Sur-Mesure',1800,120)" data-id="bot-mesure">
+          <div class="bot-head">
+            <div class="bot-radio"></div>
+            <div class="bot-name">Bot Sur-Mesure — catalogue + paiement + pilotage</div>
+            <div class="bot-price">1 800€</div>
+          </div>
+          <div class="bot-desc">Intégration catalogue temps réel, prise de commande, lien paiement automatique, CRM basique</div>
+          <div class="bot-recurrent">+ 120€/mois maintenance</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SITES WEB -->
+    <div class="section">
+      <div class="section-label">Sites Web</div>
+      <h2 class="section-h">Votre présence en ligne</h2>
+      <div class="sites-grid">
+        <div class="site-card" onclick="selectSite(this,'mini-site','Mini site basique',350)" data-id="mini-site">
+          <div class="site-head">
+            <div class="site-radio"></div>
+            <div class="site-name">Mini site basique</div>
+            <div class="site-price">350€</div>
+          </div>
+          <div class="site-desc">Page de présentation propre et professionnelle — idéale pour démarrer</div>
+        </div>
+        <div class="site-card" onclick="selectSite(this,'site-agile','Site agile + assistant IA',800)" data-id="site-agile">
+          <div class="site-head">
+            <div class="site-radio"></div>
+            <div class="site-name">Site agile + assistant IA personnalisé</div>
+            <div class="site-price">800€</div>
+          </div>
+          <div class="site-desc">Site complet avec assistant IA intégré, audit interactif et devis personnalisé</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORMATION & SUIVI -->
+    <div class="section">
+      <div class="section-label">Formation & Suivi</div>
+      <h2 class="section-h">Inclus dans votre devis</h2>
+      <div class="info-box">
+        <div class="info-box-title">Toujours inclus</div>
+        <div class="info-row"><span>Formation Bot connecté & Bot sur mesure</span><span class="info-val-free">Offert</span></div>
+        <div class="info-row"><span>Guide PDF personnalisé</span><span class="info-val-free">Offert</span></div>
+        <div class="info-row"><span>Suivi 30 jours (client existant)</span><span class="info-val-free">Offert</span></div>
+        <div class="info-row"><span>Call découverte 15 min</span><span class="info-val-free">Offert — valeur 80€</span></div>
+      </div>
+      <div class="info-box" style="border-color:rgba(201,168,76,0.12);background:rgba(201,168,76,0.03);">
+        <div class="info-box-title" style="color:var(--gold);">En option</div>
+        <div class="info-row"><span>Formation IA (comprendre & maîtriser)</span><span style="color:var(--gold);font-weight:500;">80€/h</span></div>
+        <div class="info-row"><span>Coaching opérationnel assistant IA</span><span style="color:var(--gold);font-weight:500;">150€/h</span></div>
+        <div class="info-row"><span>Coaching ponctuel spécifique</span><span style="color:var(--gold);font-weight:500;">80€/h</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PANIER STICKY -->
+  <div class="panier" id="panier">
+    <div class="panier-title">Votre sélection</div>
+    <div class="panier-items" id="panier-items">
+      <div class="panier-empty" id="panier-empty">Aucun module sélectionné.<br>Composez votre solution ci-contre.</div>
+    </div>
+    <div id="panier-totals" style="display:none">
+      <div class="panier-sep"></div>
+      <div class="panier-subtotal"><span>Sous-total</span><span id="p-subtotal">0€</span></div>
+      <div class="panier-remise-line" id="p-remise-line" style="display:none"><span>Remise 20% modules</span><span id="p-remise-val">−0€</span></div>
+      <div class="panier-total-row">
+        <span class="panier-total-label">Total</span>
+        <span class="panier-total-price" id="p-total">0€</span>
+      </div>
+      <div class="panier-recurrent" id="p-recurrent"></div>
+    </div>
+    <div class="panier-min" id="panier-min">Panier minimum : 80€</div>
+
+    <div class="call-offert">
+      <div class="call-offert-label">Prochaine étape</div>
+      <div class="call-offert-text">Call découverte — 15 min</div>
+      <div class="call-offert-val">Offert · valeur 80€</div>
+    </div>
+
+    <a href="#rdv" class="btn-rdv" id="btn-rdv">Réserver mon call gratuit →</a>
+    <div class="panier-note">Sans engagement · Je vous contacte sous 24h</div>
+  </div>
+</div>
+
+<!-- RDV SECTION -->
+<div id="rdv" style="max-width:640px;margin:0 auto 6rem;padding:0 1.5rem;position:relative;z-index:1;">
+  <div class="section-label">Rendez-vous</div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2rem;">
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">Réservez votre call <em style="font-style:italic;font-weight:400;color:var(--gold);">gratuit</em></h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:1.5rem;line-height:1.6;">15 minutes pour valider votre sélection et vous expliquer exactement comment on procède. Aucune vente forcée.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <div><label style="display:block;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Prénom *</label>
+      <input type="text" id="rdv-prenom" placeholder="Amina" style="width:100%;background:var(--card2);border:1px solid var(--border2);border-radius:6px;padding:10px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border2)'"></div>
+      <div><label style="display:block;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">WhatsApp *</label>
+      <input type="tel" id="rdv-tel" placeholder="+33 ou +225..." style="width:100%;background:var(--card2);border:1px solid var(--border2);border-radius:6px;padding:10px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border2)'"></div>
+    </div>
+    <div style="margin-bottom:12px;"><label style="display:block;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Email *</label>
+    <input type="email" id="rdv-email" placeholder="votre@email.com" style="width:100%;background:var(--card2);border:1px solid var(--border2);border-radius:6px;padding:10px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='var(--border2)'"></div>
+    <div style="margin-bottom:1.5rem;"><label style="display:block;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Votre sélection actuelle</label>
+    <div id="rdv-recap" style="background:var(--card2);border:1px solid var(--border2);border-radius:6px;padding:10px 14px;font-size:13px;color:var(--muted);min-height:40px;line-height:1.6;">Aucune sélection pour l'instant.</div></div>
+
+    <button onclick="envoyerRDV()" style="width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:0.04em;transition:all 0.2s;" onmouseover="this.style.boxShadow='0 8px 24px rgba(201,168,76,0.3)'" onmouseout="this.style.boxShadow='none'">
+      ⚡ Confirmer mon call gratuit
+    </button>
+    <p style="font-size:10px;color:var(--muted);text-align:center;margin-top:10px;">Mac Arthur vous contacte dans les 24h · Sans engagement</p>
+
+    <div id="rdv-success" style="display:none;background:rgba(61,220,132,0.08);border:1px solid rgba(61,220,132,0.25);border-radius:8px;padding:1.25rem;text-align:center;margin-top:1rem;">
+      <div style="font-size:1.5rem;margin-bottom:8px;">✦</div>
+      <div style="font-size:15px;font-weight:600;margin-bottom:4px;">Demande envoyée !</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.6;">Mac Arthur vous contacte sous 24h pour confirmer le créneau. Vérifiez vos messages WhatsApp.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;">
+    <div style="width:28px;height:28px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:var(--black);">MA</div>
+    <span style="font-family:'Space Mono',monospace;font-size:10px;color:var(--gold);font-weight:700;letter-spacing:0.1em;">MR ATTRACTOR</span>
+  </div>
+  <a href="mailto:myattractor1@gmail.com">myattractor1@gmail.com</a> · <a href="tel:+33753902323">+337.53.90.23.23</a><br>
+  <span style="color:rgba(136,136,136,0.4);">© 2025 Agence Mr Attractor · Paris</span>
+</footer>
+
+<script>
+// ─── ÉTAT ───
+const cart = {modules:{}, bot:null, site:null, remise:false};
+
+// ─── MODULES ───
+function toggleModule(el, id, name, price, isRecurrent) {
+  const selected = el.classList.toggle('selected');
+  if(selected) cart.modules[id] = {name, price, recurrent:isRecurrent};
+  else delete cart.modules[id];
+  updateRemiseBanner();
+  render();
+}
+
+// ─── REMISE 20% ───
+const ALL_MODULES = [
+  {id:'agenda',name:'Agenda & Briefing quotidien',price:80},
+  {id:'clients',name:'Suivi clients & Relances',price:80},
+  {id:'finances',name:'Tableau de bord finances',price:100},
+  {id:'assistantes',name:'Gestion assistantes',price:150},
+  {id:'reseaux',name:'Contenu réseaux sociaux',price:100},
+  {id:'whatsapp',name:'Automatisation WhatsApp',price:200}
+];
+const TOTAL_MODULES = ALL_MODULES.reduce((a,m)=>a+m.price,0); // 710
+
+function toggleRemise() {
+  const allSelected = ALL_MODULES.every(m => cart.modules[m.id]);
+  if(allSelected) {
+    ALL_MODULES.forEach(m => {
+      cart.modules[m.id] = {name:m.name, price:m.price, recurrent:false};
+    });
+    cart.remise = !cart.remise;
+  } else {
+    ALL_MODULES.forEach(m => {
+      cart.modules[m.id] = {name:m.name, price:m.price, recurrent:false};
+      document.querySelector(`[data-id="${m.id}"]`).classList.add('selected');
+    });
+    cart.remise = true;
+  }
+  updateRemiseBanner();
+  render();
+}
+
+function updateRemiseBanner() {
+  const allSelected = ALL_MODULES.every(m => cart.modules[m.id]);
+  const banner = document.getElementById('remise-banner');
+  const check = document.getElementById('remise-check');
+  const amount = document.getElementById('remise-amount');
+  if(allSelected && cart.remise) {
+    banner.classList.add('active');
+    check.style.color='var(--black)';
+    const saving = Math.round(TOTAL_MODULES * 0.2);
+    amount.textContent = `économisez ${saving}€`;
+  } else {
+    banner.classList.remove('active');
+    check.style.color='transparent';
+    amount.textContent = `économisez ${Math.round(TOTAL_MODULES*0.2)}€`;
+    if(!allSelected) cart.remise = false;
+  }
+}
+
+// ─── BOTS ───
+function selectBot(el, id, name, price, recurrent) {
+  document.querySelectorAll('.bot-card').forEach(c=>{c.classList.remove('selected');});
+  if(cart.bot && cart.bot.id === id) {
+    cart.bot = null;
+  } else {
+    el.classList.add('selected');
+    cart.bot = {id, name, price, recurrent};
+  }
+  render();
+}
+
+// ─── SITES ───
+function selectSite(el, id, name, price) {
+  document.querySelectorAll('.site-card').forEach(c=>c.classList.remove('selected'));
+  if(cart.site && cart.site.id === id) {
+    cart.site = null;
+  } else {
+    el.classList.add('selected');
+    cart.site = {id, name, price};
+  }
+  render();
+}
+
+// ─── RENDU PANIER ───
+function render() {
+  const items = document.getElementById('panier-items');
+  const empty = document.getElementById('panier-empty');
+  const totals = document.getElementById('panier-totals');
+  const recap = document.getElementById('rdv-recap');
+
+  const lines = [];
+  let subtotal = 0;
+  let recurrentTotal = 0;
+  const recurrentItems = [];
+  const recapLines = [];
+
+  Object.values(cart.modules).forEach(m => {
+    lines.push({name:m.name, price:m.price});
+    subtotal += m.price;
+    recapLines.push(m.name+' — '+m.price+'€');
+  });
+  if(cart.bot) {
+    lines.push({name:cart.bot.name, price:cart.bot.price});
+    subtotal += cart.bot.price;
+    recapLines.push(cart.bot.name+' — '+cart.bot.price+'€');
+    if(cart.bot.recurrent > 0) {
+      recurrentTotal += cart.bot.recurrent;
+      recurrentItems.push(cart.bot.recurrent+'€/mois');
+    }
+  }
+  if(cart.site) {
+    lines.push({name:cart.site.name, price:cart.site.price});
+    subtotal += cart.site.price;
+    recapLines.push(cart.site.name+' — '+cart.site.price+'€');
+  }
+
+  const allModulesSelected = ALL_MODULES.every(m => cart.modules[m.id]);
+  const remiseAmt = (allModulesSelected && cart.remise) ? Math.round(TOTAL_MODULES * 0.2) : 0;
+  const total = subtotal - remiseAmt;
+
+  if(lines.length === 0) {
+    empty.style.display = 'block';
+    totals.style.display = 'none';
+    items.innerHTML = '';
+    items.appendChild(empty);
+    recap.textContent = 'Aucune sélection pour l\'instant.';
+    return;
+  }
+
+  empty.style.display = 'none';
+  items.innerHTML = '';
+  lines.forEach(l => {
+    const div = document.createElement('div');
+    div.className = 'panier-item';
+    div.innerHTML = `<span class="panier-item-name">${l.name}</span><span class="panier-item-price">${l.price.toLocaleString('fr-FR')}€</span>`;
+    items.appendChild(div);
+  });
+
+  totals.style.display = 'block';
+  document.getElementById('p-subtotal').textContent = subtotal.toLocaleString('fr-FR')+'€';
+  const remiseLine = document.getElementById('p-remise-line');
+  if(remiseAmt > 0) {
+    remiseLine.style.display = 'flex';
+    document.getElementById('p-remise-val').textContent = '−'+remiseAmt+'€';
+  } else {
+    remiseLine.style.display = 'none';
+  }
+  document.getElementById('p-total').textContent = total.toLocaleString('fr-FR')+'€';
+  const recEl = document.getElementById('p-recurrent');
+  recEl.textContent = recurrentTotal > 0 ? '+ '+recurrentTotal+'€/mois' : '';
+
+  recap.textContent = recapLines.join(' · ') + ' — Total : '+total.toLocaleString('fr-FR')+'€';
+}
+
+// ─── COMPTE À REBOURS ───
+(function() {
+  const KEY = 'mra_timer_end';
+  let end = localStorage.getItem(KEY);
+  if(!end) {
+    end = Date.now() + 72*60*60*1000;
+    try { localStorage.setItem(KEY, end); } catch(e){}
+  }
+  function tick() {
+    const diff = Math.max(0, end - Date.now());
+    const h = Math.floor(diff/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    document.getElementById('timer').textContent =
+      String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    if(diff > 0) setTimeout(tick, 1000);
+    else document.getElementById('timer').textContent = 'Expiré';
+  }
+  tick();
+})();
+
+// ─── ENVOI DEVIS ───
+const APPS_SCRIPT_DEVIS = "https://script.google.com/macros/s/AKfycbwitw3K8BoPB9zzannmwxvdI9qVUwQOionvMe-qaBr4Ehabt-4R3SK5VZxOBm2oFApp/exec";
+
+async function envoyerRDV() {
+  const prenom = document.getElementById('rdv-prenom').value.trim();
+  const tel    = document.getElementById('rdv-tel').value.trim();
+  const email  = document.getElementById('rdv-email').value.trim();
+  if(!prenom||!tel||!email||!email.includes('@')) {
+    alert('Merci de remplir tous les champs obligatoires.');
+    return;
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const reve = urlParams.get('reve') || '—';
+  const nom  = document.getElementById('rdv-nom') ? document.getElementById('rdv-nom').value.trim() : '';
+  const pays = document.getElementById('rdv-pays') ? document.getElementById('rdv-pays').value.trim() : '—';
+
+  const modulesSelected = [];
+  document.querySelectorAll('.module-card.selected').forEach(function(card) {
+    const name  = card.querySelector('.module-name')  ? card.querySelector('.module-name').textContent.trim()  : '';
+    const price = card.querySelector('.module-price') ? card.querySelector('.module-price').textContent.trim() : '';
+    modulesSelected.push(name + ':' + price);
+  });
+  const botSelected  = document.querySelector('.bot-card.selected');
+  const siteSelected = document.querySelector('.site-card.selected');
+  const remiseActive = document.getElementById('remise-banner') && document.getElementById('remise-banner').classList.contains('active');
+  const totalEl  = document.getElementById('total-price');
+  const totalVal = totalEl ? totalEl.textContent.replace('€','').trim() : '0';
+  const recurEl  = document.getElementById('recurrent-price');
+  const recurVal = recurEl ? recurEl.textContent.replace('€/mois','').trim() : '0';
+
+  const payload = {
+    prenom, nom, email, tel, pays, reve,
+    modules:      modulesSelected.join('|'),
+    bot:          botSelected ? (botSelected.querySelector('.bot-name').textContent.trim()+':'+botSelected.querySelector('.bot-price').textContent.trim()) : '—',
+    site:         siteSelected ? (siteSelected.querySelector('.site-name').textContent.trim()+':'+siteSelected.querySelector('.site-price').textContent.trim()) : '—',
+    remise:       remiseActive ? 'true' : 'false',
+    total:        totalVal,
+    totalRemise:  totalVal,
+    recurrent:    recurVal
+  };
+
+  const btn = document.querySelector('.btn-rdv');
+  if(btn){btn.disabled=true;btn.textContent='⏳ Envoi en cours…';}
+  try {
+    const params = new URLSearchParams(payload).toString();
+    await fetch(APPS_SCRIPT_DEVIS + '?' + params, {method:'GET', mode:'no-cors'});
+    await new Promise(r => setTimeout(r, 1500));
+  } catch(e){}
+
+  document.getElementById('rdv-success').style.display = 'block';
+  document.getElementById('rdv-success').scrollIntoView({behavior:'smooth', block:'center'});
+  if(btn){btn.textContent='✅ Devis envoyé !';}
+}
+</script>
+</body>
+</html>

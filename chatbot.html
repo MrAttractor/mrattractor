@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chatbot Sur Mesure — Méthode ATTRACTOR — Mr Attractor</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --noir: #080808;
+  --blanc: #f0ece3;
+  --or: #c9a84c;
+  --or2: #e8c97a;
+  --or-dim: rgba(201,168,76,0.1);
+  --or-border: rgba(201,168,76,0.25);
+  --vert: #3ddc84;
+  --vert-dim: rgba(61,220,132,0.08);
+  --rouge: #ff5252;
+  --card: #111111;
+  --card2: #181818;
+  --border: rgba(255,255,255,0.06);
+  --muted: #555;
+  --radius: 12px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--noir);
+  color: var(--blanc);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-bottom: 100px;
+  padding-top: 44px;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: linear-gradient(rgba(201,168,76,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.02) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none; z-index: 0;
+}
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(8,8,8,0.97);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.nav-logo {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px; font-weight: 700;
+  color: var(--or); letter-spacing: 0.12em; text-transform: uppercase;
+}
+
+.nav-step {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+/* PROGRESS */
+.progress-bar {
+  height: 2px;
+  background: var(--border);
+  position: sticky; top: 49px; z-index: 99;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--or), var(--or2));
+  transition: width 0.5s ease;
+  width: 0%;
+}
+
+/* PAGES */
+.page { display: none; position: relative; z-index: 1; }
+.page.active { display: block; }
+
+/* ══════════════════════════════
+   PAGE 1 — AUDIT
+══════════════════════════════ */
+.audit-wrap {
+  max-width: 680px; margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.audit-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--or-dim);
+  border: 1px solid var(--or-border);
+  border-radius: 4px;
+  padding: 4px 14px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  color: var(--or); letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.audit-h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700; line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.audit-h1 em { font-style: italic; color: var(--or); }
+
+.audit-sub {
+  font-size: 14px; color: var(--muted);
+  line-height: 1.8; margin-bottom: 36px;
+}
+
+/* FIELD */
+.field { margin-bottom: 20px; }
+
+.field label {
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  color: var(--or); letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.field-hint {
+  font-size: 11px; color: var(--muted);
+  margin-bottom: 8px; font-style: italic;
+}
+
+input[type="text"], input[type="email"], input[type="tel"],
+textarea, select {
+  width: 100%;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 13px 16px;
+  color: var(--blanc);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+
+input:focus, textarea:focus, select:focus { border-color: var(--or); }
+input::placeholder, textarea::placeholder { color: #2a2a2a; }
+textarea { min-height: 80px; resize: vertical; line-height: 1.6; }
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23c9a84c' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-color: var(--card);
+  padding-right: 36px; cursor: pointer;
+}
+
+select option { background: #111; }
+
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* PILLS MULTI */
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+
+.pill {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 13px; font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.pill:hover { border-color: var(--or-border); }
+.pill.on { background: var(--or-dim); border-color: var(--or); color: var(--or); font-weight: 600; }
+
+/* URGENCE SLIDER */
+.urgence-row {
+  display: flex; gap: 8px;
+}
+
+.urgence-btn {
+  flex: 1;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 4px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 13px; color: var(--muted);
+}
+
+.urgence-btn.on {
+  background: var(--or-dim);
+  border-color: var(--or);
+  color: var(--or); font-weight: 700;
+}
+
+/* SECTION DIVIDER */
+.section-sep {
+  display: flex; align-items: center; gap: 12px;
+  margin: 32px 0 24px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  color: var(--or); letter-spacing: 0.15em; text-transform: uppercase;
+}
+
+.section-sep::before, .section-sep::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+/* BTN */
+.btn-primary {
+  background: linear-gradient(135deg, var(--or), #8a6f2e);
+  color: var(--noir);
+  border: none; border-radius: 8px;
+  padding: 16px 32px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  transition: all 0.2s;
+  width: 100%; margin-top: 8px;
+}
+
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* ══════════════════════════════
+   PAGE 2 — RÉCAP
+══════════════════════════════ */
+.recap-wrap {
+  max-width: 680px; margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.recap-hero {
+  text-align: center;
+  padding: 40px 24px;
+  background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(201,168,76,0.01));
+  border: 1px solid var(--or-border);
+  border-radius: 16px;
+  margin-bottom: 32px;
+}
+
+.recap-prenom {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; color: var(--or);
+  letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.recap-h {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 700; line-height: 1.15;
+  margin-bottom: 16px;
+}
+
+.recap-h em { font-style: italic; color: var(--or); }
+
+.recap-reve {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.1rem; color: var(--or);
+  line-height: 1.7;
+  border-left: 2px solid var(--or);
+  padding-left: 16px;
+  text-align: left;
+  margin: 0 auto; max-width: 480px;
+}
+
+.recap-mirror {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.recap-mirror-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  color: var(--or); letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.recap-line {
+  display: flex; gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.recap-line:last-child { border-bottom: none; }
+.recap-key { color: var(--muted); width: 140px; flex-shrink: 0; }
+.recap-val { color: var(--blanc); flex: 1; line-height: 1.5; }
+
+.possible-box {
+  background: var(--vert-dim);
+  border: 1px solid rgba(61,220,132,0.2);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.possible-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem; font-weight: 700;
+  color: var(--vert); margin-bottom: 8px;
+}
+
+.possible-sub {
+  font-size: 13px; color: rgba(61,220,132,0.7);
+  line-height: 1.7;
+}
+
+/* ══════════════════════════════
+   PAGE 3 — CONFIGURATEUR
+══════════════════════════════ */
+.config-wrap {
+  max-width: 680px; margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.config-intro {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.config-intro h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem; font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.config-intro h2 em { color: var(--or); font-style: italic; }
+.config-intro p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  color: var(--or); letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* MODULE CARD */
+.mod-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative; overflow: hidden;
+}
+
+.mod-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--or), transparent);
+  opacity: 0; transition: opacity 0.25s;
+}
+
+.mod-card:hover { border-color: var(--or-border); }
+.mod-card.selected { border-color: var(--or); background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02)); }
+.mod-card.selected::before { opacity: 1; }
+.mod-card.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+.mod-card.included { border-color: rgba(61,220,132,0.3); background: var(--vert-dim); cursor: default; }
+
+.mod-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 12px;
+}
+
+.mod-left { flex: 1; }
+.mod-name { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+.mod-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+.mod-right {
+  display: flex; flex-direction: column;
+  align-items: flex-end; gap: 6px; flex-shrink: 0;
+}
+
+.mod-price {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px; font-weight: 700;
+  color: var(--or); white-space: nowrap;
+}
+
+.mod-check {
+  width: 20px; height: 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+
+.mod-card.selected .mod-check {
+  background: var(--or); border-color: var(--or);
+}
+
+.mod-card.selected .mod-check::after {
+  content: '✓'; font-size: 11px; color: var(--noir); font-weight: 700;
+}
+
+.offert-badge {
+  display: inline-block;
+  background: rgba(61,220,132,0.1);
+  border: 1px solid rgba(61,220,132,0.3);
+  border-radius: 10px;
+  padding: 2px 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 8px; font-weight: 700;
+  color: var(--vert); letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+.included-note {
+  font-size: 11px; color: var(--vert);
+  margin-top: 6px;
+}
+
+/* PACK CARDS */
+.pack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px; margin-bottom: 8px;
+}
+
+.pack-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative; overflow: hidden;
+}
+
+.pack-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--or), transparent);
+  opacity: 0; transition: opacity 0.25s;
+}
+
+.pack-card:hover { border-color: var(--or-border); }
+.pack-card.selected { border-color: var(--or); background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.02)); }
+.pack-card.selected::before { opacity: 1; }
+
+.pack-badge {
+  position: absolute; top: 0; right: 14px;
+  background: var(--or); color: var(--noir);
+  font-family: 'Space Mono', monospace;
+  font-size: 8px; font-weight: 700;
+  padding: 3px 10px; border-radius: 0 0 6px 6px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+.pack-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.pack-price {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px; font-weight: 700;
+  color: var(--or); margin-bottom: 10px;
+}
+
+.pack-features {
+  list-style: none;
+  font-size: 11px; color: var(--muted);
+  line-height: 1.9;
+}
+
+.pack-features li::before { content: '✓  '; color: var(--vert); }
+
+/* LIMITATEUR */
+.limitateur {
+  background: linear-gradient(135deg, rgba(255,82,82,0.06), rgba(201,168,76,0.04));
+  border: 1px solid rgba(255,82,82,0.2);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 28px 0;
+  text-align: center;
+}
+
+.lim-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  color: var(--rouge); letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.lim-text {
+  font-size: 14px; color: var(--blanc);
+  line-height: 1.7; margin-bottom: 6px;
+}
+
+.lim-date {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px; color: var(--or);
+  font-weight: 700;
+}
+
+/* BONUS */
+.bonus-section {
+  background: linear-gradient(135deg, rgba(201,168,76,0.06), rgba(201,168,76,0.01));
+  border: 1px solid var(--or-border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.bonus-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  color: var(--or); letter-spacing: 0.15em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.bonus-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+
+.bonus-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+.bonus-icon {
+  width: 36px; height: 36px;
+  background: var(--or-dim);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+
+.bonus-content { flex: 1; }
+
+.bonus-name {
+  font-size: 13px; font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.bonus-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+.bonus-value {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px; color: var(--or); flex-shrink: 0;
+  text-decoration: line-through; opacity: 0.7;
+}
+
+.bonus-total {
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px solid var(--or-border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.bonus-total-label { font-size: 13px; color: var(--muted); }
+.bonus-total-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 700; color: var(--vert);
+}
+
+/* PANIER */
+.panier-fixed {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(8,8,8,0.97);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--or-border);
+  padding: 14px 24px; z-index: 200;
+}
+
+.panier-inner {
+  max-width: 680px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+
+.panier-info { flex: 1; }
+.panier-items { font-size: 11px; color: var(--muted); margin-bottom: 3px; min-height: 16px; }
+.panier-total-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 700; color: var(--or);
+}
+
+.panier-recurrent { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+.btn-panier {
+  background: linear-gradient(135deg, var(--or), #8a6f2e);
+  color: var(--noir); border: none; border-radius: 8px;
+  padding: 13px 22px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; white-space: nowrap;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  transition: all 0.2s;
+}
+
+.btn-panier:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-panier:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+
+/* ══════════════════════════════
+   PAGE 4 — PAIEMENT
+══════════════════════════════ */
+.pay-wrap {
+  max-width: 580px; margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.pay-header {
+  text-align: center; margin-bottom: 32px;
+}
+
+.pay-h {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem; font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.pay-h em { color: var(--or); font-style: italic; }
+.pay-sub { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+.pay-recap {
+  background: var(--card);
+  border: 1px solid var(--or-border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+
+.pay-recap-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  color: var(--or); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.pay-line {
+  display: flex; justify-content: space-between;
+  padding: 7px 0; border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.pay-line:last-child { border-bottom: none; }
+.pay-line-label { color: var(--muted); }
+.pay-line-val {
+  font-family: 'Space Mono', monospace;
+  font-weight: 700; color: var(--or);
+}
+
+.pay-total-line {
+  margin-top: 12px; padding-top: 12px;
+  border-top: 2px solid var(--or-border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.pay-total-label { font-size: 15px; font-weight: 600; }
+.pay-total-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; font-weight: 700; color: var(--or);
+}
+
+/* MOYENS DE PAIEMENT */
+.pay-methods {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+
+.pay-methods-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  color: var(--or); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.pay-method-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.pay-method-item:last-child { border-bottom: none; }
+.pay-method-icon { font-size: 1.2rem; }
+.pay-method-name { flex: 1; color: var(--blanc); }
+.pay-method-detail { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--or); }
+
+/* ETAPES */
+.etapes {
+  background: var(--vert-dim);
+  border: 1px solid rgba(61,220,132,0.2);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 20px;
+}
+
+.etapes-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  color: var(--vert); letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.etape {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 8px 0;
+}
+
+.etape-num {
+  width: 24px; height: 24px;
+  background: rgba(61,220,132,0.15);
+  border: 1px solid rgba(61,220,132,0.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; font-weight: 700; color: var(--vert);
+  flex-shrink: 0;
+}
+
+.etape-text { font-size: 13px; color: rgba(240,236,227,0.8); line-height: 1.6; padding-top: 3px; }
+
+/* QUESTION LUCARNE */
+.lucarne {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 24px;
+  margin-bottom: 20px;
+}
+
+.lucarne-title {
+  font-size: 13px; font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.lucarne-title span { color: var(--or); }
+
+.lucarne-input {
+  display: flex; gap: 10px;
+}
+
+.lucarne-input input {
+  flex: 1; padding: 11px 14px; font-size: 13px;
+}
+
+.btn-lucarne {
+  background: transparent;
+  border: 1px solid var(--or-border);
+  border-radius: 8px;
+  padding: 11px 16px;
+  color: var(--or);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px; font-weight: 600;
+  cursor: pointer; white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.btn-lucarne:hover { background: var(--or-dim); }
+
+/* BTN PAIEMENT */
+.btn-paid {
+  width: 100%;
+  background: linear-gradient(135deg, var(--or), #8a6f2e);
+  color: var(--noir); border: none; border-radius: 10px;
+  padding: 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px; font-weight: 700;
+  cursor: pointer; letter-spacing: 0.04em;
+  transition: all 0.2s; margin-top: 4px;
+}
+
+.btn-paid:hover { opacity: 0.9; transform: translateY(-2px); }
+
+/* SUCCESS */
+.success-screen {
+  display: none; position: fixed; inset: 0;
+  background: var(--noir); z-index: 400;
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 40px;
+}
+
+.success-screen.show { display: flex; }
+
+.success-icon {
+  width: 80px; height: 80px;
+  background: rgba(61,220,132,0.1);
+  border: 1px solid rgba(61,220,132,0.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.2rem; margin-bottom: 24px;
+}
+
+.success-h {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.success-h em { color: var(--or); font-style: italic; }
+.success-sub { font-size: 14px; color: var(--muted); line-height: 1.8; max-width: 400px; }
+
+@media (max-width: 600px) {
+  .row-2 { grid-template-columns: 1fr; }
+  .pack-grid { grid-template-columns: 1fr; }
+  .panier-inner { flex-direction: column; align-items: stretch; }
+  .btn-panier { text-align: center; }
+  .lucarne-input { flex-direction: column; }
+}
+
+/* TABS NAVIGATION */
+.page-tabs{position:fixed;top:0;left:0;right:0;z-index:190;display:flex;align-items:center;background:rgba(8,8,8,0.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(61,220,132,0.12);padding:0 2rem;overflow-x:auto;}
+.page-tab{display:flex;align-items:center;gap:8px;padding:0.7rem 1.2rem;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;color:#555;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;}
+.page-tab:hover{color:#f0ece3;}
+.page-tab.active-gr{color:#3ddc84;border-bottom-color:#3ddc84;}
+.page-tab.active-g{color:#c9a84c;border-bottom-color:#c9a84c;}
+.page-tab-sep{width:1px;height:18px;background:rgba(255,255,255,0.07);margin:0 3px;}
+.page-tab-cta{margin-left:auto;background:linear-gradient(135deg,#3ddc84,#1a8c4a);color:#080808;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;padding:6px 14px;border-radius:4px;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;}
+@media(max-width:600px){.page-tabs{padding:0 0.6rem;}.page-tab{padding:0.6rem 0.8rem;font-size:8px;}}
+
+
+nav{display:none!important;}
+.progress-bar{top:44px!important;}
+</style>
+</head>
+<body>
+<div class="page-tabs">
+  <a href="/" class="page-tab">🏠 Accueil</a>
+  <div class="page-tab-sep"></div>
+  <a href="/consulting" class="page-tab">🎯 Consulting</a>
+  <div class="page-tab-sep"></div>
+  <a href="/assistant-ia-pro" class="page-tab">⚡ Assistant IA Pro</a>
+  <div class="page-tab-sep"></div>
+  <a href="/chatbot" class="page-tab active-gr">🤖 Chatbot</a>
+  <div class="page-tab-sep"></div>
+  <a href="/notre-histoire" class="page-tab">📖 Notre histoire</a>
+  <a href="#" class="page-tab-cta">Démarrer mon audit →</a>
+</div>
+
+<nav>
+  <div class="nav-logo">Mr Attractor</div>
+  <div class="nav-step" id="nav-step">Étape 1 / 4</div>
+</nav>
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+<!-- ══════════════════════════════════════
+     PAGE 1 — AUDIT
+══════════════════════════════════════ -->
+<div class="page active" id="page-1">
+<div class="audit-wrap">
+  <div class="audit-tag">⚡ Audit — Assistant IA Pro</div>
+  <h1 class="audit-h1">Parlez-nous de<br><em>votre boutique.</em></h1>
+  <p class="audit-sub">5 minutes pour comprendre votre réalité. C'est la base de tout ce qu'on va construire ensemble.</p>
+
+  <div class="section-sep">Identité</div>
+
+  <div class="row-2">
+    <div class="field">
+      <label>Votre prénom *</label>
+      <input type="text" id="prenom" placeholder="Ex : Amina">
+    </div>
+    <div class="field">
+      <label>Nom de votre boutique *</label>
+      <input type="text" id="boutique" placeholder="Ex : KENZÉ Paris">
+    </div>
+  </div>
+
+  <div class="row-2">
+    <div class="field">
+      <label>Ville</label>
+      <input type="text" id="ville" placeholder="Ex : Abidjan">
+    </div>
+    <div class="field">
+      <label>Pays</label>
+      <input type="text" id="pays" placeholder="Ex : Côte d'Ivoire">
+    </div>
+  </div>
+
+  <div class="row-2">
+    <div class="field">
+      <label>Email *</label>
+      <input type="email" id="email" placeholder="vous@email.com">
+    </div>
+    <div class="field">
+      <label>Secteur d'activité</label>
+      <input type="text" id="secteur" placeholder="Ex : Mode, Restauration...">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Taille de votre équipe</label>
+    <div class="pills" id="pills-equipe">
+      <div class="pill" onclick="togglePill(this, 'equipe')">Seul(e)</div>
+      <div class="pill" onclick="togglePill(this, 'equipe')">1 à 3 personnes</div>
+      <div class="pill" onclick="togglePill(this, 'equipe')">4 à 10 personnes</div>
+      <div class="pill" onclick="togglePill(this, 'equipe')">Plus de 10</div>
+    </div>
+  </div>
+
+  <div class="section-sep">Messages & Communication</div>
+
+  <div class="field">
+    <label>Canaux de vente utilisés</label>
+    <div class="pills" id="pills-canaux">
+      <div class="pill" onclick="togglePill(this, 'canaux')">WhatsApp</div>
+      <div class="pill" onclick="togglePill(this, 'canaux')">Instagram</div>
+      <div class="pill" onclick="togglePill(this, 'canaux')">Facebook</div>
+      <div class="pill" onclick="togglePill(this, 'canaux')">Boutique physique</div>
+      <div class="pill" onclick="togglePill(this, 'canaux')">Site web</div>
+      <div class="pill" onclick="togglePill(this, 'canaux')">TikTok</div>
+    </div>
+  </div>
+
+  <div class="row-2">
+    <div class="field">
+      <label>Messages reçus par jour (estimation)</label>
+      <select id="msgs-jour">
+        <option value="">Choisir...</option>
+        <option>Moins de 10</option>
+        <option>10 à 30</option>
+        <option>30 à 60</option>
+        <option>Plus de 60</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Temps passé à répondre par jour</label>
+      <select id="heures-reponse">
+        <option value="">Choisir...</option>
+        <option>Moins de 1h</option>
+        <option>1 à 2h</option>
+        <option>2 à 4h</option>
+        <option>Plus de 4h</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Questions fréquentes de vos clients</label>
+    <div class="field-hint">Listez les 3-5 questions que vous répondez tout le temps</div>
+    <textarea id="faq" placeholder="Prix, disponibilité, livraison, tailles, délais..."></textarea>
+  </div>
+
+  <div class="section-sep">Douleurs & Blocages</div>
+
+  <div class="field">
+    <label>Que se passe-t-il quand un client vous écrit à 22h ?</label>
+    <div class="pills" id="pills-22h" style="flex-direction:column">
+      <div class="pill" style="width:100%" onclick="selectPill(this, '22h')">Je réponds le lendemain matin</div>
+      <div class="pill" style="width:100%" onclick="selectPill(this, '22h')">Je réponds même tard le soir</div>
+      <div class="pill" style="width:100%" onclick="selectPill(this, '22h')">Souvent oublié, message perdu</div>
+      <div class="pill" style="width:100%" onclick="selectPill(this, '22h')">J'ai une assistante qui répond</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Estimez-vous perdre des ventes par manque de réactivité ?</label>
+    <div class="pills" id="pills-ventes" style="flex-direction:column">
+      <div class="pill" style="width:100%" onclick="selectPill(this, 'ventes')">Oui, régulièrement</div>
+      <div class="pill" style="width:100%" onclick="selectPill(this, 'ventes')">Parfois, quelques cas</div>
+      <div class="pill" style="width:100%" onclick="selectPill(this, 'ventes')">Non, je suis réactif(ve)</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Ce que vous voulez absolument automatiser</label>
+    <div class="pills" id="pills-priorites">
+      <div class="pill" onclick="togglePill(this, 'priorites')">Réponses aux questions fréquentes</div>
+      <div class="pill" onclick="togglePill(this, 'priorites')">Prise de commande</div>
+      <div class="pill" onclick="togglePill(this, 'priorites')">Suivi livraison</div>
+      <div class="pill" onclick="togglePill(this, 'priorites')">Relances prospects</div>
+      <div class="pill" onclick="togglePill(this, 'priorites')">Paiement en ligne</div>
+      <div class="pill" onclick="togglePill(this, 'priorites')">SAV clients</div>
+    </div>
+  </div>
+
+  <div class="section-sep">Votre vision</div>
+
+  <div class="field">
+    <label>Votre catalogue produit est-il en ligne ?</label>
+    <div class="pills" id="pills-catalogue">
+      <div class="pill" onclick="selectPill(this, 'catalogue')">Oui — sur Instagram</div>
+      <div class="pill" onclick="selectPill(this, 'catalogue')">Oui — sur mon site</div>
+      <div class="pill" onclick="selectPill(this, 'catalogue')">Partiellement</div>
+      <div class="pill" onclick="selectPill(this, 'catalogue')">Non</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Livraison proposée</label>
+    <div class="pills" id="pills-livraison">
+      <div class="pill" onclick="selectPill(this, 'livraison')">Locale uniquement</div>
+      <div class="pill" onclick="selectPill(this, 'livraison')">Nationale</div>
+      <div class="pill" onclick="selectPill(this, 'livraison')">Internationale</div>
+      <div class="pill" onclick="selectPill(this, 'livraison')">Pas de livraison</div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>★ Votre rêve — ce que vous voulez vraiment</label>
+    <div class="field-hint">Soyez honnête. C'est autour de ça qu'on va construire votre système.</div>
+    <textarea id="reve" placeholder="Ex : Ne plus rater aucun message, avoir du temps pour ma famille, que ma boutique tourne même quand je dors..."></textarea>
+  </div>
+
+  <div class="field">
+    <label>Niveau d'urgence</label>
+    <div class="urgence-row">
+      <div class="urgence-btn" onclick="selectUrgence(this, '1')">1</div>
+      <div class="urgence-btn" onclick="selectUrgence(this, '2')">2</div>
+      <div class="urgence-btn" onclick="selectUrgence(this, '3')">3</div>
+      <div class="urgence-btn" onclick="selectUrgence(this, '4')">4</div>
+      <div class="urgence-btn" onclick="selectUrgence(this, '5')">5 🔥</div>
+    </div>
+  </div>
+
+  <button class="btn-primary" onclick="validerAudit()">
+    Voir mon analyse personnalisée →
+  </button>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE 2 — RÉCAP
+══════════════════════════════════════ -->
+<div class="page" id="page-2">
+<div class="recap-wrap">
+
+  <div class="recap-hero">
+    <div class="recap-prenom" id="recap-prenom">Pour vous,</div>
+    <h2 class="recap-h" id="recap-h">C'est <em>possible.</em></h2>
+    <div class="recap-reve" id="recap-reve"></div>
+  </div>
+
+  <div class="recap-mirror">
+    <div class="recap-mirror-title">Ce que nous avons compris de votre situation</div>
+    <div id="recap-lines"></div>
+  </div>
+
+  <div class="possible-box">
+    <div class="possible-title">Votre assistant IA peut changer ça.</div>
+    <div class="possible-sub" id="possible-sub">
+      Basé sur votre profil, nous avons identifié les solutions les plus adaptées à votre boutique. Composez votre système ci-dessous.
+    </div>
+  </div>
+
+  <button class="btn-primary" onclick="allerConfig()">
+    Composer mon système →
+  </button>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE 3 — CONFIGURATEUR
+══════════════════════════════════════ -->
+<div class="page" id="page-3">
+<div class="config-wrap">
+
+  <div class="config-intro">
+    <h2>Votre système,<br><em>sur mesure.</em></h2>
+    <p>Sélectionnez d'abord les modules spécifiques, puis choisissez un pack si vous voulez aller plus loin.</p>
+  </div>
+
+  <!-- MODULES À LA CARTE -->
+  <div style="margin-bottom:28px">
+    <div class="section-label">Modules à la carte</div>
+
+    <div class="mod-card" onclick="toggleMod(this)" data-name="Agenda & Briefing quotidien" data-price="50">
+      <div class="mod-header">
+        <div class="mod-left">
+          <div class="mod-name">Agenda & Briefing quotidien</div>
+          <div class="mod-desc">Votre assistant vous briefes chaque matin en 30 secondes. Installation rapide.</div>
+        </div>
+        <div class="mod-right">
+          <div class="mod-price">50 €</div>
+          <div class="mod-check"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mod-card" onclick="toggleMod(this)" data-name="Suivi clients & Relances" data-price="60">
+      <div class="mod-header">
+        <div class="mod-left">
+          <div class="mod-name">Suivi clients & Relances</div>
+          <div class="mod-desc">Zéro relance oubliée — votre assistant suit vos prospects automatiquement.</div>
+        </div>
+        <div class="mod-right">
+          <div class="mod-price">60 €</div>
+          <div class="mod-check"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mod-card" onclick="toggleMod(this)" data-name="Tableau de bord Finances" data-price="100">
+      <div class="mod-header">
+        <div class="mod-left">
+          <div class="mod-name">Tableau de bord Finances</div>
+          <div class="mod-desc">CA, charges et objectifs en un coup d'œil chaque jour.</div>
+        </div>
+        <div class="mod-right">
+          <div class="mod-price">100 €</div>
+          <div class="mod-check"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mod-card" onclick="toggleMod(this)" data-name="Gestion assistantes (3 assistants)" data-price="150">
+      <div class="mod-header">
+        <div class="mod-left">
+          <div class="mod-name">Gestion assistantes</div>
+          <div class="mod-desc">Configuration de 3 assistants IA spécialisés pour votre équipe.</div>
+        </div>
+        <div class="mod-right">
+          <div class="mod-price">150 €</div>
+          <div class="mod-check"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mod-card" onclick="toggleMod(this)" data-name="Contenus réseaux sociaux" data-price="100">
+      <div class="mod-header">
+        <div class="mod-left">
+          <div class="mod-name">Contenus réseaux sociaux</div>
+          <div class="mod-desc">Stratégie éditoriale alignée avec votre positionnement et vos cibles.</div>
+        </div>
+        <div class="mod-right">
+          <div class="mod-price">100 €</div>
+          <div class="mod-check"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mod-card" id="mod-whatsapp" onclick="toggleMod(this)" data-name="Automatisation WhatsApp" data-price="200">
+      <div class="mod-header">
+        <div class="mod-left">
+          <div class="mod-name">Automatisation WhatsApp uniquement</div>
+          <div class="mod-desc">Mise en place d'une automatisation ciblée sur WhatsApp Business.</div>
+        </div>
+        <div class="mod-right">
+          <div class="mod-price">200 €</div>
+          <div class="mod-check"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mod-card" id="mod-formation" onclick="toggleMod(this)" data-name="Formation IA — 1h" data-price="80">
+      <div class="mod-header">
+        <div class="mod-left">
+          <div class="mod-name">Formation IA — 1h</div>
+          <div class="mod-desc">Comprendre l'IA et ses usages concrets pour votre activité.</div>
+        </div>
+        <div class="mod-right">
+          <div class="mod-price">80 €/h</div>
+          <div class="mod-check"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mod-card" onclick="toggleMod(this)" data-name="Coaching assistant IA personnel — 1h" data-price="150">
+      <div class="mod-header">
+        <div class="mod-left">
+          <div class="mod-name">Coaching assistant IA personnel — 1h</div>
+          <div class="mod-desc">Rendre votre assistant opérationnel et adapté à votre façon de travailler.</div>
+        </div>
+        <div class="mod-right">
+          <div class="mod-price">150 €</div>
+          <div class="mod-check"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PACKS -->
+  <div style="margin-bottom:28px">
+    <div class="section-label">Packs Chatbot — allez plus loin</div>
+    <div class="pack-grid">
+
+      <div class="pack-card" onclick="selectPack(this, 'Bot Texte', 350, 0)">
+        <div class="pack-name">Bot Texte</div>
+        <div class="pack-price">350 €</div>
+        <ul class="pack-features">
+          <li>Prompt bot sur mesure</li>
+          <li>Base questions fréquentes</li>
+          <li>Installation complète</li>
+          <li>Formation 15 min <span class="offert-badge">offerte</span></li>
+          <li>Guide PDF <span class="offert-badge">offert</span></li>
+          <li>Suivi 30 jours <span class="offert-badge">offert</span></li>
+        </ul>
+      </div>
+
+      <div class="pack-card" onclick="selectPack(this, 'Bot Connecté', 900, 80)">
+        <div class="pack-badge">Populaire</div>
+        <div class="pack-name">Bot Connecté</div>
+        <div class="pack-price">900 € <span style="font-size:10px;color:var(--muted)">+ 80€/mois</span></div>
+        <ul class="pack-features">
+          <li>Tout le Bot Texte</li>
+          <li>WhatsApp & Instagram</li>
+          <li>Automatisation complète</li>
+          <li>Escalade vers le boss</li>
+          <li>Rapport hebdo messages</li>
+          <li>Formation <span class="offert-badge">offerte</span></li>
+        </ul>
+      </div>
+
+      <div class="pack-card" onclick="selectPack(this, 'Bot Sur-Mesure', 1800, 120)">
+        <div class="pack-name">Bot Sur-Mesure</div>
+        <div class="pack-price">1 800 € <span style="font-size:10px;color:var(--muted)">+ 120€/mois</span></div>
+        <ul class="pack-features">
+          <li>Tout le Bot Connecté</li>
+          <li>Catalogue temps réel</li>
+          <li>Prise de commande intégrée</li>
+          <li>Lien paiement automatique</li>
+          <li>Outil de pilotage complet</li>
+          <li>Formation <span class="offert-badge">offerte</span></li>
+        </ul>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:8px">
+      <span style="font-size:12px;color:var(--muted);cursor:pointer" onclick="deselecPack()">Aucun pack — modules à la carte uniquement</span>
+    </div>
+  </div>
+
+  <!-- LIMITATEUR -->
+  <div class="limitateur">
+    <div class="lim-title">⏳ Offre à durée limitée</div>
+    <div class="lim-text">Nous démarrons <strong>en priorité avec vous sous 48h</strong> si vous confirmez avant le</div>
+    <div class="lim-date" id="lim-date"></div>
+    <div style="font-size:12px;color:var(--muted);margin-top:8px">Au-delà, le démarrage suit la file d'attente standard.</div>
+  </div>
+
+  <!-- BONUS -->
+  <div class="bonus-section">
+    <div class="bonus-title">🎁 Bonus offerts si vous confirmez avant la date</div>
+
+    <div class="bonus-item">
+      <div class="bonus-icon">💬</div>
+      <div class="bonus-content">
+        <div class="bonus-name">Conseils & ajustements 30 jours</div>
+        <div class="bonus-desc">Accompagnement WhatsApp + email pendant 30 jours après déploiement.</div>
+      </div>
+      <div class="bonus-value">350€</div>
+    </div>
+
+    <div class="bonus-item">
+      <div class="bonus-icon">📞</div>
+      <div class="bonus-content">
+        <div class="bonus-name">Appel stratégique 1h avec Mac Arthur</div>
+        <div class="bonus-desc">Un call dédié pour affiner votre stratégie après les premiers jours.</div>
+      </div>
+      <div class="bonus-value">80€</div>
+    </div>
+
+    <div class="bonus-item">
+      <div class="bonus-icon">🏅</div>
+      <div class="bonus-content">
+        <div class="bonus-name">Carte Privilège Mr Attractor</div>
+        <div class="bonus-desc">Accès restreint — Coaching personnalisés · Club Select · Relations d'affaires · Partenariats stratégiques · Publicité. Accès exclusif pour une organisation parfaite.</div>
+      </div>
+      <div class="bonus-value">350€</div>
+    </div>
+
+    <div class="bonus-total">
+      <div class="bonus-total-label">Valeur totale des bonus</div>
+      <div class="bonus-total-val">780 € offerts</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PANIER STICKY -->
+<div class="panier-fixed">
+  <div class="panier-inner">
+    <div class="panier-info">
+      <div class="panier-items" id="panier-items">Sélectionnez vos modules</div>
+      <div class="panier-total-val" id="panier-total">0 €</div>
+      <div class="panier-recurrent" id="panier-recurrent"></div>
+    </div>
+    <button class="btn-panier" id="btn-panier" onclick="allerPaiement()" disabled>
+      Confirmer →
+    </button>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAGE 4 — PAIEMENT
+══════════════════════════════════════ -->
+<div class="page" id="page-4">
+<div class="pay-wrap">
+
+  <div class="pay-header">
+    <h2 class="pay-h">Dernière <em>étape.</em></h2>
+    <p class="pay-sub">Votre sélection est prête. Choisissez votre moyen de paiement et confirmez.</p>
+  </div>
+
+  <!-- RECAP COMMANDE -->
+  <div class="pay-recap">
+    <div class="pay-recap-title">Votre sélection</div>
+    <div id="pay-recap-lines"></div>
+    <div class="pay-total-line">
+      <div class="pay-total-label">Total</div>
+      <div class="pay-total-val" id="pay-total-val">0 €</div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:6px" id="pay-recurrent-note"></div>
+  </div>
+
+  <!-- MOYENS DE PAIEMENT -->
+  <div class="pay-methods" id="pay-methods">
+    <div class="pay-methods-title">Moyens de paiement</div>
+    <div id="pay-methods-list"></div>
+  </div>
+
+  <!-- LUCARNE -->
+  <div class="lucarne">
+    <div class="lucarne-title">Une question avant de confirmer ? <span>Je vous réponds en moins de 2h.</span></div>
+    <div class="lucarne-input">
+      <input type="text" id="question-input" placeholder="Ex : Est-ce que le bot fonctionne sans internet ?">
+      <button class="btn-lucarne" onclick="envoyerQuestion()">Envoyer →</button>
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin-top:8px">Ou contactez directement : <a href="https://wa.me/33753902323" style="color:var(--or);text-decoration:none;">WhatsApp +337.53.90.23.23</a></div>
+  </div>
+
+  <!-- ÉTAPES -->
+  <div class="etapes">
+    <div class="etapes-title">Ce qui se passe après votre paiement</div>
+    <div class="etape">
+      <div class="etape-num">1</div>
+      <div class="etape-text">Vous recevez une confirmation par email dans les minutes qui suivent.</div>
+    </div>
+    <div class="etape">
+      <div class="etape-num">2</div>
+      <div class="etape-text">Mac Arthur vous contacte sous 24h pour organiser le démarrage.</div>
+    </div>
+    <div class="etape">
+      <div class="etape-num">3</div>
+      <div class="etape-text">Déploiement complet de votre système sous 48h.</div>
+    </div>
+    <div class="etape">
+      <div class="etape-num">4</div>
+      <div class="etape-text">30 jours d'accompagnement + appel stratégique + Carte Privilège — offerts.</div>
+    </div>
+  </div>
+
+  <button class="btn-paid" onclick="confirmerPaiement()">
+    ✅ J'ai effectué mon paiement — Démarrer sous 48h
+  </button>
+
+  <div style="text-align:center;margin-top:12px;font-size:11px;color:var(--muted)">
+    Paiement intégral avant démarrage · Déploiement prioritaire sous 48h
+  </div>
+
+</div>
+</div>
+
+<!-- SUCCESS -->
+<div class="success-screen" id="success">
+  <div class="success-icon">✅</div>
+  <div class="success-h">Bienvenue dans<br><em>la famille.</em></div>
+  <div class="success-sub" id="success-sub">
+    Votre paiement est confirmé. Mac Arthur vous contacte sous 24h pour démarrer votre déploiement. Vos bonus sont réservés.
+  </div>
+  <div style="margin-top:24px;font-size:12px;color:var(--muted)">
+    En attendant : <a href="https://wa.me/33753902323" style="color:var(--or);text-decoration:none;font-weight:600;">WhatsApp +337.53.90.23.23</a>
+  </div>
+</div>
+
+<script>
+const APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbyTfnfPyQGpKt8nlSvK5yak59bDXgaoDQZfkdDh-mlSG8hVqGJXY97XXZK2zA_7fzuulA/exec";
+
+// ── STATE ──
+let audit = {};
+let panier = { pack: null, modules: [], total: 0, recurrent: 0 };
+let urgenceVal = '';
+let selectedPills = {};
+
+// ── PROGRESS ──
+function setPage(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + n).classList.add('active');
+  document.getElementById('nav-step').textContent = 'Étape ' + n + ' / 4';
+  document.getElementById('progress').style.width = ((n-1)/3*100) + '%';
+  window.scrollTo(0, 0);
+}
+
+// ── PILLS ──
+function togglePill(el, group) {
+  el.classList.toggle('on');
+  if (!selectedPills[group]) selectedPills[group] = [];
+  const val = el.textContent.trim();
+  if (el.classList.contains('on')) {
+    if (!selectedPills[group].includes(val)) selectedPills[group].push(val);
+  } else {
+    selectedPills[group] = selectedPills[group].filter(v => v !== val);
+  }
+}
+
+function selectPill(el, group) {
+  const container = el.parentElement;
+  container.querySelectorAll('.pill').forEach(p => p.classList.remove('on'));
+  el.classList.add('on');
+  selectedPills[group] = [el.textContent.trim()];
+}
+
+function getPills(group) {
+  return (selectedPills[group] || []).join(', ') || '—';
+}
+
+function selectUrgence(el, val) {
+  document.querySelectorAll('.urgence-btn').forEach(b => b.classList.remove('on'));
+  el.classList.add('on');
+  urgenceVal = val;
+}
+
+// ── PAGE 1 → 2 ──
+function validerAudit() {
+  const prenom = document.getElementById('prenom').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const boutique = document.getElementById('boutique').value.trim();
+
+  if (!prenom || !email) {
+    alert('Prénom et email requis pour continuer.'); return;
+  }
+
+  audit = {
+    prenom, boutique,
+    ville: document.getElementById('ville').value.trim(),
+    pays: document.getElementById('pays').value.trim(),
+    email,
+    secteur: document.getElementById('secteur').value.trim(),
+    equipe: getPills('equipe'),
+    canaux: getPills('canaux'),
+    msgs_jour: document.getElementById('msgs-jour').value,
+    heures_reponse: document.getElementById('heures-reponse').value,
+    faq: document.getElementById('faq').value.trim(),
+    reaction_22h: getPills('22h'),
+    ventes_perdues: getPills('ventes'),
+    priorites: getPills('priorites'),
+    catalogue: getPills('catalogue'),
+    livraison: getPills('livraison'),
+    reve: document.getElementById('reve').value.trim(),
+    urgence: urgenceVal,
+    source: 'formulaire-audit-bot-v2'
+  };
+
+  // Calculer palier recommandé
+  const msgs = audit.msgs_jour;
+  let palier = 'Bot Texte — 350€';
+  if (msgs === 'Plus de 60') palier = 'Bot Sur-Mesure — 1800€ + 120€/mois';
+  else if (msgs === '30 à 60') palier = 'Bot Connecté — 900€ + 80€/mois';
+  else if (msgs === '10 à 30') palier = 'Bot Connecté — 900€ + 80€/mois';
+  audit.palier_recommande = palier;
+
+  // Envoyer à Apps Script
+  const params = new URLSearchParams(audit).toString();
+  fetch(APPS_SCRIPT + '?' + params, { method: 'GET', mode: 'no-cors' }).catch(() => {});
+
+  // Construire récap
+  buildRecap();
+  setPage(2);
+}
+
+function buildRecap() {
+  const p = audit.prenom;
+  document.getElementById('recap-prenom').textContent = p + ',';
+  document.getElementById('recap-h').innerHTML = 'Ce que vous décrivez,<br><em>on peut le résoudre.</em>';
+
+  const reve = audit.reve || "Avoir une boutique qui tourne sans vous épuiser.";
+  document.getElementById('recap-reve').textContent = '"' + reve + '"';
+
+  const lines = [
+    { k: 'Boutique', v: audit.boutique || '—' },
+    { k: 'Secteur', v: audit.secteur || '—' },
+    { k: 'Messages/jour', v: audit.msgs_jour || '—' },
+    { k: 'Temps de réponse', v: audit.heures_reponse || '—' },
+    { k: 'Réactivité 22h', v: audit.reaction_22h || '—' },
+    { k: 'Ventes perdues', v: audit.ventes_perdues || '—' },
+    { k: 'Priorités', v: audit.priorites || '—' },
+  ];
+
+  document.getElementById('recap-lines').innerHTML = lines.map(l =>
+    `<div class="recap-line"><div class="recap-key">${l.k}</div><div class="recap-val">${l.v}</div></div>`
+  ).join('');
+
+  document.getElementById('possible-sub').textContent =
+    `Basé sur votre profil, nous recommandons le ${audit.palier_recommande}. Mais vous pouvez composer votre système exactement comme vous le souhaitez.`;
+}
+
+// ── PAGE 2 → 3 ──
+function allerConfig() {
+  // Date limitateur
+  const d = new Date();
+  d.setDate(d.getDate() + 2);
+  document.getElementById('lim-date').textContent = d.toLocaleDateString('fr-FR', {
+    weekday: 'long', day: 'numeric', month: 'long'
+  }) + ' à minuit';
+
+  setPage(3);
+}
+
+// ── MODULES ──
+function toggleMod(el) {
+  if (el.classList.contains('included') || el.classList.contains('disabled')) return;
+  el.classList.toggle('selected');
+  const name = el.dataset.name;
+  const price = parseInt(el.dataset.price);
+  if (el.classList.contains('selected')) {
+    panier.modules.push({ name, price });
+  } else {
+    panier.modules = panier.modules.filter(m => m.name !== name);
+  }
+  calculerTotal();
+}
+
+// ── PACK ──
+function selectPack(el, name, price, recurrent) {
+  document.querySelectorAll('.pack-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  panier.pack = { name, price, recurrent };
+
+  // Gérer conflits
+  const modWa = document.getElementById('mod-whatsapp');
+  const modForm = document.getElementById('mod-formation');
+
+  if (name === 'Bot Connecté' || name === 'Bot Sur-Mesure') {
+    // WhatsApp inclus → désactiver
+    modWa.classList.add('disabled');
+    modWa.classList.remove('selected');
+    modWa.querySelector('.mod-desc').textContent = 'Inclus dans votre pack — déploiement WhatsApp complet.';
+    panier.modules = panier.modules.filter(m => m.name !== 'Automatisation WhatsApp');
+
+    // Formation incluse → afficher note
+    modForm.classList.add('included');
+    modForm.classList.remove('selected');
+    modForm.querySelector('.mod-price').textContent = '';
+    if (!modForm.querySelector('.included-note')) {
+      const note = document.createElement('div');
+      note.className = 'included-note';
+      note.textContent = '✓ Incluse dans votre pack — offerte';
+      modForm.appendChild(note);
+    }
+    panier.modules = panier.modules.filter(m => m.name !== 'Formation IA — 1h');
+  } else {
+    modWa.classList.remove('disabled');
+    modWa.querySelector('.mod-desc').textContent = 'Mise en place d\'une automatisation ciblée sur WhatsApp Business.';
+    modForm.classList.remove('included');
+    modForm.querySelector('.mod-price').textContent = '80 €/h';
+    const note = modForm.querySelector('.included-note');
+    if (note) note.remove();
+  }
+
+  calculerTotal();
+}
+
+function deselecPack() {
+  document.querySelectorAll('.pack-card').forEach(c => c.classList.remove('selected'));
+  panier.pack = null;
+  // Réactiver modules
+  const modWa = document.getElementById('mod-whatsapp');
+  const modForm = document.getElementById('mod-formation');
+  modWa.classList.remove('disabled');
+  modWa.querySelector('.mod-desc').textContent = 'Mise en place d\'une automatisation ciblée sur WhatsApp Business.';
+  modForm.classList.remove('included');
+  modForm.querySelector('.mod-price').textContent = '80 €/h';
+  const note = modForm.querySelector('.included-note');
+  if (note) note.remove();
+  calculerTotal();
+}
+
+// ── CALCUL ──
+function calculerTotal() {
+  let total = 0, recurrent = 0, items = [];
+  if (panier.pack) {
+    total += panier.pack.price;
+    recurrent += panier.pack.recurrent || 0;
+    items.push(panier.pack.name);
+  }
+  panier.modules.forEach(m => { total += m.price; items.push(m.name); });
+  panier.total = total; panier.recurrent = recurrent;
+
+  const fmt = n => n.toLocaleString('fr-FR') + ' €';
+  document.getElementById('panier-total').textContent = fmt(total);
+  document.getElementById('panier-items').textContent = items.length
+    ? items.slice(0,2).join(' · ') + (items.length > 2 ? ' +' + (items.length-2) : '')
+    : 'Sélectionnez vos modules';
+  document.getElementById('panier-recurrent').textContent = recurrent ? '+ ' + fmt(recurrent) + '/mois' : '';
+  document.getElementById('btn-panier').disabled = total === 0;
+}
+
+// ── PAGE 3 → 4 ──
+function allerPaiement() {
+  // Recap
+  const fmt = n => n.toLocaleString('fr-FR') + ' €';
+  let lines = '';
+  if (panier.pack) lines += `<div class="pay-line"><div class="pay-line-label">📦 ${panier.pack.name}</div><div class="pay-line-val">${fmt(panier.pack.price)}</div></div>`;
+  panier.modules.forEach(m => {
+    lines += `<div class="pay-line"><div class="pay-line-label">✓ ${m.name}</div><div class="pay-line-val">${fmt(m.price)}</div></div>`;
+  });
+  document.getElementById('pay-recap-lines').innerHTML = lines;
+  document.getElementById('pay-total-val').textContent = fmt(panier.total);
+  document.getElementById('pay-recurrent-note').textContent = panier.recurrent
+    ? '+ ' + fmt(panier.recurrent) + '/mois d\'assistance' : '';
+
+  // Moyens de paiement selon pays
+  const pays = (audit.pays || '').toLowerCase();
+  const afriqueOuest = ['côte d\'ivoire', 'sénégal', 'mali', 'cameroun', 'burkina', 'togo', 'bénin', 'guinée', 'congo', 'ghana', 'niger'];
+  const isAfrique = afriqueOuest.some(c => pays.includes(c));
+
+  let methods = '';
+  if (isAfrique) {
+    methods = `
+      <div class="pay-method-item"><div class="pay-method-icon">📱</div><div class="pay-method-name">Wave</div><div class="pay-method-detail">+225.05.76.87.70.70</div></div>
+      <div class="pay-method-item"><div class="pay-method-icon">💙</div><div class="pay-method-name">Djamo</div><div class="pay-method-detail">+225.05.76.87.70.70</div></div>
+      <div class="pay-method-item"><div class="pay-method-icon">📲</div><div class="pay-method-name">MTN Money</div><div class="pay-method-detail">+225.05.76.87.70.70</div></div>
+      <div class="pay-method-item"><div class="pay-method-icon">🟠</div><div class="pay-method-name">Orange Money</div><div class="pay-method-detail">+225.05.76.87.70.70</div></div>`;
+  } else {
+    methods = `
+      <div class="pay-method-item"><div class="pay-method-icon">💙</div><div class="pay-method-name">PayPal</div><div class="pay-method-detail">@Myattractor</div></div>
+      <div class="pay-method-item"><div class="pay-method-icon">🟢</div><div class="pay-method-name">Wero / Revolut</div><div class="pay-method-detail">+33 7 53 90 23 23</div></div>
+      <div class="pay-method-item"><div class="pay-method-icon">🌍</div><div class="pay-method-name">MoneyGram</div><div class="pay-method-detail">KOUASSI N'Guessan Arsène, Paris</div></div>`;
+  }
+  document.getElementById('pay-methods-list').innerHTML = methods;
+
+  setPage(4);
+}
+
+// ── QUESTION LUCARNE ──
+function envoyerQuestion() {
+  const q = document.getElementById('question-input').value.trim();
+  if (!q) return;
+  const msg = encodeURIComponent(`Question avant paiement (${audit.prenom}) : ${q}`);
+  window.open('https://wa.me/33753902323?text=' + msg, '_blank');
+  document.getElementById('question-input').value = '';
+}
+
+// ── CONFIRMATION PAIEMENT ──
+function confirmerPaiement() {
+  const payload = {
+    ...audit,
+    palier_recommande: panier.pack ? panier.pack.name : 'Modules à la carte',
+    priorites: panier.modules.map(m => m.name).join(' | '),
+    msgs_jour: panier.total + '€ — paiement confirmé',
+    heures_reponse: panier.recurrent ? panier.recurrent + '€/mois' : '0',
+    source: 'paiement-confirme',
+    total: panier.total,
+    recurrent: panier.recurrent
+  };
+
+  const params = new URLSearchParams(payload).toString();
+  fetch(APPS_SCRIPT + '?' + params, { method: 'GET', mode: 'no-cors' }).catch(() => {});
+
+  document.getElementById('success-sub').textContent =
+    `Merci ${audit.prenom}. Votre paiement est confirmé. Mac Arthur vous contacte sous 24h pour démarrer. Vos 780€ de bonus sont réservés.`;
+  document.getElementById('success').classList.add('show');
+}
+</script>
+</body>
+</html>
