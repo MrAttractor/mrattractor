@@ -183,6 +183,33 @@ footer{padding:2.5rem;border-top:1px solid var(--border);display:flex;flex-wrap:
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:500;overflow-y:auto;padding:2rem;}
 .modal-box{max-width:680px;margin:2rem auto;background:var(--card);border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:2.5rem;}
 
+/* ── SECTION VIDÉO ── */
+.video-section{position:relative;z-index:1;padding:70px 2.5rem;border-top:1px solid var(--border);}
+.video-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.video-left{}
+.video-kicker{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;}
+.video-h{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.1rem);font-weight:700;line-height:1.15;margin-bottom:1.2rem;}
+.video-h em{font-style:italic;color:var(--gold);}
+.video-p{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:2rem;}
+.video-cta{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);text-decoration:none;font-size:12px;font-weight:700;padding:13px 24px;border-radius:8px;transition:all 0.2s;letter-spacing:0.04em;}
+.video-cta:hover{box-shadow:0 8px 24px rgba(201,168,76,0.35);transform:translateY(-2px);}
+.video-cta-note{font-size:11px;color:var(--muted);margin-top:10px;}
+.video-right{display:flex;justify-content:center;align-items:center;}
+.video-frame-wrap{position:relative;width:100%;max-width:340px;}
+.video-frame-glow{position:absolute;inset:-1px;border-radius:18px;background:linear-gradient(135deg,rgba(201,168,76,0.3),rgba(201,168,76,0.05));z-index:-1;}
+.video-frame{width:100%;aspect-ratio:9/16;border-radius:16px;overflow:hidden;border:1px solid rgba(201,168,76,0.2);box-shadow:0 24px 60px rgba(0,0,0,0.5);}
+.video-frame iframe{width:100%;height:100%;border:none;display:block;}
+.video-quote{background:linear-gradient(135deg,rgba(201,168,76,0.06),rgba(201,168,76,0.01));border:1px solid rgba(201,168,76,0.15);border-radius:10px;padding:1.2rem 1.5rem;margin-bottom:1.8rem;}
+.video-quote p{font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:var(--text);line-height:1.7;}
+.video-quote span{display:block;font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-top:8px;}
+
+@media(max-width:900px){
+  .video-inner{grid-template-columns:1fr;gap:2rem;}
+  .video-right{order:-1;}
+  .video-frame-wrap{max-width:260px;}
+  .video-section{padding:50px 1.2rem;}
+}
+
 /* ── POPUP LEAD MAGNET ── */
 .lm-popup-overlay{
   display:none;position:fixed;inset:0;z-index:600;
@@ -256,6 +283,23 @@ footer{padding:2.5rem;border-top:1px solid var(--border);display:flex;flex-wrap:
   .lm-popup-content{padding:2rem 1.5rem;}
 }
 </style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1225122193019269');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1225122193019269&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
 <body>
 
@@ -445,6 +489,45 @@ footer{padding:2.5rem;border-top:1px solid var(--border);display:flex;flex-wrap:
     <div class="stat"><div class="stat-num">500h</div><div class="stat-lbl">Récupérées par an</div></div>
     <div class="stat"><div class="stat-num">24/7</div><div class="stat-lbl">Votre système travaille</div></div>
     <div class="stat"><div class="stat-num">80€</div><div class="stat-lbl">Diagnostic offert</div></div>
+  </div>
+</div>
+
+<!-- SECTION VIDÉO -->
+<div class="video-section">
+  <div class="video-inner">
+
+    <div class="video-left">
+      <div class="video-kicker">Mac Arthur Kouassi · Mr Attractor</div>
+      <h2 class="video-h">En automatisant mes tâches,<br>je me concentre sur <em>l'essentiel.</em></h2>
+
+      <div class="video-quote">
+        <p>« En automatisant une partie de mes tâches j'arrive à me concentrer réellement sur l'accompagnement de mes clients. »</p>
+        <span>— Mac Arthur Kouassi, Fondateur Mr Attractor</span>
+      </div>
+
+      <p class="video-p">C'est exactement ce que la Méthode ATTRACTOR peut faire pour vous. Moins d'urgences. Plus de vision. Un système qui tourne pendant que vous êtes ailleurs.</p>
+
+      <a href="/lead-magnet" class="video-cta">
+        🎁 Télécharger le guide gratuit →
+      </a>
+      <div class="video-cta-note">Obtenez une meilleure organisation en 7 jours · Offert · 32 pages</div>
+    </div>
+
+    <div class="video-right">
+      <div class="video-frame-wrap">
+        <div class="video-frame-glow"></div>
+        <div class="video-frame">
+          <iframe
+            src="https://www.youtube.com/embed/lHJ3pWtS_zM?rel=0&modestbranding=1&playsinline=1"
+            title="Mac Arthur Kouassi — Méthode ATTRACTOR"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
