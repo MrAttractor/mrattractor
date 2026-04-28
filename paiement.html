@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paiement — Système ATTRACTOR</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--gold-dim:#8a6f2e;--gl:rgba(201,168,76,0.1);--bg:#0F0F0F;--card:#1A1A1A;--card2:#222;--b:rgba(255,255,255,0.08);--bg2:rgba(201,168,76,0.18);--text:#F2EDE4;--muted:#999;--green:#3DDC84;--red:#FF6B6B;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:#0F0F0F;color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(10,10,10,0.98);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.07);}
+.nm{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nk{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#000;}
+.nn{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;}
+.nb{font-size:13px;color:var(--muted);text-decoration:none;border:1px solid rgba(255,255,255,0.08);padding:6px 14px;border-radius:6px;}
+
+.wrap{max-width:600px;margin:0 auto;padding:100px 1.5rem 80px;}
+
+/* ÉTAPES */
+.steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:3rem;}
+.step-item{display:flex;align-items:center;gap:8px;}
+.step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;border:2px solid rgba(255,255,255,0.1);color:var(--muted);transition:all 0.3s;}
+.step-num.done{background:var(--green);border-color:var(--green);color:#000;}
+.step-num.active{background:var(--gold);border-color:var(--gold);color:#000;}
+.step-lbl{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;}
+.step-lbl.active{color:var(--gold);}
+.step-sep{width:32px;height:1px;background:rgba(255,255,255,0.1);margin:0 8px;}
+
+/* HEADER */
+.page-header{text-align:center;margin-bottom:2.5rem;}
+.page-eyebrow{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.8rem;display:flex;align-items:center;justify-content:center;gap:8px;}
+.eyedot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.page-h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.4rem);font-weight:700;margin-bottom:0.5rem;}
+.page-h1 em{font-style:italic;color:var(--gold);}
+.page-sub{font-size:14px;color:var(--muted);line-height:1.7;}
+
+/* RÉCAP DEVIS */
+.recap-box{background:var(--card);border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:1.4rem;margin-bottom:1.5rem;}
+.recap-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem;}
+.recap-items{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem;}
+.ri{display:flex;justify-content:space-between;font-size:13px;}
+.ri-nm{color:#CCC;}
+.ri-pr{font-family:'Space Mono',monospace;font-size:12px;color:var(--gold);font-weight:700;}
+.recap-sep{height:1px;background:rgba(201,168,76,0.15);margin:10px 0;}
+.recap-total{display:flex;justify-content:space-between;align-items:baseline;}
+.rt-lbl{font-size:14px;font-weight:600;}
+.rt-val{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);}
+.recap-validity{font-size:11px;color:var(--red);margin-top:6px;text-align:right;}
+
+/* ZONES PAIEMENT */
+.pay-zones{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem;}
+.pay-zone{background:var(--card);border:2px solid rgba(255,255,255,0.08);border-radius:10px;padding:1.2rem;cursor:pointer;transition:all 0.2s;position:relative;}
+.pay-zone:hover{border-color:rgba(201,168,76,0.3);}
+.pay-zone.sel{border-color:var(--gold);background:rgba(201,168,76,0.05);}
+.pay-zone.sel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);border-radius:10px 10px 0 0;}
+.pz-flag{font-size:1.4rem;margin-bottom:6px;display:block;}
+.pz-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
+.pz-method{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.pz-icon{font-size:1rem;}
+.pz-name{font-size:13px;color:#DDD;font-weight:600;}
+.pz-detail{font-size:11px;color:var(--muted);}
+.pz-check{position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;background:var(--gold);color:#000;display:none;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+.pay-zone.sel .pz-check{display:flex;}
+
+/* FORMULAIRE */
+.form-section{margin-bottom:1.5rem;}
+.field-label{display:block;font-size:12px;font-weight:700;color:#DDD;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:7px;}
+.field-input{width:100%;background:var(--card);border:2px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px 14px;color:#F2EDE4;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:all 0.2s;}
+.field-input:focus{border-color:var(--gold);}
+.field-input::placeholder{color:rgba(153,153,153,0.5);}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* UPLOAD REÇU */
+.upload-zone{background:var(--card);border:2px dashed rgba(255,255,255,0.12);border-radius:10px;padding:2rem;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;margin-bottom:1.5rem;}
+.upload-zone:hover{border-color:rgba(201,168,76,0.4);}
+.upload-zone.has-file{border-color:var(--green);background:rgba(61,220,132,0.04);}
+.upload-icon{font-size:2rem;margin-bottom:0.5rem;display:block;}
+.upload-title{font-size:14px;font-weight:600;color:#DDD;margin-bottom:4px;}
+.upload-hint{font-size:12px;color:var(--muted);}
+.upload-filename{font-size:13px;color:var(--green);margin-top:8px;font-weight:600;display:none;}
+#fileInput{position:absolute;inset:0;opacity:0;cursor:pointer;}
+
+/* BOUTON PAYER */
+.btn-pay{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#000;border:none;border-radius:10px;padding:18px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s;margin-bottom:12px;letter-spacing:0.02em;}
+.btn-pay:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(201,168,76,0.35);}
+.btn-pay:disabled{opacity:0.35;cursor:not-allowed;transform:none;}
+.pay-note{font-size:11px;color:var(--muted);text-align:center;line-height:1.7;}
+
+/* CONFIRMATION */
+.confirmation{display:none;text-align:center;padding:2rem 0;}
+.confirmation.show{display:block;animation:fadeUp 0.5s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.conf-icon{font-size:4rem;margin-bottom:1rem;}
+.conf-h2{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;margin-bottom:0.8rem;}
+.conf-h2 em{font-style:italic;color:var(--gold);}
+.conf-p{font-size:14px;color:var(--muted);line-height:1.75;max-width:440px;margin:0 auto 1.5rem;}
+.conf-next{background:var(--card);border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:1.4rem;max-width:440px;margin:0 auto 1.5rem;text-align:left;}
+.cn-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;font-weight:700;}
+.cn-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#CCC;margin-bottom:10px;line-height:1.6;}
+.cn-item::before{content:'→';color:var(--gold);flex-shrink:0;font-weight:700;}
+
+/* TIMER */
+.timer-box{background:rgba(255,107,107,0.06);border:1px solid rgba(255,107,107,0.2);border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:10px;margin-bottom:1.5rem;}
+.timer-icon{font-size:1.1rem;}
+.timer-text{font-size:13px;color:#DDD;flex:1;}
+.timer-val{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:var(--red);}
+
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(60px);background:var(--card);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:10px 18px;font-size:13px;opacity:0;transition:all 0.35s;pointer-events:none;white-space:nowrap;z-index:999;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast.ok{border-color:rgba(61,220,132,0.3);color:var(--green);}
+.toast.err{border-color:rgba(255,107,107,0.3);color:var(--red);}
+
+@media(max-width:560px){
+  .pay-zones{grid-template-columns:1fr;}
+  .field-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nm"><div class="nk">MA</div><div class="nn">Mr Attractor</div></a>
+  <a href="/configurateur" class="nb">← Mon devis</a>
+</nav>
+
+<div class="wrap">
+
+  <!-- ÉTAPES -->
+  <div class="steps">
+    <div class="step-item">
+      <div class="step-num done">✓</div>
+      <div class="step-lbl">Audit</div>
+    </div>
+    <div class="step-sep"></div>
+    <div class="step-item">
+      <div class="step-num done">✓</div>
+      <div class="step-lbl">Devis</div>
+    </div>
+    <div class="step-sep"></div>
+    <div class="step-item">
+      <div class="step-num active">3</div>
+      <div class="step-lbl active">Paiement</div>
+    </div>
+    <div class="step-sep"></div>
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-lbl">Onboarding</div>
+    </div>
+  </div>
+
+  <div id="formPaiement">
+
+    <!-- HEADER -->
+    <div class="page-header">
+      <div class="page-eyebrow"><div class="eyedot"></div>Dernière étape</div>
+      <h1 class="page-h1">Finalisez votre<br><em>paiement.</em></h1>
+      <p class="page-sub">Votre système sera configuré et livré dans les <strong style="color:var(--text);">48h</strong> suivant la réception.</p>
+    </div>
+
+    <!-- TIMER 72H -->
+    <div class="timer-box">
+      <div class="timer-icon">⏱</div>
+      <div class="timer-text">Offre valable encore</div>
+      <div class="timer-val" id="timerVal">72:00:00</div>
+    </div>
+
+    <!-- RÉCAP DEVIS -->
+    <div class="recap-box">
+      <div class="recap-label">Récapitulatif de votre commande</div>
+      <div class="recap-items" id="recapItems">
+        <div class="ri"><span class="ri-nm">Système ATTRACTOR</span><span class="ri-pr" id="recapTotal">—</span></div>
+      </div>
+      <div class="recap-sep"></div>
+      <div class="recap-total">
+        <span class="rt-lbl">Total à régler</span>
+        <span class="rt-val" id="totalVal">—</span>
+      </div>
+      <div class="recap-validity" id="validityDate"></div>
+    </div>
+
+    <!-- ZONES PAIEMENT -->
+    <div class="form-section">
+      <label class="field-label">Votre zone de paiement *</label>
+      <div class="pay-zones">
+
+        <div class="pay-zone" id="zone-afrique" onclick="selectZone('afrique')">
+          <div class="pz-check">✓</div>
+          <span class="pz-flag">🌍</span>
+          <div class="pz-title">Afrique & Diaspora</div>
+          <div class="pz-method">
+            <span class="pz-icon">📱</span>
+            <div>
+              <div class="pz-name">Wave · Djamo · MTN</div>
+              <div class="pz-detail">+225.05.76.87.70.70</div>
+            </div>
+          </div>
+          <div class="pz-method">
+            <span class="pz-icon">🟠</span>
+            <div>
+              <div class="pz-name">Orange Money</div>
+              <div class="pz-detail">+225.05.76.87.70.70</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pay-zone" id="zone-europe" onclick="selectZone('europe')">
+          <div class="pz-check">✓</div>
+          <span class="pz-flag">🇫🇷</span>
+          <div class="pz-title">France & Europe</div>
+          <div class="pz-method">
+            <span class="pz-icon">💙</span>
+            <div>
+              <div class="pz-name">PayPal</div>
+              <div class="pz-detail">@Myattractor</div>
+            </div>
+          </div>
+          <div class="pz-method">
+            <span class="pz-icon">🟢</span>
+            <div>
+              <div class="pz-name">Wero · Revolut</div>
+              <div class="pz-detail">+33 7 53 90 23 23</div>
+            </div>
+          </div>
+          <div class="pz-method">
+            <span class="pz-icon">🌍</span>
+            <div>
+              <div class="pz-name">Western Union</div>
+              <div class="pz-detail">KOUASSI N'Guessan — Paris</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- COORDONNÉES -->
+    <div class="form-section">
+      <label class="field-label">Vos coordonnées *</label>
+      <div class="field-row" style="margin-bottom:10px;">
+        <div>
+          <input class="field-input" id="f-prenom" type="text" placeholder="Prénom">
+        </div>
+        <div>
+          <input class="field-input" id="f-email" type="email" placeholder="Email">
+        </div>
+      </div>
+      <input class="field-input" id="f-wa" type="tel" placeholder="WhatsApp (pour confirmer)" style="margin-bottom:10px;">
+      <select class="field-input" id="f-moyen">
+        <option value="">Moyen de paiement utilisé</option>
+        <optgroup label="Afrique">
+          <option>Wave</option>
+          <option>Djamo</option>
+          <option>MTN Money</option>
+          <option>Orange Money</option>
+        </optgroup>
+        <optgroup label="Europe">
+          <option>PayPal</option>
+          <option>Wero</option>
+          <option>Revolut</option>
+          <option>Western Union</option>
+          <option>Virement bancaire</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <!-- UPLOAD REÇU -->
+    <div class="form-section">
+      <label class="field-label">Photo / capture de votre reçu *</label>
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="fileInput" accept="image/*,.pdf" onchange="handleFile(this)">
+        <span class="upload-icon">📎</span>
+        <div class="upload-title">Glissez votre reçu ici</div>
+        <div class="upload-hint">ou cliquez pour choisir · JPG, PNG, PDF</div>
+        <div class="upload-filename" id="uploadFilename"></div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.65;">Le reçu permet à Mac Arthur de vérifier et confirmer votre paiement sous 2h. Votre système est lancé dès confirmation.</p>
+    </div>
+
+    <!-- BOUTON -->
+    <button class="btn-pay" id="btnPay" onclick="soumettrePaiement()" disabled>
+      ✅ Confirmer mon paiement →
+    </button>
+    <p class="pay-note">
+      Paiement intégral requis avant démarrage · Livraison 48h après confirmation<br>
+      Une question ? <a href="https://wa.me/33753902323" style="color:var(--gold);">WhatsApp +33 7 53 90 23 23</a>
+    </p>
+
+  </div>
+
+  <!-- CONFIRMATION -->
+  <div class="confirmation" id="confirmation">
+    <div class="conf-icon">🎉</div>
+    <h2 class="conf-h2">Paiement reçu.<br><em>Bienvenue !</em></h2>
+    <p class="conf-p">Mac Arthur vérifie votre paiement et vous confirme sous 2h. Votre système sera livré dans les 48h suivant la confirmation.</p>
+    <div class="conf-next">
+      <div class="cn-label">Ce qui se passe maintenant</div>
+      <div class="cn-item">Vérification de votre paiement par Mac Arthur (sous 2h)</div>
+      <div class="cn-item">Vous recevez un email de confirmation + votre checklist personnalisée</div>
+      <div class="cn-item">Envoyez vos assets selon la checklist</div>
+      <div class="cn-item">Votre système est livré sous 48h après réception</div>
+    </div>
+    <a href="https://wa.me/33753902323?text=Bonjour+Mac+Arthur,+je+viens+de+confirmer+mon+paiement+Système+ATTRACTOR" style="display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#000;text-decoration:none;font-size:14px;font-weight:700;padding:14px 28px;border-radius:8px;text-transform:uppercase;letter-spacing:0.04em;">📱 Confirmer sur WhatsApp aussi →</a>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbzYF6P3s_0-U7Q8Q2ZK1ibENtjhuT64bPV_B2HOZ4_nTxdOPTgP5FW1HodMtOFD_RbXpA/exec";
+
+// Récupérer données URL
+const up = new URLSearchParams(window.location.search);
+let devisData = {
+  prenom:  up.get('p') || localStorage.getItem('audit_prenom') || '',
+  email:   up.get('e') || localStorage.getItem('audit_email') || '',
+  total:   up.get('t') || '',
+  modules: up.get('m') || '',
+  id:      up.get('id') || ''
+};
+
+// Pré-remplir
+if (devisData.prenom) document.getElementById('f-prenom').value = devisData.prenom;
+if (devisData.email)  document.getElementById('f-email').value  = devisData.email;
+
+// Afficher récap
+if (devisData.total) {
+  document.getElementById('totalVal').textContent = devisData.total + '€';
+  document.getElementById('recapTotal').textContent = devisData.total + '€';
+}
+if (devisData.modules) {
+  const items = devisData.modules.split('|');
+  const container = document.getElementById('recapItems');
+  container.innerHTML = '';
+  items.forEach(m => {
+    const parts = m.split(':');
+    const div = document.createElement('div');
+    div.className = 'ri';
+    div.innerHTML = `<span class="ri-nm">${parts[0] || m}</span><span class="ri-pr">${parts[1] || ''}</span>`;
+    container.appendChild(div);
+  });
+}
+
+// Timer 72h
+function startTimer() {
+  const stored = localStorage.getItem('devis_expiry');
+  let expiry;
+  if (stored) {
+    expiry = new Date(stored);
+  } else {
+    expiry = new Date(Date.now() + 72 * 60 * 60 * 1000);
+    localStorage.setItem('devis_expiry', expiry.toISOString());
+  }
+  // Afficher date d'expiration
+  document.getElementById('validityDate').textContent =
+    'Valable jusqu\'au ' + expiry.toLocaleDateString('fr-FR') + ' à ' + expiry.toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+
+  function tick() {
+    const diff = expiry - Date.now();
+    if (diff <= 0) {
+      document.getElementById('timerVal').textContent = 'Expirée';
+      return;
+    }
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('timerVal').textContent =
+      String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+startTimer();
+
+// Zone paiement
+let selectedZone = '';
+function selectZone(zone) {
+  document.querySelectorAll('.pay-zone').forEach(z => z.classList.remove('sel'));
+  document.getElementById('zone-' + zone).classList.add('sel');
+  selectedZone = zone;
+  checkForm();
+}
+
+// Upload fichier
+let fileBase64 = '';
+let fileName = '';
+function handleFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  fileName = file.name;
+  const zone = document.getElementById('uploadZone');
+  const fn = document.getElementById('uploadFilename');
+  zone.classList.add('has-file');
+  fn.style.display = 'block';
+  fn.textContent = '✓ ' + file.name;
+  // Convertir en base64
+  const reader = new FileReader();
+  reader.onload = e => {
+    fileBase64 = e.target.result.split(',')[1];
+    checkForm();
+  };
+  reader.readAsDataURL(file);
+  toast('✓ ' + file.name + ' prêt', 'ok');
+}
+
+// Activer le bouton si tout est rempli
+function checkForm() {
+  const prenom = document.getElementById('f-prenom').value.trim();
+  const email  = document.getElementById('f-email').value.trim();
+  const moyen  = document.getElementById('f-moyen').value;
+  const ok = prenom && email && email.includes('@') && moyen && selectedZone && fileBase64;
+  document.getElementById('btnPay').disabled = !ok;
+}
+
+// Écouter les champs
+['f-prenom','f-email','f-wa','f-moyen'].forEach(id => {
+  document.getElementById(id).addEventListener('input', checkForm);
+});
+
+// Soumettre
+async function soumettrePaiement() {
+  const btn = document.getElementById('btnPay');
+  btn.disabled = true;
+  btn.textContent = '⏳ Envoi en cours…';
+
+  const prenom = document.getElementById('f-prenom').value.trim();
+  const email  = document.getElementById('f-email').value.trim();
+  const wa     = document.getElementById('f-wa').value.trim();
+  const moyen  = document.getElementById('f-moyen').value;
+  const total  = devisData.total || document.getElementById('totalVal').textContent.replace('€','').replace('—','');
+
+  const params = new URLSearchParams({
+    action:    'paiement',
+    prenom,
+    email,
+    whatsapp:  wa,
+    id_client: devisData.id || '—',
+    montant:   total,
+    moyen,
+    preuve:    fileName ? 'Photo reçu uploadée : ' + fileName : 'En attente',
+    recu_b64:  fileBase64 ? fileBase64.substring(0, 500) : '' // tronqué pour URL
+  });
+
+  try {
+    await fetch(APPS_SCRIPT + '?' + params.toString(), {method:'GET', mode:'no-cors'});
+    await new Promise(r => setTimeout(r, 1500));
+    // Afficher confirmation
+    document.getElementById('formPaiement').style.display = 'none';
+    document.getElementById('confirmation').classList.add('show');
+    window.scrollTo({top:0, behavior:'smooth'});
+    // Mettre à jour étapes
+    document.querySelectorAll('.step-num').forEach((s, i) => {
+      if (i <= 2) { s.classList.remove('active'); s.classList.add('done'); s.textContent = '✓'; }
+      if (i === 3) { s.classList.add('active'); }
+    });
+  } catch(e) {
+    toast('Erreur — contactez-nous sur WhatsApp', 'err');
+    btn.disabled = false;
+    btn.textContent = '✅ Confirmer mon paiement →';
+  }
+}
+
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  t.className = 'toast ' + (type||'');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
