@@ -465,7 +465,7 @@ function goStep(n) {
   currentStep = n;
   document.getElementById('s'+n).classList.add('active');
   updateProgress(n);
-  if (n === 6) buildRecap();
+  if (n === 5) buildRecap();
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
@@ -590,30 +590,34 @@ function setUrgence(n) {
 
 // ── RÉCAP
 function buildRecap() {
-  document.getElementById('recapIdentite').innerHTML = `
-    <div class="recap-label">Identité</div>
-    <div class="recap-row"><span class="recap-key">Prénom</span><span class="recap-val">${v('prenom')}</span></div>
-    <div class="recap-row"><span class="recap-key">Email</span><span class="recap-val">${v('email')}</span></div>
-    <div class="recap-row"><span class="recap-key">WhatsApp</span><span class="recap-val">${v('whatsapp') || '—'}</span></div>
-    <div class="recap-row"><span class="recap-key">Pays</span><span class="recap-val">${v('pays') || '—'}</span></div>
-  `;
-  document.getElementById('recapProfil').innerHTML = `
-    <div class="recap-label">Profil</div>
-    <div class="recap-row"><span class="recap-key">Activité</span><span class="recap-val">${v('activite')}</span></div>
-    <div class="recap-row"><span class="recap-key">Secteur</span><span class="recap-val">${state.secteur}</span></div>
-    <div class="recap-row"><span class="recap-key">Stade</span><span class="recap-val">${state.stade}</span></div>
-    <div class="recap-row"><span class="recap-key">Budget</span><span class="recap-val">${state.budget || '—'}</span></div>
-  `;
-  document.getElementById('recapDouleurs').innerHTML = `
-    <div class="recap-label">Douleurs & Besoins</div>
-    <div class="recap-row"><span class="recap-key">Douleurs</span><span class="recap-val">${state.douleurs.join(', ') || '—'}</span></div>
-    <div class="recap-row"><span class="recap-key">Besoins</span><span class="recap-val">${state.besoins.join(', ') || '—'}</span></div>
-    <div class="recap-row"><span class="recap-key">Urgence</span><span class="recap-val">${state.urgence}/5</span></div>
-  `;
-  document.getElementById('recapReve').innerHTML = `
-    <div class="recap-label">Votre rêve</div>
-    <div style="font-size:14px;color:var(--gold);font-style:italic;line-height:1.7;">"${v('reve')}"</div>
-  `;
+  const secteurLabels = {ecommerce:'E-commerce / Mode',restaurant:'Restauration / Food',service:'Services / Consulting',beaute:'Beauté / Bien-être',immobilier:'Immobilier / BTP',autre:'Autre'};
+  const stadeLabels = {demarrage:'Démarrage',croissance:'En croissance',optimisation:'Optimisation',relance:'Relance'};
+
+  document.getElementById('recapIdentite').innerHTML =
+    '<div class="recap-label">Identité</div>' +
+    '<div class="recap-row"><span class="recap-key">Prénom</span><span class="recap-val">' + (v('prenom')||'—') + '</span></div>' +
+    '<div class="recap-row"><span class="recap-key">Email</span><span class="recap-val">' + (v('email')||'—') + '</span></div>' +
+    '<div class="recap-row"><span class="recap-key">WhatsApp</span><span class="recap-val">' + (v('whatsapp')||'—') + '</span></div>' +
+    '<div class="recap-row"><span class="recap-key">Pays</span><span class="recap-val">' + (v('pays')||'—') + '</span></div>';
+
+  document.getElementById('recapProfil').innerHTML =
+    '<div class="recap-label">Profil</div>' +
+    '<div class="recap-row"><span class="recap-key">Activité</span><span class="recap-val">' + (v('activite')||'—') + '</span></div>' +
+    '<div class="recap-row"><span class="recap-key">Secteur</span><span class="recap-val">' + (secteurLabels[state.secteur]||state.secteur||'—') + '</span></div>' +
+    '<div class="recap-row"><span class="recap-key">Stade</span><span class="recap-val">' + (stadeLabels[state.stade]||state.stade||'—') + '</span></div>';
+
+  document.getElementById('recapDouleurs').innerHTML =
+    '<div class="recap-label">Douleurs & Blocages</div>' +
+    '<div class="recap-row"><span class="recap-key">Identifiés</span><span class="recap-val">' + (state.douleurs.join(', ')||'—') + '</span></div>' +
+    (v('douleurLibre') ? '<div class="recap-row"><span class="recap-key">En vos mots</span><span class="recap-val">' + v('douleurLibre') + '</span></div>' : '') +
+    '<div class="recap-row"><span class="recap-key">Urgence</span><span class="recap-val">' + (state.urgence||0) + '/5</span></div>';
+
+  const reve = v('reve');
+  document.getElementById('recapReve').innerHTML =
+    '<div class="recap-label">Votre rêve</div>' +
+    '<div style="font-size:15px;color:var(--gold);font-style:italic;line-height:1.75;margin-top:4px;">' +
+    (reve ? '"' + reve + '"' : '<span style="color:var(--muted)">Non renseigné</span>') +
+    '</div>';
 }
 
 // ── CARELLE CHAT
