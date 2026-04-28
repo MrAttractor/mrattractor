@@ -1,3 +1,4 @@
 /api/starter  https://mrattractor.app.n8n.cloud/webhook/starter-attractor  200
 /lead-magnet  /lead-magnet.html  200
 /challenge    /challenge.html    200
+/audit        /audit.html        200

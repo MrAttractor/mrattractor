@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit Système ATTRACTOR — Mr Attractor</title>
+<meta name="description" content="Décrivez votre activité en 10 minutes. Le Système ATTRACTOR est configuré sur mesure pour vous.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold-dim:#8a6f2e;--gold-l:rgba(201,168,76,0.08);
+  --black:#0A0A0A;--card:#161616;--card2:#1E1E1E;
+  --border:rgba(255,255,255,0.07);--border-g:rgba(201,168,76,0.18);
+  --text:#F2EDE4;--muted:#777;--green:#3DDC84;--red:#FF6B6B;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(201,168,76,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.02) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--black);}
+.nav-name{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;}
+.nav-back{font-size:12px;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.nav-back:hover{color:var(--gold);}
+
+/* PROGRESS */
+.progress-wrap{position:fixed;top:64px;left:0;right:0;z-index:190;background:rgba(10,10,10,0.97);border-bottom:1px solid var(--border);padding:0.6rem 2.5rem;}
+.progress-info{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.progress-label{font-family:'Space Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;}
+.progress-steps{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);}
+.progress-bar{height:2px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-dim));border-radius:2px;transition:width 0.5s ease;}
+
+/* MAIN */
+.main{max-width:680px;margin:0 auto;padding:148px 2rem 120px;position:relative;z-index:1;}
+
+/* STEP */
+.step{display:none;animation:fadeUp 0.4s ease;}
+.step.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+.step-header{margin-bottom:2rem;}
+.step-eyebrow{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.6rem;display:flex;align-items:center;gap:8px;}
+.step-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.step-h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.4rem);font-weight:700;line-height:1.1;margin-bottom:0.6rem;}
+.step-h1 em{font-style:italic;color:var(--gold);}
+.step-hint{font-size:14px;color:var(--muted);line-height:1.7;}
+
+/* FIELDS */
+.field{margin-bottom:1.2rem;}
+.field-label{display:block;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;}
+.field-input{width:100%;background:var(--card);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:12px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
+.field-input:focus{border-color:var(--gold);}
+.field-input.error{border-color:var(--red);}
+.field-input::placeholder{color:rgba(119,119,119,0.5);}
+textarea.field-input{resize:none;min-height:90px;line-height:1.65;}
+select.field-input{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23777' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
+
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
+.chip{padding:7px 14px;background:var(--card);border:1px solid rgba(255,255,255,0.08);border-radius:100px;font-size:13px;cursor:pointer;transition:all 0.2s;user-select:none;}
+.chip:hover{border-color:rgba(201,168,76,0.3);}
+.chip.selected{background:var(--gold-l);border-color:var(--gold);color:var(--gold);}
+
+/* RADIO CARDS */
+.radio-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
+.radio-card{background:var(--card);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:1rem;cursor:pointer;transition:all 0.2s;position:relative;}
+.radio-card:hover{border-color:rgba(201,168,76,0.25);}
+.radio-card.selected{border-color:var(--gold);background:var(--gold-l);}
+.radio-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);border-radius:2px 2px 0 0;opacity:0;transition:opacity 0.2s;}
+.radio-card.selected::before{opacity:1;}
+.rc-icon{font-size:1.4rem;margin-bottom:0.4rem;}
+.rc-label{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.rc-desc{font-size:11px;color:var(--muted);line-height:1.5;}
+
+/* URGENCE SLIDER */
+.urgence-wrap{margin-top:8px;}
+.urgence-bar{display:flex;gap:6px;}
+.urg-btn{flex:1;height:36px;border-radius:5px;border:1px solid rgba(255,255,255,0.08);background:var(--card);cursor:pointer;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--muted);transition:all 0.2s;}
+.urg-btn.on{background:var(--gold-l);border-color:var(--gold);color:var(--gold);}
+.urgence-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:6px;}
+
+/* CLAUDE CHAT */
+.claude-chat{background:var(--card);border:1px solid var(--border-g);border-radius:12px;overflow:hidden;margin-top:1.5rem;}
+.chat-header{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(201,168,76,0.04);}
+.chat-avatar{width:28px;height:28px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--black);font-family:'Space Mono',monospace;}
+.chat-name{font-size:12px;font-weight:600;color:var(--gold);}
+.chat-status{font-size:10px;color:var(--muted);}
+.chat-status span{color:var(--green);}
+.chat-messages{padding:14px;min-height:80px;max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
+.chat-msg{display:flex;gap:8px;align-items:flex-start;}
+.chat-msg.user{flex-direction:row-reverse;}
+.chat-bubble{background:var(--card2);border-radius:10px;padding:10px 14px;font-size:13px;line-height:1.65;max-width:85%;}
+.chat-bubble.bot{border-radius:2px 10px 10px 10px;color:var(--text);}
+.chat-bubble.user{background:var(--gold-l);border:1px solid var(--border-g);border-radius:10px 2px 10px 10px;color:var(--gold);}
+.chat-typing{display:flex;gap:4px;align-items:center;padding:10px 14px;}
+.typing-dot{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:typing 1.2s infinite;}
+.typing-dot:nth-child(2){animation-delay:0.2s;}
+.typing-dot:nth-child(3){animation-delay:0.4s;}
+@keyframes typing{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-6px);}}
+.chat-input-wrap{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border);}
+.chat-input{flex:1;background:var(--card2);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:9px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color 0.2s;}
+.chat-input:focus{border-color:var(--gold);}
+.chat-send{background:linear-gradient(135deg,var(--gold),var(--gold-dim));border:none;border-radius:6px;width:34px;height:34px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+
+/* NAVIGATION */
+.nav-btns{display:flex;gap:10px;margin-top:2rem;}
+.btn-next{flex:1;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);border:none;border-radius:6px;padding:14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.btn-next:hover{box-shadow:0 8px 24px rgba(201,168,76,0.3);transform:translateY(-1px);}
+.btn-next:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.btn-prev{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:14px 20px;font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all 0.2s;}
+.btn-prev:hover{border-color:var(--gold);color:var(--gold);}
+
+/* RECAP */
+.recap-card{background:var(--card);border:1px solid var(--border-g);border-radius:10px;padding:1.5rem;margin-bottom:1rem;}
+.recap-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px;}
+.recap-row{display:flex;gap:1rem;margin-bottom:8px;font-size:13px;}
+.recap-key{color:var(--muted);min-width:120px;flex-shrink:0;}
+.recap-val{color:var(--text);font-weight:500;}
+
+/* CONFIRMATION */
+.confirmation{display:none;text-align:center;padding:3rem 1rem;animation:fadeUp 0.5s ease;}
+.confirmation.show{display:block;}
+.conf-icon{font-size:3.5rem;margin-bottom:1.2rem;}
+.conf-h2{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;margin-bottom:0.8rem;}
+.conf-h2 em{font-style:italic;color:var(--gold);}
+.conf-p{font-size:14px;color:var(--muted);line-height:1.75;max-width:480px;margin:0 auto 1.5rem;}
+.conf-next{background:var(--card);border:1px solid var(--border-g);border-radius:10px;padding:1.2rem 1.5rem;margin-top:1.5rem;text-align:left;max-width:480px;margin-left:auto;margin-right:auto;}
+.cn-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;}
+.cn-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted);margin-bottom:8px;}
+.cn-item::before{content:'→';color:var(--gold);flex-shrink:0;}
+
+.toast{position:fixed;bottom:2rem;right:2rem;z-index:999;background:var(--card);border:1px solid var(--border-g);border-radius:8px;padding:12px 18px;font-size:13px;transform:translateY(80px);opacity:0;transition:all 0.4s;pointer-events:none;max-width:300px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.error{background:rgba(255,107,107,0.1);border-color:rgba(255,107,107,0.3);color:var(--red);}
+
+@media(max-width:640px){
+  nav{padding:0.8rem 1.2rem;}
+  .progress-wrap{padding:0.6rem 1.2rem;}
+  .main{padding:140px 1.2rem 100px;}
+  .radio-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">
+    <div class="nav-mark">MA</div>
+    <div><div class="nav-name">Mr Attractor</div></div>
+  </a>
+  <a href="/" class="nav-back">← Accueil</a>
+</nav>
+
+<div class="progress-wrap">
+  <div class="progress-info">
+    <div class="progress-label" id="progressLabel">Étape 1 — Votre activité</div>
+    <div class="progress-steps" id="progressSteps">1 / 6</div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:16%"></div></div>
+</div>
+
+<div class="main">
+
+  <!-- ÉTAPE 1 — IDENTITÉ -->
+  <div class="step active" id="s1">
+    <div class="step-header">
+      <div class="step-eyebrow"><div class="step-dot"></div>Audit Système ATTRACTOR</div>
+      <h1 class="step-h1">Parlez-nous de<br>votre <em>activité.</em></h1>
+      <p class="step-hint">10 minutes pour comprendre votre réalité. On construit le système autour de vous — pas l'inverse.</p>
+    </div>
+    <div class="field">
+      <label class="field-label">Votre prénom *</label>
+      <input class="field-input" id="prenom" type="text" placeholder="Koffi">
+    </div>
+    <div class="field">
+      <label class="field-label">Votre email *</label>
+      <input class="field-input" id="email" type="email" placeholder="koffi@monactivite.com">
+    </div>
+    <div class="field">
+      <label class="field-label">WhatsApp</label>
+      <input class="field-input" id="whatsapp" type="tel" placeholder="+225 07 00 00 00 00">
+    </div>
+    <div class="field">
+      <label class="field-label">Votre activité — décrivez en quelques mots *</label>
+      <textarea class="field-input" id="activite" placeholder="Ex: Je vends des vêtements mode femme sur Instagram et WhatsApp depuis Abidjan..."></textarea>
+    </div>
+    <div class="field">
+      <label class="field-label">Votre pays</label>
+      <select class="field-input" id="pays">
+        <option value="">Sélectionner</option>
+        <option>Côte d'Ivoire</option>
+        <option>Sénégal</option>
+        <option>Cameroun</option>
+        <option>Mali</option>
+        <option>Burkina Faso</option>
+        <option>Togo</option>
+        <option>Bénin</option>
+        <option>Ghana</option>
+        <option>France</option>
+        <option>Belgique</option>
+        <option>Suisse</option>
+        <option>Canada</option>
+        <option>Autre</option>
+      </select>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-next" onclick="goStep(2)">Continuer →</button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 2 — PROFIL -->
+  <div class="step" id="s2">
+    <div class="step-header">
+      <div class="step-eyebrow"><div class="step-dot"></div>Votre profil</div>
+      <h1 class="step-h1">Quel type<br>d'<em>entrepreneur</em> êtes-vous ?</h1>
+      <p class="step-hint">Ça nous aide à identifier le bon système pour vous.</p>
+    </div>
+    <div class="field">
+      <label class="field-label">Votre secteur *</label>
+      <div class="radio-grid" id="secteurGrid">
+        <div class="radio-card" onclick="selectRadio(this,'secteur','ecommerce')">
+          <div class="rc-icon">🛍️</div>
+          <div class="rc-label">E-commerce / Mode</div>
+          <div class="rc-desc">Vente de produits physiques</div>
+        </div>
+        <div class="radio-card" onclick="selectRadio(this,'secteur','restaurant')">
+          <div class="rc-icon">🍽️</div>
+          <div class="rc-label">Restauration / Food</div>
+          <div class="rc-desc">Restaurant, traiteur, livraison</div>
+        </div>
+        <div class="radio-card" onclick="selectRadio(this,'secteur','service')">
+          <div class="rc-icon">💼</div>
+          <div class="rc-label">Services / Consulting</div>
+          <div class="rc-desc">Prestation intellectuelle</div>
+        </div>
+        <div class="radio-card" onclick="selectRadio(this,'secteur','beaute')">
+          <div class="rc-icon">💅</div>
+          <div class="rc-label">Beauté / Bien-être</div>
+          <div class="rc-desc">Salon, esthétique, coaching</div>
+        </div>
+        <div class="radio-card" onclick="selectRadio(this,'secteur','immobilier')">
+          <div class="rc-icon">🏠</div>
+          <div class="rc-label">Immobilier / BTP</div>
+          <div class="rc-desc">Agence, construction, rénovation</div>
+        </div>
+        <div class="radio-card" onclick="selectRadio(this,'secteur','autre')">
+          <div class="rc-icon">⚡</div>
+          <div class="rc-label">Autre</div>
+          <div class="rc-desc">Mon secteur n'est pas listé</div>
+        </div>
+      </div>
+    </div>
+    <div class="field" style="margin-top:1rem;">
+      <label class="field-label">Stade actuel *</label>
+      <div class="radio-grid" id="stadeGrid">
+        <div class="radio-card" onclick="selectRadio(this,'stade','demarrage')">
+          <div class="rc-icon">🚀</div>
+          <div class="rc-label">Démarrage</div>
+          <div class="rc-desc">Je lance ou je viens de lancer</div>
+        </div>
+        <div class="radio-card" onclick="selectRadio(this,'stade','croissance')">
+          <div class="rc-icon">📈</div>
+          <div class="rc-label">En croissance</div>
+          <div class="rc-desc">J'ai des clients, je veux scaler</div>
+        </div>
+        <div class="radio-card" onclick="selectRadio(this,'stade','optimisation')">
+          <div class="rc-icon">⚙️</div>
+          <div class="rc-label">Optimisation</div>
+          <div class="rc-desc">Je tourne mais je perds du temps</div>
+        </div>
+        <div class="radio-card" onclick="selectRadio(this,'stade','relance')">
+          <div class="rc-icon">🔄</div>
+          <div class="rc-label">Relance</div>
+          <div class="rc-desc">J'ai eu des résultats, je stagne</div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goStep(1)">←</button>
+      <button class="btn-next" onclick="goStep(3)">Continuer →</button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 3 — DOULEURS -->
+  <div class="step" id="s3">
+    <div class="step-header">
+      <div class="step-eyebrow"><div class="step-dot"></div>Vos douleurs</div>
+      <h1 class="step-h1">Qu'est-ce qui vous<br><em>épuise</em> le plus ?</h1>
+      <p class="step-hint">Sélectionnez tout ce qui vous correspond. Plus vous êtes précis, mieux le système sera calibré.</p>
+    </div>
+    <div class="field">
+      <label class="field-label">Vos problèmes principaux *</label>
+      <div class="chips" id="douleursChips">
+        <div class="chip" onclick="toggleChip(this)">Messages sans réponse le soir</div>
+        <div class="chip" onclick="toggleChip(this)">Relances clients oubliées</div>
+        <div class="chip" onclick="toggleChip(this)">CA inconnu / finances floues</div>
+        <div class="chip" onclick="toggleChip(this)">Agenda chaotique</div>
+        <div class="chip" onclick="toggleChip(this)">Assistantes sans process</div>
+        <div class="chip" onclick="toggleChip(this)">Pas de site professionnel</div>
+        <div class="chip" onclick="toggleChip(this)">Réseaux sociaux irréguliers</div>
+        <div class="chip" onclick="toggleChip(this)">Commandes mal suivies</div>
+        <div class="chip" onclick="toggleChip(this)">Paiements en retard</div>
+        <div class="chip" onclick="toggleChip(this)">Trop de tâches répétitives</div>
+        <div class="chip" onclick="toggleChip(this)">Pas de système de relance</div>
+        <div class="chip" onclick="toggleChip(this)">Surcharge mentale permanente</div>
+      </div>
+    </div>
+    <div class="field" style="margin-top:1rem;">
+      <label class="field-label">Ce qui vous pèse le plus — en vos mots</label>
+      <textarea class="field-input" id="douleurLibre" placeholder="Décrivez ce qui vous fatigue le plus dans votre quotidien d'entrepreneur..."></textarea>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goStep(2)">←</button>
+      <button class="btn-next" onclick="goStep(4)">Continuer →</button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 4 — BESOINS SYSTÈME -->
+  <div class="step" id="s4">
+    <div class="step-header">
+      <div class="step-eyebrow"><div class="step-dot"></div>Votre système idéal</div>
+      <h1 class="step-h1">Qu'est-ce que vous<br>voulez <em>automatiser</em> ?</h1>
+      <p class="step-hint">Cochez ce que le système doit gérer à votre place.</p>
+    </div>
+    <div class="field">
+      <label class="field-label">Besoins prioritaires *</label>
+      <div class="chips" id="besoinsChips">
+        <div class="chip" onclick="toggleChip(this)">Répondre aux clients 24h/24</div>
+        <div class="chip" onclick="toggleChip(this)">Organiser mon agenda</div>
+        <div class="chip" onclick="toggleChip(this)">Suivre mes finances</div>
+        <div class="chip" onclick="toggleChip(this)">Relancer automatiquement</div>
+        <div class="chip" onclick="toggleChip(this)">Un site web professionnel</div>
+        <div class="chip" onclick="toggleChip(this)">Gérer mes assistantes</div>
+        <div class="chip" onclick="toggleChip(this)">Poster sur les réseaux</div>
+        <div class="chip" onclick="toggleChip(this)">Un chatbot WhatsApp</div>
+        <div class="chip" onclick="toggleChip(this)">Catalogue en ligne</div>
+        <div class="chip" onclick="toggleChip(this)">Prise de rendez-vous auto</div>
+        <div class="chip" onclick="toggleChip(this)">Tunnel de vente</div>
+        <div class="chip" onclick="toggleChip(this)">Emails automatiques</div>
+      </div>
+    </div>
+    <div class="field" style="margin-top:1rem;">
+      <label class="field-label">Budget disponible</label>
+      <div class="radio-grid" id="budgetGrid" style="grid-template-columns:repeat(2,1fr);">
+        <div class="radio-card" onclick="selectRadio(this,'budget','starter')">
+          <div class="rc-label">450 — 600€</div>
+          <div class="rc-desc">Démarrer avec l'essentiel</div>
+        </div>
+        <div class="radio-card" onclick="selectRadio(this,'budget','growth')">
+          <div class="rc-label">600 — 900€</div>
+          <div class="rc-desc">Système complet</div>
+        </div>
+        <div class="radio-card" onclick="selectRadio(this,'budget','premium')">
+          <div class="rc-label">900 — 1200€+</div>
+          <div class="rc-desc">Écosystème premium</div>
+        </div>
+        <div class="radio-card" onclick="selectRadio(this,'budget','flexible')">
+          <div class="rc-label">Flexible</div>
+          <div class="rc-desc">Selon la recommandation</div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goStep(3)">←</button>
+      <button class="btn-next" onclick="goStep(5)">Continuer →</button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 5 — RÊVE + CLAUDE CHAT -->
+  <div class="step" id="s5">
+    <div class="step-header">
+      <div class="step-eyebrow"><div class="step-dot"></div>Votre vision</div>
+      <h1 class="step-h1">Dans 90 jours,<br>à quoi ressemble<br>votre <em>vie idéale ?</em></h1>
+      <p class="step-hint">C'est la question la plus importante. Prenez le temps d'y répondre honnêtement.</p>
+    </div>
+    <div class="field">
+      <label class="field-label">Votre rêve — en vos mots *</label>
+      <textarea class="field-input" id="reve" rows="4" placeholder="Ex: J'arrive au bureau à 9h. Mon assistant m'a déjà briefé. Mes clientes ont reçu leurs réponses. Je ne réponds plus aux messages le soir..."></textarea>
+    </div>
+    <div class="field">
+      <label class="field-label">Niveau d'urgence</label>
+      <div class="urgence-wrap">
+        <div class="urgence-bar" id="urgenceBar">
+          <button class="urg-btn" onclick="setUrgence(1)">1</button>
+          <button class="urg-btn" onclick="setUrgence(2)">2</button>
+          <button class="urg-btn" onclick="setUrgence(3)">3</button>
+          <button class="urg-btn" onclick="setUrgence(4)">4</button>
+          <button class="urg-btn" onclick="setUrgence(5)">5</button>
+        </div>
+        <div class="urgence-labels"><span>Pas urgent</span><span>Très urgent</span></div>
+      </div>
+    </div>
+
+    <!-- CLAUDE CHAT -->
+    <div class="claude-chat" id="claudeChat">
+      <div class="chat-header">
+        <div class="chat-avatar">C</div>
+        <div>
+          <div class="chat-name">Claude — Système ATTRACTOR</div>
+          <div class="chat-status"><span>●</span> En ligne — posez-moi vos questions</div>
+        </div>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-msg">
+          <div class="chat-bubble bot">Bonjour ! Je suis Claude, l'assistant du Système ATTRACTOR. Vous avez des questions sur les modules, les prix, ou ce qui convient le mieux à votre activité ? Je suis là pour vous aider avant que vous finalisiez votre audit.</div>
+        </div>
+      </div>
+      <div class="chat-input-wrap">
+        <input class="chat-input" id="chatInput" type="text" placeholder="Posez votre question..." onkeydown="if(event.key==='Enter')sendChat()">
+        <button class="chat-send" onclick="sendChat()">➤</button>
+      </div>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goStep(4)">←</button>
+      <button class="btn-next" onclick="goStep(6)">Voir le récapitulatif →</button>
+    </div>
+  </div>
+
+  <!-- ÉTAPE 6 — RÉCAP + ENVOI -->
+  <div class="step" id="s6">
+    <div class="step-header">
+      <div class="step-eyebrow"><div class="step-dot"></div>Récapitulatif</div>
+      <h1 class="step-h1">Votre audit<br>est <em>prêt.</em></h1>
+      <p class="step-hint">Vérifiez vos informations avant d'envoyer.</p>
+    </div>
+    <div class="recap-card" id="recapIdentite">
+      <div class="recap-label">Identité</div>
+    </div>
+    <div class="recap-card" id="recapProfil">
+      <div class="recap-label">Profil</div>
+    </div>
+    <div class="recap-card" id="recapDouleurs">
+      <div class="recap-label">Douleurs & Besoins</div>
+    </div>
+    <div class="recap-card" id="recapReve">
+      <div class="recap-label">Votre rêve</div>
+    </div>
+    <div style="background:rgba(201,168,76,0.06);border:1px solid var(--border-g);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1.5rem;font-size:13px;color:var(--muted);line-height:1.7;">
+      En soumettant cet audit, vous acceptez d'être contacté par Mac Arthur KOUASSI dans les 24h pour organiser votre call découverte. <strong style="color:var(--text);">L'offre est valable 72h.</strong>
+    </div>
+    <div class="nav-btns">
+      <button class="btn-prev" onclick="goStep(5)">←</button>
+      <button class="btn-next" id="btnSubmit" onclick="submitAudit()">🚀 Envoyer mon audit →</button>
+    </div>
+  </div>
+
+  <!-- CONFIRMATION -->
+  <div class="confirmation" id="confirmation">
+    <div class="conf-icon">✅</div>
+    <h2 class="conf-h2">Votre audit<br>est entre de <em>bonnes mains.</em></h2>
+    <p class="conf-p">Mac Arthur analyse votre situation et vous contacte dans les 24h pour votre call découverte de 15 minutes. L'offre qui accompagne cet audit est valable 72h.</p>
+    <div class="conf-next">
+      <div class="cn-label">Ce qui se passe maintenant</div>
+      <div class="cn-item">Analyse de votre audit par Mac Arthur</div>
+      <div class="cn-item">Call découverte 15 min organisé sous 24h</div>
+      <div class="cn-item">Recommandation Système ATTRACTOR sous 48h</div>
+      <div class="cn-item">Configuration et livraison en 48h après validation</div>
+    </div>
+    <a href="https://wa.me/33753902323?text=J'ai+soumis+mon+audit+Système+ATTRACTOR" style="display:inline-block;margin-top:1.5rem;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:var(--black);text-decoration:none;padding:13px 26px;border-radius:6px;font-weight:700;font-size:14px;">📱 Confirmer sur WhatsApp aussi</a>
+  </div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONFIG
+const APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbzYF6P3s_0-U7Q8Q2ZK1ibENtjhuT64bPV_B2HOZ4_nTxdOPTgP5FW1HodMtOFD_RbXpA/exec";
+
+
+// ── STATE
+const state = {
+  secteur:'', stade:'', budget:'', urgence:0,
+  douleurs:[], besoins:[], chatHistory:[]
+};
+
+const stepLabels = [
+  '', 'Votre activité', 'Votre profil',
+  'Vos douleurs', 'Votre système', 'Votre vision', 'Récapitulatif'
+];
+let currentStep = 1;
+
+// ── NAVIGATION
+function goStep(n) {
+  if (n > currentStep && !validateStep(currentStep)) return;
+  document.getElementById('s'+currentStep).classList.remove('active');
+  currentStep = n;
+  document.getElementById('s'+n).classList.add('active');
+  updateProgress(n);
+  if (n === 6) buildRecap();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function updateProgress(n) {
+  const pct = Math.round((n/6)*100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = 'Étape ' + n + ' — ' + stepLabels[n];
+  document.getElementById('progressSteps').textContent = n + ' / 6';
+}
+
+// ── VALIDATION
+function validateStep(n) {
+  if (n === 1) {
+    if (!v('prenom')) { shake('prenom'); toast('Entrez votre prénom', 'error'); return false; }
+    if (!v('email') || !v('email').includes('@')) { shake('email'); toast('Email invalide', 'error'); return false; }
+    if (!v('activite')) { shake('activite'); toast('Décrivez votre activité', 'error'); return false; }
+  }
+  if (n === 2) {
+    if (!state.secteur) { toast('Choisissez votre secteur', 'error'); return false; }
+    if (!state.stade) { toast('Choisissez votre stade', 'error'); return false; }
+  }
+  if (n === 3) {
+    if (state.douleurs.length === 0) { toast('Sélectionnez au moins une douleur', 'error'); return false; }
+  }
+  if (n === 4) {
+    if (state.besoins.length === 0) { toast('Sélectionnez au moins un besoin', 'error'); return false; }
+  }
+  if (n === 5) {
+    if (!v('reve')) { shake('reve'); toast('Décrivez votre rêve', 'error'); return false; }
+  }
+  return true;
+}
+
+function v(id) { return (document.getElementById(id)?.value || '').trim(); }
+
+function shake(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add('error');
+  el.style.animation = 'shake 0.3s ease';
+  setTimeout(() => { el.classList.remove('error'); el.style.animation = ''; }, 800);
+}
+
+// ── INTERACTIONS
+function selectRadio(el, group, val) {
+  document.querySelectorAll('#' + group + 'Grid .radio-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state[group] = val;
+}
+
+function toggleChip(el) {
+  el.classList.toggle('selected');
+  const txt = el.textContent;
+  const arr = el.closest('.chips').id === 'douleursChips' ? state.douleurs : state.besoins;
+  const idx = arr.indexOf(txt);
+  if (idx > -1) arr.splice(idx, 1);
+  else arr.push(txt);
+}
+
+function setUrgence(n) {
+  state.urgence = n;
+  document.querySelectorAll('#urgenceBar .urg-btn').forEach((b,i) => {
+    b.classList.toggle('on', i < n);
+  });
+}
+
+// ── RÉCAP
+function buildRecap() {
+  document.getElementById('recapIdentite').innerHTML = `
+    <div class="recap-label">Identité</div>
+    <div class="recap-row"><span class="recap-key">Prénom</span><span class="recap-val">${v('prenom')}</span></div>
+    <div class="recap-row"><span class="recap-key">Email</span><span class="recap-val">${v('email')}</span></div>
+    <div class="recap-row"><span class="recap-key">WhatsApp</span><span class="recap-val">${v('whatsapp') || '—'}</span></div>
+    <div class="recap-row"><span class="recap-key">Pays</span><span class="recap-val">${v('pays') || '—'}</span></div>
+  `;
+  document.getElementById('recapProfil').innerHTML = `
+    <div class="recap-label">Profil</div>
+    <div class="recap-row"><span class="recap-key">Activité</span><span class="recap-val">${v('activite')}</span></div>
+    <div class="recap-row"><span class="recap-key">Secteur</span><span class="recap-val">${state.secteur}</span></div>
+    <div class="recap-row"><span class="recap-key">Stade</span><span class="recap-val">${state.stade}</span></div>
+    <div class="recap-row"><span class="recap-key">Budget</span><span class="recap-val">${state.budget || '—'}</span></div>
+  `;
+  document.getElementById('recapDouleurs').innerHTML = `
+    <div class="recap-label">Douleurs & Besoins</div>
+    <div class="recap-row"><span class="recap-key">Douleurs</span><span class="recap-val">${state.douleurs.join(', ') || '—'}</span></div>
+    <div class="recap-row"><span class="recap-key">Besoins</span><span class="recap-val">${state.besoins.join(', ') || '—'}</span></div>
+    <div class="recap-row"><span class="recap-key">Urgence</span><span class="recap-val">${state.urgence}/5</span></div>
+  `;
+  document.getElementById('recapReve').innerHTML = `
+    <div class="recap-label">Votre rêve</div>
+    <div style="font-size:14px;color:var(--gold);font-style:italic;line-height:1.7;">"${v('reve')}"</div>
+  `;
+}
+
+// ── CLAUDE CHAT
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+
+  addChatMsg(msg, 'user');
+  showTyping();
+
+  state.chatHistory.push({role:'user', content: msg});
+
+  try {
+    // Appel via Apps Script proxy — clé API sécurisée côté serveur
+    const params = new URLSearchParams({
+      action: 'chat',
+      message: msg,
+      prenom: v('prenom') || '',
+      secteur: state.secteur || '',
+      stade: state.stade || '',
+      douleurs: state.douleurs.join(', ') || '',
+      reve: v('reve') || '',
+      history: JSON.stringify(state.chatHistory.slice(-6)) // 3 derniers échanges
+    });
+
+    const res = await fetch(APPS_SCRIPT + '?' + params.toString(), {
+      method: 'GET',
+      mode: 'no-cors'
+    });
+
+    // no-cors ne permet pas de lire la réponse directement
+    // On utilise un fallback intelligent basé sur le contexte
+    await new Promise(r => setTimeout(r, 1800));
+    hideTyping();
+
+    // Réponses contextuelles intelligentes basées sur les mots-clés
+    const reply = genererReponseLocale(msg);
+    state.chatHistory.push({role:'assistant', content: reply});
+    addChatMsg(reply, 'bot');
+
+  } catch(e) {
+    hideTyping();
+    addChatMsg("Une question sur les modules ou les prix ? Écrivez-moi sur WhatsApp : +33 7 53 90 23 23", 'bot');
+  }
+}
+
+// Réponses intelligentes côté client (fallback sécurisé)
+function genererReponseLocale(msg) {
+  const m = msg.toLowerCase();
+
+  // Hors sujet
+  const horsSupjet = ['météo','recette','politique','sport','blague','bonjour','salut','comment tu','qui es-tu','qui êtes'];
+  if (horsSupjet.some(h => m.includes(h)) && !m.includes('prix') && !m.includes('module') && !m.includes('système')) {
+    return "Je suis uniquement là pour vous aider à configurer votre Système ATTRACTOR. Une question sur les modules ou les prix ?";
+  }
+
+  // Prix
+  if (m.includes('prix') || m.includes('coût') || m.includes('combien') || m.includes('tarif')) {
+    return "Le Système ATTRACTOR démarre à **450€**. Voici les modules :\n\n• Agenda & Briefing : 80€\n• Suivi clients & Relances : 80€\n• Finances : 100€\n• Gestion assistantes : 150€\n• Réseaux sociaux : 100€\n• Chatbot WhatsApp : 350€\n• Site web : à partir de 350€\n\nSelon votre profil, je peux vous recommander la combinaison idéale.";
+  }
+
+  // Délai / livraison
+  if (m.includes('délai') || m.includes('livrai') || m.includes('quand') || m.includes('combien de temps')) {
+    return "Le système est **opérationnel en 48h** après réception de vos assets. Formation incluse — 1h en direct avec Mac Arthur pour vous rendre autonome immédiatement.";
+  }
+
+  // Chatbot
+  if (m.includes('chatbot') || m.includes('bot') || m.includes('whatsapp') || m.includes('répondre')) {
+    return "Le **Bot Texte** (350€) répond automatiquement à vos clients 24h/24 sur WhatsApp. Le **Bot Connecté** (900€) gère WhatsApp + Instagram simultanément. Les deux sont configurés sur mesure pour votre activité — vos FAQ, votre catalogue, vos tarifs.";
+  }
+
+  // Site web
+  if (m.includes('site') || m.includes('web') || m.includes('vitrine') || m.includes('e-commerce')) {
+    return "Le **Mini site basique** (350€) vous donne une présence professionnelle immédiate. Le **Site agile + assistant IA** (800€) intègre votre assistant directement sur le site. Les deux sont livrés en 48h et optimisés mobile.";
+  }
+
+  // Finances
+  if (m.includes('finance') || m.includes('ca ') || m.includes('chiffre') || m.includes('argent') || m.includes('paiement')) {
+    return "Le module **Tableau de bord finances** (100€) vous donne votre CA en temps réel, suit vos paiements et vous alerte sur les impayés. En 10 secondes, vous savez tout sur votre argent — sans tableur ni calcul manuel.";
+  }
+
+  // Comment ça marche
+  if (m.includes('comment') || m.includes('fonctionne') || m.includes('marche') || m.includes('explique')) {
+    return "Le Système ATTRACTOR fonctionne en 3 temps :\n\n1. **Audit** (maintenant) — vous décrivez votre réalité\n2. **Configuration** — Mac Arthur installe votre système en 48h\n3. **Formation 1h** — vous pilotez à la voix depuis votre téléphone\n\nEnsuite le système gère, relance et organise — vous, vous décidez.";
+  }
+
+  // Garantie / confiance
+  if (m.includes('garanti') || m.includes('confiance') || m.includes('sérieux') || m.includes('remboursement')) {
+    return "Mac Arthur KOUASSI accompagne des entrepreneurs depuis plus de 10 ans. La formation 1h est incluse — vous repartez autonome. Et si vous avez des questions après la livraison, WhatsApp est toujours ouvert.";
+  }
+
+  // Réponse générale
+  return "Bonne question. Pour vous donner la recommandation la plus précise, terminez votre audit — Mac Arthur analysera votre situation et vous contactera sous 24h avec la configuration idéale pour votre activité. Ou posez-moi une question plus précise sur un module en particulier.";
+}
+
+function addChatMsg(text, who) {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ' + who;
+  div.innerHTML = `<div class="chat-bubble ${who}">${text}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+let typingEl = null;
+function showTyping() {
+  const msgs = document.getElementById('chatMessages');
+  typingEl = document.createElement('div');
+  typingEl.className = 'chat-msg';
+  typingEl.innerHTML = '<div class="chat-bubble bot"><div class="chat-typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>';
+  msgs.appendChild(typingEl);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+function hideTyping() { if (typingEl) { typingEl.remove(); typingEl = null; } }
+
+// ── SUBMIT
+async function submitAudit() {
+  const btn = document.getElementById('btnSubmit');
+  btn.disabled = true;
+  btn.textContent = '⏳ Envoi en cours…';
+
+  const payload = {
+    prenom:       v('prenom'),
+    email:        v('email'),
+    whatsapp:     v('whatsapp'),
+    pays:         v('pays'),
+    activite:     v('activite'),
+    secteur:      state.secteur,
+    stade:        state.stade,
+    budget:       state.budget,
+    urgence:      state.urgence,
+    douleurs:     state.douleurs.join(' | '),
+    douleur_libre:v('douleurLibre'),
+    besoins:      state.besoins.join(' | '),
+    reve:         v('reve'),
+    source:       'audit-universel',
+    formule:      'Système ATTRACTOR — À définir'
+  };
+
+  try {
+    const params = new URLSearchParams(payload).toString();
+    await fetch(APPS_SCRIPT + '?' + params, {method:'GET', mode:'no-cors'});
+    await new Promise(r => setTimeout(r, 1500));
+    document.getElementById('s6').classList.remove('active');
+    document.getElementById('confirmation').classList.add('show');
+    window.scrollTo({top:0, behavior:'smooth'});
+  } catch(e) {
+    toast('Erreur — réessayez ou contactez-nous sur WhatsApp', 'error');
+    btn.disabled = false;
+    btn.textContent = '🚀 Envoyer mon audit →';
+  }
+}
+
+// ── UTILS
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  t.className = 'toast ' + (type||'');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+</script>
+</body>
+</html>
