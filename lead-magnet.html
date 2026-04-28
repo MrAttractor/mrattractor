@@ -216,7 +216,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 <div class="toast" id="toast"></div>
 
 <script>
-const APPS_SCRIPT_LEAD = "https://script.google.com/macros/s/AKfycbyItv3-uaZvyE1lD4O4e5bIXJBhTdlm3nnY-896CEJkD7R5DtReq_i9i-MeWHVHm2oJAw/exec";
+const APPS_SCRIPT_LEAD = "https://script.google.com/macros/s/AKfycbzYF6P3s_0-U7Q8Q2ZK1ibENtjhuT64bPV_B2HOZ4_nTxdOPTgP5FW1HodMtOFD_RbXpA/exec";
 let captchaChecked = false;
 
 function toggleCaptcha(){
@@ -254,7 +254,8 @@ async function submitLead(){
 
   try {
     const params = new URLSearchParams(payload).toString();
-    await fetch(APPS_SCRIPT_LEAD + '?' + params, {method:'GET', mode:'no-cors'});
+    params.append('action', 'lead-magnet');
+    await fetch(APPS_SCRIPT_LEAD + '?' + params.toString(), {method:'GET', mode:'no-cors'});
     await new Promise(r => setTimeout(r, 1500));
     document.getElementById('confirmScreen').classList.add('show');
   } catch(err) {
