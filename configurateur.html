@@ -3,369 +3,462 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Configurateur — Système ATTRACTOR</title>
-<meta name="description" content="Composez votre Système ATTRACTOR. Prix en temps réel. Devis généré en 30 secondes.">
+<title>Configurez votre système — Mr Attractor</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --gold:#C9A84C;--gold-dim:#8a6f2e;--gold-l:rgba(201,168,76,0.1);
-  --black:#0F0F0F;--card:#1A1A1A;--card2:#222;
-  --border:rgba(255,255,255,0.08);--border-g:rgba(201,168,76,0.2);
-  --text:#F2EDE4;--muted:#999;--green:#3DDC84;--red:#FF6B6B;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{background:var(--black);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;min-height:100vh;}
+:root{--gold:#C9A84C;--gold-dim:#8a6f2e;--gl:rgba(201,168,76,0.1);--bg:#0F0F0F;--card:#1A1A1A;--card2:#222;--b:rgba(255,255,255,0.08);--bg:rgba(201,168,76,0.18);--text:#F2EDE4;--muted:#999;--green:#3DDC84;--red:#FF6B6B;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:#0F0F0F;color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(10,10,10,0.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
-.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
-.nav-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#000;}
-.nav-name{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;}
-.nav-back{font-size:13px;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:6px 14px;border-radius:6px;transition:all 0.2s;}
-.nav-back:hover{color:var(--gold);border-color:var(--border-g);}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(10,10,10,0.98);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.07);}
+.nm{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nk{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:#000;}
+.nn{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;}
+.nb{font-size:13px;color:var(--muted);text-decoration:none;border:1px solid rgba(255,255,255,0.08);padding:6px 14px;border-radius:6px;}
 
-/* LAYOUT PRINCIPAL */
-.layout{display:grid;grid-template-columns:1fr 380px;min-height:calc(100vh - 64px);margin-top:64px;}
+/* LAYOUT */
+.wrap{display:grid;grid-template-columns:1fr 360px;min-height:calc(100vh - 64px);margin-top:64px;}
 
-/* COLONNE GAUCHE — Configuration */
-.col-config{padding:2.5rem 2rem;border-right:1px solid var(--border);overflow-y:auto;}
+/* ONGLETS */
+.tabs{display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,0.08);padding:0 2rem;background:#0F0F0F;position:sticky;top:64px;z-index:100;}
+.tab{padding:1rem 1.4rem;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;display:flex;align-items:center;gap:8px;}
+.tab:hover{color:var(--text);}
+.tab.on{color:var(--gold);border-bottom-color:var(--gold);}
+.tab-badge{background:var(--gold);color:#000;border-radius:10px;font-size:9px;font-weight:700;padding:2px 7px;min-width:18px;text-align:center;}
 
-/* COLONNE DROITE — Panier sticky */
-.col-panier{position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;padding:2rem 1.5rem;background:var(--card);border-left:1px solid var(--border);}
+/* CONTENT */
+.col-left{border-right:1px solid rgba(255,255,255,0.07);overflow-y:auto;}
+.tab-content{display:none;padding:2rem;}
+.tab-content.on{display:block;}
 
-/* SECTION */
-.config-section{margin-bottom:2.5rem;}
-.config-title{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.2rem;display:flex;align-items:center;gap:10px;}
-.config-title::after{content:'';flex:1;height:1px;background:var(--border-g);}
+/* SECTION TITRE */
+.stitle{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.2rem;display:flex;align-items:center;gap:10px;}
+.stitle::after{content:'';flex:1;height:1px;background:rgba(201,168,76,0.2);}
 
-/* PALIERS */
-.paliers{display:flex;flex-direction:column;gap:12px;}
-.palier{background:var(--card2);border:2px solid var(--border);border-radius:12px;padding:1.4rem;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;}
-.palier::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),transparent);opacity:0;transition:opacity 0.25s;}
-.palier.active::before{opacity:1;}
-.palier:hover{border-color:rgba(201,168,76,0.35);background:#252525;}
-.palier.active{border-color:var(--gold);background:rgba(201,168,76,0.05);}
-.palier.active-green{border-color:var(--green);background:rgba(61,220,132,0.05);}
-.palier.active-green::before{background:linear-gradient(90deg,var(--green),transparent);opacity:1;}
-.palier-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;}
-.palier-left{}
-.palier-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:4px;padding:3px 10px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#CCC;margin-bottom:5px;}
-.palier-badge.green{background:rgba(61,220,132,0.1);border-color:rgba(61,220,132,0.25);color:var(--green);}
-.palier-badge.gold{background:var(--gold-l);border-color:var(--border-g);color:var(--gold);}
-.palier-nom{font-size:16px;font-weight:700;color:#F2EDE4;}
-.palier-prix{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);text-align:right;}
-.palier-prix.green{color:var(--green);}
-.palier-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;margin-bottom:10px;}
-.palier-item{font-size:13px;color:#BBB;display:flex;align-items:center;gap:6px;}
-.palier-item::before{content:'✓';color:var(--gold);font-size:11px;font-weight:700;flex-shrink:0;}
-.palier-item.green::before{color:var(--green);}
-.palier-desc{font-size:12px;color:#777;border-top:1px solid var(--border);padding-top:8px;font-style:italic;}
-.palier-check{position:absolute;top:14px;right:14px;width:24px;height:24px;border-radius:50%;background:var(--gold);display:none;align-items:center;justify-content:center;font-size:12px;color:#000;font-weight:700;}
-.palier.active .palier-check,.palier.active-green .palier-check{display:flex;}
-.palier.active-green .palier-check{background:var(--green);}
+/* MODULE CARD */
+.modules-list{display:flex;flex-direction:column;gap:10px;margin-bottom:2rem;}
+.mcard{background:#1A1A1A;border:2px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.2rem 1.4rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:1rem;position:relative;}
+.mcard:hover{border-color:rgba(201,168,76,0.3);background:#1f1f1f;}
+.mcard.sel{border-color:var(--gold);background:rgba(201,168,76,0.05);}
+.mcard-icon{font-size:1.6rem;flex-shrink:0;width:40px;text-align:center;}
+.mcard-body{flex:1;}
+.mcard-name{font-size:15px;font-weight:700;color:#F2EDE4;margin-bottom:3px;}
+.mcard-desc{font-size:13px;color:#999;line-height:1.5;}
+.mcard-tags{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;}
+.mtag{font-size:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:3px;padding:2px 8px;color:#888;font-family:'Space Mono',monospace;}
+.mcard-price{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--gold);flex-shrink:0;text-align:right;}
+.mcard-price small{font-size:11px;color:var(--muted);display:block;font-family:'DM Sans',sans-serif;font-weight:400;}
+.mcard-check{position:absolute;top:12px;right:12px;width:22px;height:22px;border-radius:50%;background:var(--gold);color:#000;display:none;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
+.mcard.sel .mcard-check{display:flex;}
 
-/* MODULES */
-.modules-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.module{background:var(--card2);border:2px solid var(--border);border-radius:10px;padding:1rem;cursor:pointer;transition:all 0.2s;position:relative;}
-.module:hover{border-color:rgba(201,168,76,0.3);background:#252525;}
-.module.selected{border-color:var(--gold);background:var(--gold-l);}
-.module-icon{font-size:1.4rem;margin-bottom:6px;display:block;}
-.module-name{font-size:13px;font-weight:700;color:#F2EDE4;margin-bottom:3px;}
-.module-desc{font-size:11px;color:#999;line-height:1.5;margin-bottom:8px;}
-.module-price{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--gold);}
-.module-check{position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;background:var(--gold);display:none;align-items:center;justify-content:center;font-size:10px;color:#000;font-weight:700;}
-.module.selected .module-check{display:flex;}
+/* PALIER BADGE DYNAMIQUE */
+.palier-indicator{background:#1A1A1A;border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:1rem 1.4rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;transition:all 0.3s;}
+.pi-left{}
+.pi-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;}
+.pi-name{font-size:15px;font-weight:700;color:var(--gold);}
+.pi-desc{font-size:12px;color:var(--muted);margin-top:2px;}
+.pi-eco{background:rgba(61,220,132,0.1);border:1px solid rgba(61,220,132,0.2);border-radius:6px;padding:6px 12px;font-size:12px;color:var(--green);font-weight:600;display:none;}
 
-/* CARELLE SUGGESTION */
-.carelle-box{background:var(--card2);border:1px solid var(--border-g);border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.5rem;display:flex;gap:10px;align-items:flex-start;}
-.carelle-av{width:30px;height:30px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#000;font-family:'Space Mono',monospace;flex-shrink:0;}
-.carelle-msg{font-size:13px;color:#DDD;line-height:1.65;}
-.carelle-name{font-size:10px;font-weight:700;color:var(--gold);font-family:'Space Mono',monospace;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;}
+/* ONGLET MON PROJET */
+.projet-section{margin-bottom:2rem;}
+.field-label{display:block;font-size:13px;font-weight:700;color:#DDD;margin-bottom:8px;}
+.field-hint{font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.5;}
+.field-input{width:100%;background:#1A1A1A;border:2px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px 14px;color:#F2EDE4;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:all 0.2s;}
+.field-input:focus{border-color:var(--gold);}
+.field-input::placeholder{color:rgba(153,153,153,0.5);}
+textarea.field-input{resize:none;min-height:90px;line-height:1.65;}
+.progress-dots{display:flex;gap:6px;margin-top:1rem;}
+.pdot{height:4px;border-radius:2px;background:rgba(255,255,255,0.08);flex:1;transition:all 0.3s;}
+.pdot.filled{background:var(--gold);}
+.projet-complete{background:rgba(61,220,132,0.06);border:1px solid rgba(61,220,132,0.2);border-radius:10px;padding:1rem 1.4rem;margin-top:1rem;display:none;}
+.pc-title{font-size:13px;font-weight:700;color:var(--green);margin-bottom:4px;}
+.pc-text{font-size:12px;color:var(--muted);}
 
 /* PANIER */
-.panier-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;margin-bottom:1.5rem;color:#fff;}
-.panier-title em{font-style:italic;color:var(--gold);}
-.panier-empty{text-align:center;padding:2rem 0;color:var(--muted);font-size:14px;}
-.panier-empty-icon{font-size:2.5rem;margin-bottom:0.5rem;}
-.panier-items{display:flex;flex-direction:column;gap:8px;margin-bottom:1.5rem;}
-.panier-item{display:flex;justify-content:space-between;align-items:center;background:var(--black);border:1px solid var(--border);border-radius:8px;padding:10px 12px;}
-.panier-item-name{font-size:13px;color:#DDD;}
-.panier-item-price{font-family:'Space Mono',monospace;font-size:12px;color:var(--gold);font-weight:700;}
-.panier-item-remove{font-size:11px;color:var(--red);cursor:pointer;padding:2px 6px;border-radius:4px;border:1px solid rgba(255,107,107,0.2);background:rgba(255,107,107,0.06);transition:all 0.15s;flex-shrink:0;margin-left:8px;}
-.panier-item-remove:hover{background:rgba(255,107,107,0.15);}
-.panier-sep{height:1px;background:var(--border);margin:1rem 0;}
-.panier-total-label{font-size:13px;color:var(--muted);margin-bottom:4px;}
-.panier-total{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--gold);margin-bottom:4px;}
-.panier-total-note{font-size:11px;color:var(--muted);margin-bottom:1.5rem;}
-.panier-remise{background:rgba(61,220,132,0.08);border:1px solid rgba(61,220,132,0.2);border-radius:8px;padding:10px 14px;margin-bottom:1rem;font-size:13px;color:var(--green);display:none;}
-.btn-devis{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#000;border:none;border-radius:8px;padding:15px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.2s;margin-bottom:10px;}
-.btn-devis:hover{box-shadow:0 8px 24px rgba(201,168,76,0.35);transform:translateY(-1px);}
-.btn-devis:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
-.btn-wa{width:100%;background:transparent;color:var(--green);border:2px solid rgba(61,220,132,0.3);border-radius:8px;padding:12px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block;text-align:center;}
-.btn-wa:hover{background:rgba(61,220,132,0.08);border-color:var(--green);}
+.col-right{position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;padding:1.5rem;background:#141414;border-left:1px solid rgba(255,255,255,0.07);}
+.panier-h{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;margin-bottom:1.2rem;}
+.panier-h em{font-style:italic;color:var(--gold);}
+.panier-empty{text-align:center;padding:2rem 0;color:var(--muted);}
+.pe-icon{font-size:2.5rem;margin-bottom:8px;}
+.panier-items{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem;}
+.pi{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:#1A1A1A;border-radius:7px;border:1px solid rgba(255,255,255,0.06);}
+.pi-nm{font-size:13px;color:#DDD;}
+.pi-pr{font-family:'Space Mono',monospace;font-size:11px;color:var(--gold);font-weight:700;}
+.pi-rm{font-size:10px;color:var(--red);cursor:pointer;padding:2px 6px;border-radius:3px;border:1px solid rgba(255,107,107,0.15);background:rgba(255,107,107,0.05);margin-left:6px;flex-shrink:0;}
+.sep{height:1px;background:rgba(255,255,255,0.07);margin:12px 0;}
+.total-label{font-size:12px;color:var(--muted);margin-bottom:3px;}
+.total-val{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);line-height:1;}
+.total-note{font-size:11px;color:var(--muted);margin-top:4px;margin-bottom:16px;}
+.eco-badge{background:rgba(61,220,132,0.08);border:1px solid rgba(61,220,132,0.2);border-radius:7px;padding:8px 12px;font-size:12px;color:var(--green);margin-bottom:12px;display:none;}
+.btn-devis{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#000;border:none;border-radius:8px;padding:14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;margin-bottom:8px;}
+.btn-devis:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(201,168,76,0.3);}
+.btn-devis:disabled{opacity:0.35;cursor:not-allowed;transform:none;}
+.btn-wa{width:100%;background:transparent;border:2px solid rgba(61,220,132,0.25);border-radius:8px;padding:11px;font-size:13px;font-weight:600;color:var(--green);cursor:pointer;text-decoration:none;display:block;text-align:center;transition:all 0.2s;}
+.btn-wa:hover{background:rgba(61,220,132,0.06);}
 .panier-mention{font-size:11px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.6;}
 
-/* CONFIRMATION DEVIS */
-.devis-confirm{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:500;display:none;align-items:center;justify-content:center;padding:2rem;}
-.devis-confirm.show{display:flex;}
-.devis-box{background:var(--card);border:1px solid var(--border-g);border-radius:16px;padding:2.5rem;max-width:520px;width:100%;text-align:center;}
-.devis-icon{font-size:3rem;margin-bottom:1rem;}
-.devis-h2{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;margin-bottom:0.8rem;}
-.devis-h2 em{font-style:italic;color:var(--gold);}
-.devis-p{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:1.5rem;}
-.devis-total-box{background:var(--black);border:1px solid var(--border-g);border-radius:10px;padding:1.2rem;margin-bottom:1.5rem;}
-.devis-items{text-align:left;margin-bottom:1rem;}
-.di{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border);}
-.di:last-child{border-bottom:none;}
-.di-name{color:#CCC;}
-.di-price{color:var(--gold);font-family:'Space Mono',monospace;font-size:12px;font-weight:700;}
-.devis-total-val{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);}
-.btn-confirm{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#000;text-decoration:none;padding:14px 28px;border-radius:8px;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;cursor:pointer;border:none;width:100%;}
-.btn-close-devis{background:transparent;border:1px solid var(--border);color:var(--muted);padding:10px 20px;border-radius:8px;cursor:pointer;font-size:13px;width:100%;margin-top:8px;font-family:'DM Sans',sans-serif;}
+/* MODAL DEVIS */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:500;align-items:center;justify-content:center;padding:1.5rem;}
+.modal.open{display:flex;}
+.modal-box{background:#1A1A1A;border:1px solid rgba(201,168,76,0.2);border-radius:16px;padding:2rem;max-width:500px;width:100%;max-height:90vh;overflow-y:auto;}
+.modal-icon{font-size:2.5rem;margin-bottom:1rem;text-align:center;}
+.modal-h2{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;margin-bottom:0.6rem;text-align:center;}
+.modal-h2 em{font-style:italic;color:var(--gold);}
+.modal-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:1.5rem;line-height:1.65;}
+.devis-recap{background:#111;border:1px solid rgba(201,168,76,0.15);border-radius:10px;padding:1.2rem;margin-bottom:1.2rem;}
+.dr-item{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.dr-item:last-child{border-bottom:none;}
+.dr-nm{color:#CCC;}
+.dr-pr{font-family:'Space Mono',monospace;font-size:12px;color:var(--gold);font-weight:700;}
+.dr-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;padding-top:10px;border-top:1px solid rgba(201,168,76,0.2);}
+.dr-total-lbl{font-size:14px;font-weight:600;}
+.dr-total-val{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--gold);}
+.modal-info{background:#111;border-radius:8px;padding:1rem;margin-bottom:1.2rem;font-size:13px;color:var(--muted);line-height:1.7;}
+.modal-info strong{color:#F2EDE4;}
+.btn-modal-ok{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#000;border:none;border-radius:8px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:8px;}
+.btn-modal-cancel{width:100%;background:transparent;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:11px;font-size:13px;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;}
 
 /* TOAST */
-.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);z-index:999;background:var(--card);border:1px solid var(--border-g);border-radius:8px;padding:12px 20px;font-size:13px;opacity:0;transition:all 0.4s;pointer-events:none;white-space:nowrap;}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(60px);background:#1A1A1A;border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:10px 18px;font-size:13px;opacity:0;transition:all 0.35s;pointer-events:none;white-space:nowrap;z-index:999;}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
-.toast.success{background:rgba(61,220,132,0.12);border-color:rgba(61,220,132,0.3);color:var(--green);}
-.toast.error{background:rgba(255,107,107,0.12);border-color:rgba(255,107,107,0.3);color:var(--red);}
+.toast.ok{border-color:rgba(61,220,132,0.3);color:var(--green);}
+.toast.err{border-color:rgba(255,107,107,0.3);color:var(--red);}
 
-@media(max-width:900px){
-  .layout{grid-template-columns:1fr;}
-  .col-panier{position:fixed;bottom:0;left:0;right:0;height:auto;border-left:none;border-top:1px solid var(--border);padding:1rem 1.5rem;z-index:100;}
-  .panier-items,.panier-empty{display:none;}
-  .col-config{padding-bottom:200px;}
-  .modules-grid{grid-template-columns:1fr;}
-  .palier-grid{grid-template-columns:1fr;}
+@media(max-width:860px){
+  .wrap{grid-template-columns:1fr;}
+  .col-right{position:fixed;bottom:0;left:0;right:0;height:auto;border-top:1px solid rgba(255,255,255,0.07);border-left:none;padding:1rem 1.5rem;z-index:99;}
+  .panier-items,.panier-empty,.eco-badge,.panier-mention{display:none!important;}
+  .col-left{padding-bottom:160px;}
+  .tabs{overflow-x:auto;}
 }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="/" class="nav-brand">
-    <div class="nav-mark">MA</div>
-    <div><div class="nav-name">Mr Attractor</div></div>
-  </a>
-  <a href="/audit" class="nav-back">← Retour à l'audit</a>
+  <a href="/" class="nm"><div class="nk">MA</div><div class="nn">Mr Attractor</div></a>
+  <a href="/audit" class="nb">← Retour à l'audit</a>
 </nav>
 
-<div class="layout">
+<div class="wrap">
+  <!-- COLONNE GAUCHE -->
+  <div class="col-left">
 
-  <!-- COLONNE GAUCHE — Configuration -->
-  <div class="col-config">
-
-    <!-- SUGGESTION CARELLE -->
-    <div class="carelle-box" id="carelleBox">
-      <div class="carelle-av">CA</div>
-      <div>
-        <div class="carelle-name">Carelle — Agence Mr Attractor</div>
-        <div class="carelle-msg" id="carelleMsg">Bonjour ! Composez votre Système ATTRACTOR en sélectionnant un palier, puis ajoutez les modules qui correspondent à vos besoins. Le total se met à jour en temps réel.</div>
+    <!-- ONGLETS -->
+    <div class="tabs">
+      <div class="tab on" onclick="switchTab('modules')" id="tab-modules">
+        🧩 Mes modules <span class="tab-badge" id="badge-modules">0</span>
+      </div>
+      <div class="tab" onclick="switchTab('projet')" id="tab-projet">
+        📋 Mon projet <span class="tab-badge" id="badge-projet" style="background:#555;">0/6</span>
+      </div>
+      <div class="tab" onclick="switchTab('devis')" id="tab-devis">
+        📄 Mon devis
       </div>
     </div>
 
-    <!-- PALIERS -->
-    <div class="config-section">
-      <div class="config-title">Choisissez votre palier</div>
-      <div class="paliers">
+    <!-- ONGLET 1 — MES MODULES -->
+    <div class="tab-content on" id="tc-modules">
 
-        <div class="palier" id="p-starter" onclick="selectPalier('starter')">
-          <div class="palier-check">✓</div>
-          <div class="palier-top">
-            <div class="palier-left">
-              <div class="palier-badge">STARTER</div>
-              <div class="palier-nom">L'essentiel pour démarrer</div>
-            </div>
-            <div class="palier-prix">450€</div>
+      <!-- Indicateur palier dynamique -->
+      <div class="palier-indicator" id="palierIndicator">
+        <div class="pi-left">
+          <div class="pi-label">Votre niveau actuel</div>
+          <div class="pi-name" id="piName">Commencez à composer votre système</div>
+          <div class="pi-desc" id="piDesc">Choisissez les modules qui correspondent à votre réalité</div>
+        </div>
+        <div class="pi-eco" id="piEco"></div>
+      </div>
+
+      <!-- SECTION : ORGANISATION & PILOTAGE -->
+      <div class="stitle">Organisation & Pilotage</div>
+      <div class="modules-list">
+
+        <div class="mcard" onclick="toggleMod(this,'Agenda & Briefing quotidien',80,'org')" id="m-agenda">
+          <div class="mcard-check">✓</div>
+          <div class="mcard-icon">📅</div>
+          <div class="mcard-body">
+            <div class="mcard-name">Agenda & Briefing quotidien</div>
+            <div class="mcard-desc">Chaque matin à 8h, votre briefing vocal est prêt. RDV, relances, priorités — en 30 secondes vous savez quoi faire.</div>
+            <div class="mcard-tags"><span class="mtag">VOCAL</span><span class="mtag">QUOTIDIEN</span></div>
           </div>
-          <div class="palier-grid">
-            <div class="palier-item">Agenda & Briefing quotidien</div>
-            <div class="palier-item">Suivi clients & Relances</div>
-            <div class="palier-item">1 module au choix</div>
-            <div class="palier-item">Formation 1h incluse</div>
-          </div>
-          <div class="palier-desc">Idéal pour démarrer · Activité solo · Premier système</div>
+          <div class="mcard-price">80€</div>
         </div>
 
-        <div class="palier" id="p-growth" onclick="selectPalier('growth')">
-          <div class="palier-check">✓</div>
-          <div class="palier-top">
-            <div class="palier-left">
-              <div class="palier-badge green">GROWTH ⭐ Recommandé</div>
-              <div class="palier-nom">Le système complet</div>
-            </div>
-            <div class="palier-prix green">800€</div>
+        <div class="mcard" onclick="toggleMod(this,'Suivi clients & Relances',80,'org')" id="m-relances">
+          <div class="mcard-check">✓</div>
+          <div class="mcard-icon">🔔</div>
+          <div class="mcard-body">
+            <div class="mcard-name">Suivi clients & Relances auto</div>
+            <div class="mcard-desc">Zéro prospect oublié. Le système relance automatiquement selon vos règles — même quand vous êtes occupé.</div>
+            <div class="mcard-tags"><span class="mtag">AUTOMATIQUE</span><span class="mtag">CRM LÉGER</span></div>
           </div>
-          <div class="palier-grid">
-            <div class="palier-item green">Tout le Starter inclus</div>
-            <div class="palier-item green">Tableau de bord finances</div>
-            <div class="palier-item green">Chatbot WhatsApp</div>
-            <div class="palier-item green">Contenu réseaux sociaux</div>
-            <div class="palier-item green">3 modules au choix</div>
-            <div class="palier-item green">Formation 1h incluse</div>
-          </div>
-          <div class="palier-desc">Activité en croissance · +10 clients/mois · E-commerce</div>
+          <div class="mcard-price">80€</div>
         </div>
 
-        <div class="palier" id="p-premium" onclick="selectPalier('premium')">
-          <div class="palier-check">✓</div>
-          <div class="palier-top">
-            <div class="palier-left">
-              <div class="palier-badge gold">PREMIUM</div>
-              <div class="palier-nom">L'écosystème intelligent</div>
-            </div>
-            <div class="palier-prix">1200€</div>
+        <div class="mcard" onclick="toggleMod(this,'Tableau de bord finances',100,'org')" id="m-finances">
+          <div class="mcard-check">✓</div>
+          <div class="mcard-icon">💰</div>
+          <div class="mcard-body">
+            <div class="mcard-name">Tableau de bord finances</div>
+            <div class="mcard-desc">Votre CA en temps réel. Paiements suivis. Objectifs mensuels trackés. Vous savez exactement où vous en êtes en 10 secondes.</div>
+            <div class="mcard-tags"><span class="mtag">CA TEMPS RÉEL</span><span class="mtag">OBJECTIFS</span></div>
           </div>
-          <div class="palier-grid">
-            <div class="palier-item">Tout le Growth inclus</div>
-            <div class="palier-item">Bot Connecté WA+Instagram</div>
-            <div class="palier-item">Site web professionnel</div>
-            <div class="palier-item">Gestion assistantes</div>
-            <div class="palier-item">Modules illimités</div>
-            <div class="palier-item">Suivi 30 jours inclus</div>
+          <div class="mcard-price">100€</div>
+        </div>
+
+        <div class="mcard" onclick="toggleMod(this,'Gestion assistantes',150,'org')" id="m-assistantes">
+          <div class="mcard-check">✓</div>
+          <div class="mcard-icon">🤝</div>
+          <div class="mcard-body">
+            <div class="mcard-name">Gestion assistantes</div>
+            <div class="mcard-desc">Délégation claire avec contexte automatique. Vos assistantes savent quoi faire sans réunion quotidienne.</div>
+            <div class="mcard-tags"><span class="mtag">DÉLÉGATION</span><span class="mtag">ÉQUIPE</span></div>
           </div>
-          <div class="palier-desc">Entreprise structurée · Équipe · Plusieurs canaux</div>
+          <div class="mcard-price">150€</div>
+        </div>
+
+      </div>
+
+      <!-- SECTION : COMMUNICATION -->
+      <div class="stitle">Communication & Clients</div>
+      <div class="modules-list">
+
+        <div class="mcard" onclick="toggleMod(this,'Bot Texte WhatsApp',350,'com')" id="m-bot-texte">
+          <div class="mcard-check">✓</div>
+          <div class="mcard-icon">💬</div>
+          <div class="mcard-body">
+            <div class="mcard-name">Bot Texte WhatsApp</div>
+            <div class="mcard-desc">Répond automatiquement à vos clients sur WhatsApp 24h/24. FAQ, prix, disponibilités — sans que vous interveniez.</div>
+            <div class="mcard-tags"><span class="mtag">WHATSAPP</span><span class="mtag">24H/24</span><span class="mtag">FAQ AUTO</span></div>
+          </div>
+          <div class="mcard-price">350€</div>
+        </div>
+
+        <div class="mcard" onclick="toggleMod(this,'Bot Connecté WA + Instagram',900,'com')" id="m-bot-connecte">
+          <div class="mcard-check">✓</div>
+          <div class="mcard-icon">🤖</div>
+          <div class="mcard-body">
+            <div class="mcard-name">Bot Connecté WhatsApp + Instagram</div>
+            <div class="mcard-desc">WhatsApp ET Instagram gérés simultanément. Répond, relance, qualifie vos leads sur les deux plateformes.</div>
+            <div class="mcard-tags"><span class="mtag">WA + IG</span><span class="mtag">LEADS AUTO</span><span class="mtag">+80€/MOIS</span></div>
+          </div>
+          <div class="mcard-price">900€<small>+80€/mois</small></div>
+        </div>
+
+        <div class="mcard" onclick="toggleMod(this,'Contenu réseaux sociaux',100,'com')" id="m-reseaux">
+          <div class="mcard-check">✓</div>
+          <div class="mcard-icon">📱</div>
+          <div class="mcard-body">
+            <div class="mcard-name">Contenu réseaux sociaux</div>
+            <div class="mcard-desc">Calendrier éditorial automatisé. Textes générés selon votre activité. Vous postez régulièrement sans y passer 2h.</div>
+            <div class="mcard-tags"><span class="mtag">CALENDRIER</span><span class="mtag">IA RÉDACTION</span></div>
+          </div>
+          <div class="mcard-price">100€</div>
+        </div>
+
+      </div>
+
+      <!-- SECTION : PRÉSENCE WEB -->
+      <div class="stitle">Présence Web & Vente</div>
+      <div class="modules-list">
+
+        <div class="mcard" onclick="toggleMod(this,'Site web basique',350,'web')" id="m-site-basique">
+          <div class="mcard-check">✓</div>
+          <div class="mcard-icon">🌐</div>
+          <div class="mcard-body">
+            <div class="mcard-name">Site web basique</div>
+            <div class="mcard-desc">Une présence professionnelle immédiate. Page de présentation, paiements intégrés, formulaire de contact. Livré en 48h.</div>
+            <div class="mcard-tags"><span class="mtag">48H</span><span class="mtag">PAIEMENTS</span><span class="mtag">MOBILE</span></div>
+          </div>
+          <div class="mcard-price">350€</div>
+        </div>
+
+        <div class="mcard" onclick="toggleMod(this,'Site agile + assistant IA',800,'web')" id="m-site-agile">
+          <div class="mcard-check">✓</div>
+          <div class="mcard-icon">⚡</div>
+          <div class="mcard-body">
+            <div class="mcard-name">Site agile + assistant IA intégré</div>
+            <div class="mcard-desc">Votre site avec un assistant IA qui qualifie vos prospects, répond à leurs questions et les guide vers l'achat — 24h/24.</div>
+            <div class="mcard-tags"><span class="mtag">ASSISTANT IA</span><span class="mtag">QUALIFICATION AUTO</span><span class="mtag">VENTE</span></div>
+          </div>
+          <div class="mcard-price">800€</div>
+        </div>
+
+        <div class="mcard" onclick="toggleMod(this,'Formation IA (1h)',80,'web')" id="m-formation">
+          <div class="mcard-check">✓</div>
+          <div class="mcard-icon">🎓</div>
+          <div class="mcard-body">
+            <div class="mcard-name">Formation IA additionnelle (1h)</div>
+            <div class="mcard-desc">1h de formation personnalisée supplémentaire. Commandes vocales avancées, automatisations spécifiques à votre activité.</div>
+            <div class="mcard-tags"><span class="mtag">1H EN DIRECT</span><span class="mtag">PERSONNALISÉ</span></div>
+          </div>
+          <div class="mcard-price">80€/h</div>
         </div>
 
       </div>
     </div>
 
-    <!-- MODULES ADDITIONNELS -->
-    <div class="config-section" id="modulesSection" style="display:none;">
-      <div class="config-title">Modules additionnels</div>
-      <div class="modules-grid">
+    <!-- ONGLET 2 — MON PROJET -->
+    <div class="tab-content" id="tc-projet">
+      <p style="font-size:14px;color:var(--muted);margin-bottom:2rem;line-height:1.75;">Plus vous précisez votre projet, plus le système sera configuré sur mesure. Ces informations permettent à Mac Arthur de préparer exactement ce dont vous avez besoin.</p>
 
-        <div class="module" id="m-agenda" onclick="toggleModule(this,'Agenda & Briefing',80)">
-          <div class="module-check">✓</div>
-          <span class="module-icon">📅</span>
-          <div class="module-name">Agenda & Briefing</div>
-          <div class="module-desc">Briefing vocal chaque matin — agenda, relances, priorités en 30 sec</div>
-          <div class="module-price">+80€</div>
+      <div class="projet-section">
+        <label class="field-label">Quel est votre plus grand problème aujourd'hui ? <span style="color:var(--red)">*</span></label>
+        <div class="field-hint">Décrivez concrètement ce qui vous coûte le plus de temps ou d'argent chaque semaine.</div>
+        <textarea class="field-input" id="p-probleme" rows="3" placeholder="Ex: Je réponds aux mêmes messages WhatsApp 3h par jour. Je perds des clients parce que je ne relance pas assez vite..." onInput="updateProjetProgress()"></textarea>
+      </div>
+
+      <div class="projet-section">
+        <label class="field-label">Décrivez votre client idéal</label>
+        <div class="field-hint">Qui achète chez vous ? Femme de 30-45 ans à Paris ? Commerçant en Côte d'Ivoire ? PME en France ?</div>
+        <textarea class="field-input" id="p-client" rows="2" placeholder="Ex: Femmes 25-40 ans, Abidjan et diaspora, passionnées de mode..." onInput="updateProjetProgress()"></textarea>
+      </div>
+
+      <div class="projet-section">
+        <label class="field-label">Vos canaux de vente actuels</label>
+        <div class="field-hint">Où vendez-vous aujourd'hui ? WhatsApp, Instagram, boutique physique, site web, marché ?</div>
+        <input class="field-input" id="p-canaux" type="text" placeholder="Ex: Instagram, WhatsApp, boutique physique à Cocody" onInput="updateProjetProgress()">
+      </div>
+
+      <div class="projet-section">
+        <label class="field-label">Votre objectif financier sur 90 jours</label>
+        <div class="field-hint">Quel CA mensuel voulez-vous atteindre ? Être honnête ici permet de calibrer le système au bon niveau.</div>
+        <input class="field-input" id="p-objectif" type="text" placeholder="Ex: Passer de 800 000 FCFA à 1 500 000 FCFA par mois" onInput="updateProjetProgress()">
+      </div>
+
+      <div class="projet-section">
+        <label class="field-label">Ce que vous faites encore manuellement</label>
+        <div class="field-hint">Listez les tâches répétitives que vous faites vous-même et qui pourraient être automatisées.</div>
+        <textarea class="field-input" id="p-manuel" rows="3" placeholder="Ex: Envoyer les confirmations de commande, mettre à jour le stock, répondre aux questions de livraison, relancer les impayés..." onInput="updateProjetProgress()"></textarea>
+      </div>
+
+      <div class="projet-section">
+        <label class="field-label">Un message libre à Mac Arthur</label>
+        <div class="field-hint">Dites-lui ce que vous n'avez pas pu exprimer ailleurs. Une contrainte particulière, une urgence, une vision.</div>
+        <textarea class="field-input" id="p-message" rows="3" placeholder="Ex: J'ai besoin que ça soit opérationnel avant le 15 du mois. J'ai une assistante qui peut aider à la configuration..." onInput="updateProjetProgress()"></textarea>
+      </div>
+
+      <!-- Progress -->
+      <div style="margin-top:1rem;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px;">
+          <span>Complétion du projet</span>
+          <span id="projetPct">0%</span>
+        </div>
+        <div class="progress-dots" id="projetDots">
+          <div class="pdot" id="pd0"></div>
+          <div class="pdot" id="pd1"></div>
+          <div class="pdot" id="pd2"></div>
+          <div class="pdot" id="pd3"></div>
+          <div class="pdot" id="pd4"></div>
+          <div class="pdot" id="pd5"></div>
+        </div>
+      </div>
+
+      <div class="projet-complete" id="projetComplete">
+        <div class="pc-title">✅ Projet complet — Mac Arthur a tout ce qu'il faut</div>
+        <div class="pc-text">Votre profil est suffisamment détaillé pour configurer votre système sur mesure. Passez à l'onglet "Mon devis" pour finaliser.</div>
+      </div>
+    </div>
+
+    <!-- ONGLET 3 — MON DEVIS -->
+    <div class="tab-content" id="tc-devis">
+
+      <div id="devis-vide" style="text-align:center;padding:3rem 1rem;color:var(--muted);">
+        <div style="font-size:2.5rem;margin-bottom:1rem;">📋</div>
+        <p style="font-size:15px;margin-bottom:0.5rem;">Aucun module sélectionné</p>
+        <p style="font-size:13px;">Retournez à l'onglet <strong style="color:var(--gold)">Mes modules</strong> pour composer votre système.</p>
+      </div>
+
+      <div id="devis-contenu" style="display:none;">
+        <div style="background:#1A1A1A;border:1px solid rgba(201,168,76,0.2);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;">Votre sélection</div>
+          <div id="devis-liste"></div>
+          <div style="height:1px;background:rgba(201,168,76,0.15);margin:1rem 0;"></div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;">
+            <span style="font-size:14px;color:var(--muted);">Total</span>
+            <span style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--gold);" id="devis-total-val">0€</span>
+          </div>
+          <div id="devis-eco" style="font-size:12px;color:var(--green);margin-top:4px;display:none;"></div>
         </div>
 
-        <div class="module" id="m-relances" onclick="toggleModule(this,'Suivi & Relances',80)">
-          <div class="module-check">✓</div>
-          <span class="module-icon">🔔</span>
-          <div class="module-name">Suivi & Relances</div>
-          <div class="module-desc">Zéro prospect oublié. Relances automatiques selon vos règles</div>
-          <div class="module-price">+80€</div>
+        <div style="background:#1A1A1A;border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;">Vos coordonnées</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div>
+              <label class="field-label" style="font-size:11px;">Prénom *</label>
+              <input class="field-input" id="d-prenom" type="text" placeholder="Votre prénom">
+            </div>
+            <div>
+              <label class="field-label" style="font-size:11px;">Email *</label>
+              <input class="field-input" id="d-email" type="email" placeholder="votre@email.com">
+            </div>
+            <div>
+              <label class="field-label" style="font-size:11px;">WhatsApp</label>
+              <input class="field-input" id="d-wa" type="tel" placeholder="+225 07 00 00 00">
+            </div>
+            <div>
+              <label class="field-label" style="font-size:11px;">Pays</label>
+              <select class="field-input" id="d-pays">
+                <option value="">Sélectionner</option>
+                <option>Côte d'Ivoire</option><option>Sénégal</option><option>Cameroun</option>
+                <option>Mali</option><option>Burkina Faso</option><option>Togo</option>
+                <option>Ghana</option><option>France</option><option>Belgique</option>
+                <option>Suisse</option><option>Canada</option><option>Autre</option>
+              </select>
+            </div>
+          </div>
         </div>
 
-        <div class="module" id="m-finances" onclick="toggleModule(this,'Tableau de bord finances',100)">
-          <div class="module-check">✓</div>
-          <span class="module-icon">💰</span>
-          <div class="module-name">Finances</div>
-          <div class="module-desc">CA en temps réel, paiements suivis, objectifs trackés</div>
-          <div class="module-price">+100€</div>
-        </div>
-
-        <div class="module" id="m-assistantes" onclick="toggleModule(this,'Gestion assistantes',150)">
-          <div class="module-check">✓</div>
-          <span class="module-icon">🤝</span>
-          <div class="module-name">Gestion assistantes</div>
-          <div class="module-desc">Délégation claire, tâches assignées avec contexte automatique</div>
-          <div class="module-price">+150€</div>
-        </div>
-
-        <div class="module" id="m-reseaux" onclick="toggleModule(this,'Contenu réseaux sociaux',100)">
-          <div class="module-check">✓</div>
-          <span class="module-icon">📱</span>
-          <div class="module-name">Réseaux sociaux</div>
-          <div class="module-desc">Calendrier éditorial, textes générés, publication régulière</div>
-          <div class="module-price">+100€</div>
-        </div>
-
-        <div class="module" id="m-bot-texte" onclick="toggleModule(this,'Bot Texte WhatsApp',350)">
-          <div class="module-check">✓</div>
-          <span class="module-icon">💬</span>
-          <div class="module-name">Bot Texte WhatsApp</div>
-          <div class="module-desc">Répond à vos clients 24h/24 sur WhatsApp automatiquement</div>
-          <div class="module-price">+350€</div>
-        </div>
-
-        <div class="module" id="m-bot-connecte" onclick="toggleModule(this,'Bot Connecté WA+Instagram',900)">
-          <div class="module-check">✓</div>
-          <span class="module-icon">🤖</span>
-          <div class="module-name">Bot Connecté WA+Instagram</div>
-          <div class="module-desc">WhatsApp + Instagram simultanément. +80€/mois maintenance</div>
-          <div class="module-price">+900€</div>
-        </div>
-
-        <div class="module" id="m-site-basique" onclick="toggleModule(this,'Site web basique',350)">
-          <div class="module-check">✓</div>
-          <span class="module-icon">🌐</span>
-          <div class="module-name">Site web basique</div>
-          <div class="module-desc">Présence professionnelle immédiate. Livré en 48h</div>
-          <div class="module-price">+350€</div>
-        </div>
-
-        <div class="module" id="m-site-agile" onclick="toggleModule(this,'Site agile + assistant IA',800)">
-          <div class="module-check">✓</div>
-          <span class="module-icon">⚡</span>
-          <div class="module-name">Site agile + assistant IA</div>
-          <div class="module-desc">Site avec assistant IA intégré qui vend et qualifie 24h/24</div>
-          <div class="module-price">+800€</div>
-        </div>
-
-        <div class="module" id="m-formation" onclick="toggleModule(this,'Formation IA supplémentaire',80)">
-          <div class="module-check">✓</div>
-          <span class="module-icon">🎓</span>
-          <div class="module-name">Formation IA suppl.</div>
-          <div class="module-desc">1h de formation additionnelle personnalisée</div>
-          <div class="module-price">+80€/h</div>
-        </div>
-
+        <button class="btn-devis" style="width:100%;" onclick="ouvrirModal()">🚀 Générer mon devis →</button>
       </div>
     </div>
 
   </div>
 
-  <!-- COLONNE DROITE — Panier -->
-  <div class="col-panier">
-    <h2 class="panier-title">Votre <em>sélection</em></h2>
+  <!-- COLONNE DROITE — PANIER -->
+  <div class="col-right">
+    <h2 class="panier-h">Votre <em>sélection</em></h2>
 
-    <div id="panierEmpty" class="panier-empty">
-      <div class="panier-empty-icon">🛒</div>
-      <p>Sélectionnez un palier<br>pour commencer</p>
+    <div class="panier-empty" id="panier-empty">
+      <div class="pe-icon">🛒</div>
+      <p style="font-size:13px;">Composez votre système<br>module par module</p>
     </div>
 
-    <div id="panierItems" class="panier-items" style="display:none;"></div>
+    <div class="panier-items" id="panier-items" style="display:none;"></div>
+    <div class="eco-badge" id="eco-badge"></div>
 
-    <div id="panierRemise" class="panier-remise"></div>
-
-    <div id="panierTotal" style="display:none;">
-      <div class="panier-sep"></div>
-      <div class="panier-total-label">Total estimé</div>
-      <div class="panier-total" id="totalVal">0€</div>
-      <div class="panier-total-note" id="totalNote">Formation 1h incluse · Livraison 48h</div>
+    <div id="panier-total-wrap" style="display:none;">
+      <div class="sep"></div>
+      <div class="total-label">Total estimé</div>
+      <div class="total-val" id="total-val">0€</div>
+      <div class="total-note" id="total-note">Formation 1h incluse · Livraison 48h</div>
     </div>
 
-    <button class="btn-devis" id="btnDevis" onclick="genererDevis()" disabled>
-      Générer mon devis →
+    <button class="btn-devis" id="btn-devis-main" onclick="switchTab('devis')" disabled>
+      Voir mon devis →
     </button>
-    <a href="https://wa.me/33753902323?text=Je+veux+configurer+mon+Système+ATTRACTOR" class="btn-wa" target="_blank">
-      📱 Discuter sur WhatsApp
-    </a>
-    <div class="panier-mention">Devis valable 72h · Paiement après validation · Livraison 48h</div>
+    <a href="https://wa.me/33753902323" class="btn-wa" target="_blank">📱 WhatsApp</a>
+    <div class="panier-mention">Devis valable 72h<br>Paiement après validation</div>
   </div>
-
 </div>
 
-<!-- MODAL DEVIS -->
-<div class="devis-confirm" id="devisModal">
-  <div class="devis-box">
-    <div class="devis-icon">✅</div>
-    <h2 class="devis-h2">Votre devis<br>est <em>prêt.</em></h2>
-    <p class="devis-p">Voici le récapitulatif de votre Système ATTRACTOR. Mac Arthur reçoit votre sélection et vous contacte sous 24h.</p>
-    <div class="devis-total-box">
-      <div class="devis-items" id="devisItems"></div>
-      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.08);">
-        <span style="font-size:14px;color:var(--muted);">Total</span>
-        <div class="devis-total-val" id="devisTotalVal">0€</div>
-      </div>
+<!-- MODAL CONFIRMATION -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="modal-icon">📄</div>
+    <h2 class="modal-h2">Votre devis<br><em>est prêt.</em></h2>
+    <div class="modal-sub">Mac Arthur reçoit votre sélection et vous contacte sous 24h pour organiser votre call de validation.</div>
+    <div class="devis-recap" id="modal-recap"></div>
+    <div class="modal-info">
+      <strong>Prochaines étapes :</strong><br>
+      1. Mac Arthur analyse votre sélection<br>
+      2. Call de 15 min pour valider et ajuster<br>
+      3. Paiement → Configuration → Livraison 48h
     </div>
-    <button class="btn-confirm" onclick="confirmerDevis()">📱 Confirmer sur WhatsApp →</button>
-    <button class="btn-close-devis" onclick="fermerDevis()">Modifier ma sélection</button>
+    <button class="btn-modal-ok" onclick="confirmer()">📱 Confirmer sur WhatsApp →</button>
+    <button class="btn-modal-cancel" onclick="fermerModal()">Modifier ma sélection</button>
   </div>
 </div>
 
@@ -374,254 +467,264 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 <script>
 const APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbzYF6P3s_0-U7Q8Q2ZK1ibENtjhuT64bPV_B2HOZ4_nTxdOPTgP5FW1HodMtOFD_RbXpA/exec";
 
-// STATE
-const panier = { palier: null, prixPalier: 0, modules: [], total: 0 };
-const PALIER_PRIX = { starter: 450, growth: 800, premium: 1200 };
+// État
+const sel = []; // {nom, prix, recurrent}
+let projetFilled = 0;
 
-// Récupérer les données de l'audit depuis l'URL
-const urlP = new URLSearchParams(window.location.search);
-const auditData = {
-  prenom:  urlP.get('p') || localStorage.getItem('audit_prenom') || '',
-  email:   urlP.get('e') || localStorage.getItem('audit_email') || '',
-  secteur: urlP.get('s') || localStorage.getItem('audit_secteur') || '',
-  budget:  urlP.get('b') || localStorage.getItem('audit_budget') || ''
+// Récupérer données audit
+const up = new URLSearchParams(window.location.search);
+const audit = {
+  prenom: up.get('p') || localStorage.getItem('audit_prenom') || '',
+  email:  up.get('e') || localStorage.getItem('audit_email') || '',
+  secteur:up.get('s') || localStorage.getItem('audit_secteur') || ''
 };
 
-// Suggestions Carelle par secteur
-const suggestions = {
-  ecommerce: {
-    starter:  "Pour une boutique e-commerce, commencez par les relances automatiques — c'est là que les ventes se perdent le soir.",
-    growth:   "Le Growth est parfait pour vous. Ajoutez le Bot Texte WhatsApp pour répondre à vos clientes 24h/24, même quand vous dormez.",
-    premium:  "Le Premium avec Bot Connecté WA+Instagram est idéal pour une boutique active sur les deux plateformes."
-  },
-  restaurant: {
-    starter:  "Pour la restauration, l'agenda et les relances vous feront récupérer au moins 5h/semaine immédiatement.",
-    growth:   "Le Growth avec le chatbot gère les réservations et commandes automatiquement — même à 23h.",
-    premium:  "Le Premium vous donne un système complet : site, bot, réseaux. Vos clients commandent sans vous appeler."
-  },
-  service: {
-    starter:  "En consulting, commencez par le Starter — agenda et relances. Vous closez plus vite quand aucun prospect n'est oublié.",
-    growth:   "Le Growth avec le tableau de bord finances vous donne une vision claire de votre CA en temps réel.",
-    premium:  "Le Premium avec site agile + IA transforme votre site en commercial qui travaille 24h/24."
-  },
-  beaute: {
-    starter:  "Pour votre salon, les relances automatiques rappellent vos clientes pour leur prochain rendez-vous.",
-    growth:   "Le Bot WhatsApp prend les rendez-vous automatiquement — même quand vous êtes en cabine.",
-    premium:  "Le Premium avec réseaux sociaux automatisés maintient votre visibilité sans y passer 2h par jour."
-  }
-};
+// Pré-remplir coordonnées si audit rempli
+if (audit.prenom) document.getElementById('d-prenom').value = audit.prenom;
+if (audit.email)  document.getElementById('d-email').value  = audit.email;
 
-// INIT
-window.addEventListener('DOMContentLoaded', () => {
-  // Pré-sélectionner le palier si vient de l'audit
-  if (auditData.budget) {
-    const map = { 'starter':'starter','growth':'growth','premium':'premium','450-600€':'starter','600-900€':'growth','900-1200€+':'premium' };
-    const palier = map[auditData.budget] || 'growth';
-    selectPalier(palier);
-  }
-  // Message Carelle personnalisé
-  if (auditData.prenom) {
-    document.getElementById('carelleMsg').textContent =
-      `Bonjour ${auditData.prenom} ! Votre audit est analysé. Composez votre système ci-dessous — le total se met à jour en temps réel.`;
-  }
-});
-
-// SÉLECTION PALIER
-function selectPalier(palier) {
-  // Reset
-  document.querySelectorAll('.palier').forEach(p => {
-    p.classList.remove('active','active-green');
-  });
-
-  // Activer
-  const el = document.getElementById('p-' + palier);
-  if (palier === 'growth') el.classList.add('active-green');
-  else el.classList.add('active');
-
-  panier.palier = palier;
-  panier.prixPalier = PALIER_PRIX[palier];
-
-  // Afficher modules
-  document.getElementById('modulesSection').style.display = 'block';
-
-  // Suggestion Carelle
-  const sugg = suggestions[auditData.secteur]?.[palier];
-  if (sugg) {
-    document.getElementById('carelleMsg').textContent = sugg;
-  }
-
-  // Si premium, suggérer upsell
-  if (palier === 'starter') {
-    setTimeout(() => {
-      document.getElementById('carelleMsg').textContent =
-        "Bon choix pour démarrer ! Sachez que le Growth (800€) inclut déjà le chatbot WhatsApp — beaucoup de clients le choisissent après avoir vu l'impact du Starter.";
-    }, 2000);
-  }
-
-  updatePanier();
-  document.getElementById('modulesSection').scrollIntoView({behavior:'smooth', block:'start'});
+// ── ONGLETS
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('on'));
+  document.getElementById('tab-' + id).classList.add('on');
+  document.getElementById('tc-' + id).classList.add('on');
+  if (id === 'devis') refreshDevisTab();
 }
 
-// TOGGLE MODULE
-function toggleModule(el, nom, prix) {
-  // Vérifier qu'un palier est sélectionné
-  if (!panier.palier) {
-    toast('Choisissez d\'abord un palier', 'error');
-    return;
-  }
-
-  el.classList.toggle('selected');
-  const idx = panier.modules.findIndex(m => m.nom === nom);
+// ── MODULES
+function toggleMod(el, nom, prix, cat) {
+  el.classList.toggle('sel');
+  const idx = sel.findIndex(m => m.nom === nom);
+  const recurrent = nom.includes('Connecté') ? 80 : 0;
 
   if (idx > -1) {
-    panier.modules.splice(idx, 1);
-    toast(nom + ' retiré', '');
+    sel.splice(idx, 1);
+    toast('Retiré : ' + nom, '');
   } else {
-    panier.modules.push({ nom, prix });
-    toast('✓ ' + nom + ' ajouté', 'success');
-    // Suggestion Carelle après ajout
-    suggestUpsell(nom);
+    sel.push({ nom, prix, recurrent });
+    toast('✓ Ajouté : ' + nom, 'ok');
   }
   updatePanier();
 }
 
-function suggestUpsell(nom) {
-  const upsells = {
-    'Bot Texte WhatsApp': 'Le Bot Connecté WA+Instagram vous donne WhatsApp ET Instagram pour seulement 550€ de plus.',
-    'Site web basique': 'Le Site agile + IA (800€) inclut un assistant commercial intégré qui qualifie vos prospects 24h/24.',
-    'Suivi & Relances': 'Associez-le au Tableau de bord finances — vous verrez l\'impact direct des relances sur votre CA.'
-  };
-  if (upsells[nom]) {
-    setTimeout(() => {
-      document.getElementById('carelleMsg').textContent = upsells[nom];
-    }, 1000);
-  }
+function getTotal() {
+  return sel.reduce((s, m) => s + m.prix, 0);
 }
 
-// UPDATE PANIER
 function updatePanier() {
-  const total = panier.prixPalier + panier.modules.reduce((s, m) => s + m.prix, 0);
-  panier.total = total;
+  const total = getTotal();
+  const n = sel.length;
 
-  // Vider et reconstruire
-  const itemsEl = document.getElementById('panierItems');
-  itemsEl.innerHTML = '';
+  // Badge onglet
+  document.getElementById('badge-modules').textContent = n;
 
-  if (!panier.palier) {
-    document.getElementById('panierEmpty').style.display = 'block';
+  // Palier indicateur
+  let palierNom = '', palierDesc = '', eco = '';
+  if (total === 0) {
+    palierNom = 'Commencez à composer votre système';
+    palierDesc = 'Choisissez les modules qui correspondent à votre réalité';
+  } else if (total < 450) {
+    palierNom = 'Système en construction';
+    palierDesc = `${total}€ · Ajoutez d'autres modules pour couvrir vos besoins`;
+  } else if (total < 800) {
+    palierNom = '⭐ Niveau Starter — 450€';
+    palierDesc = 'Votre système de base est prêt. Vous pouvez démarrer.';
+    if (total > 450) {
+      eco = `Vous êtes à ${800 - total}€ du niveau Growth — ajoutez des modules pour bénéficier du pack complet.`;
+    }
+  } else if (total < 1200) {
+    palierNom = '🚀 Niveau Growth — 800€';
+    palierDesc = 'Système complet. Vous scalez efficacement.';
+    if (total > 800) {
+      const saved = Math.round((total - 800) * 0.1);
+      eco = `Pack Growth activé · Économie de ${saved}€ appliquée`;
+    }
+  } else {
+    palierNom = '💎 Niveau Premium — 1200€';
+    palierDesc = 'Écosystème intelligent complet. Vous pilotez sans effort.';
+    const saved = Math.round((total - 1200) * 0.15);
+    if (saved > 0) eco = `Pack Premium activé · Économie de ${saved}€ appliquée`;
+  }
+
+  document.getElementById('piName').textContent = palierNom;
+  document.getElementById('piDesc').textContent = palierDesc;
+  const ecoEl = document.getElementById('piEco');
+  if (eco) { ecoEl.textContent = eco; ecoEl.style.display = 'block'; }
+  else ecoEl.style.display = 'none';
+
+  // Panier
+  const emptyEl = document.getElementById('panier-empty');
+  const itemsEl = document.getElementById('panier-items');
+  const totalWrap = document.getElementById('panier-total-wrap');
+  const btn = document.getElementById('btn-devis-main');
+
+  if (n === 0) {
+    emptyEl.style.display = 'block';
     itemsEl.style.display = 'none';
-    document.getElementById('panierTotal').style.display = 'none';
-    document.getElementById('btnDevis').disabled = true;
+    totalWrap.style.display = 'none';
+    btn.disabled = true;
     return;
   }
 
-  document.getElementById('panierEmpty').style.display = 'none';
+  emptyEl.style.display = 'none';
   itemsEl.style.display = 'flex';
-  document.getElementById('panierTotal').style.display = 'block';
-  document.getElementById('btnDevis').disabled = false;
+  totalWrap.style.display = 'block';
+  btn.disabled = false;
 
-  // Palier
-  const palierNoms = { starter: 'Starter', growth: 'Growth', premium: 'Premium' };
-  const liPalier = document.createElement('div');
-  liPalier.className = 'panier-item';
-  liPalier.innerHTML = `<span class="panier-item-name">Palier ${palierNoms[panier.palier]}</span><span class="panier-item-price">${panier.prixPalier}€</span>`;
-  itemsEl.appendChild(liPalier);
-
-  // Modules
-  panier.modules.forEach(m => {
-    const li = document.createElement('div');
-    li.className = 'panier-item';
-    li.innerHTML = `<span class="panier-item-name">${m.nom}</span><div style="display:flex;align-items:center;gap:6px;"><span class="panier-item-price">+${m.prix}€</span><span class="panier-item-remove" onclick="retirerModule('${m.nom}')">✕</span></div>`;
-    itemsEl.appendChild(li);
+  itemsEl.innerHTML = '';
+  sel.forEach(m => {
+    const div = document.createElement('div');
+    div.className = 'pi';
+    div.innerHTML = `<span class="pi-nm">${m.nom}</span><div style="display:flex;align-items:center;"><span class="pi-pr">${m.prix}€</span><span class="pi-rm" onclick="retirerMod('${m.nom}')">✕</span></div>`;
+    itemsEl.appendChild(div);
   });
 
-  // Remise si total > 1000
-  const remiseEl = document.getElementById('panierRemise');
+  // Eco badge
+  const ecoBadge = document.getElementById('eco-badge');
   if (total >= 1000) {
     const remise = Math.round(total * 0.1);
-    remiseEl.style.display = 'block';
-    remiseEl.textContent = `🎁 Réduction fidélité −10% appliquée : −${remise}€ (total : ${total - remise}€)`;
-    panier.total = total - remise;
-  } else {
-    remiseEl.style.display = 'none';
-  }
+    ecoBadge.style.display = 'block';
+    ecoBadge.textContent = `🎁 Réduction −10% : −${remise}€`;
+  } else ecoBadge.style.display = 'none';
 
-  // Total
-  document.getElementById('totalVal').textContent = panier.total.toLocaleString('fr-FR') + '€';
-  const recurrent = panier.modules.some(m => m.nom.includes('Bot Connecté')) ? ' + 80€/mois' : '';
-  document.getElementById('totalNote').textContent = 'Formation 1h incluse · Livraison 48h' + recurrent;
+  document.getElementById('total-val').textContent = finalTotal() + '€';
+  const rec = sel.some(m => m.recurrent > 0) ? ' + 80€/mois' : '';
+  document.getElementById('total-note').textContent = 'Formation 1h incluse · Livraison 48h' + rec;
 }
 
-function retirerModule(nom) {
-  const idx = panier.modules.findIndex(m => m.nom === nom);
+function finalTotal() {
+  const t = getTotal();
+  return t >= 1000 ? Math.round(t * 0.9) : t;
+}
+
+function retirerMod(nom) {
+  const idx = sel.findIndex(m => m.nom === nom);
   if (idx > -1) {
-    // Désélectionner visuellement
-    document.querySelectorAll('.module').forEach(el => {
-      if (el.textContent.includes(nom)) el.classList.remove('selected');
-    });
-    panier.modules.splice(idx, 1);
+    const elId = {
+      'Agenda & Briefing quotidien':'m-agenda',
+      'Suivi clients & Relances':'m-relances',
+      'Tableau de bord finances':'m-finances',
+      'Gestion assistantes':'m-assistantes',
+      'Bot Texte WhatsApp':'m-bot-texte',
+      'Bot Connecté WA + Instagram':'m-bot-connecte',
+      'Contenu réseaux sociaux':'m-reseaux',
+      'Site web basique':'m-site-basique',
+      'Site agile + assistant IA':'m-site-agile',
+      'Formation IA (1h)':'m-formation'
+    }[nom];
+    if (elId) document.getElementById(elId)?.classList.remove('sel');
+    sel.splice(idx, 1);
     updatePanier();
   }
 }
 
-// GÉNÉRER DEVIS
-function genererDevis() {
-  if (!panier.palier) return;
-
-  // Remplir la modal
-  const palierNoms = { starter: 'Starter', growth: 'Growth', premium: 'Premium' };
-  let html = `<div class="di"><span class="di-name">Palier ${palierNoms[panier.palier]}</span><span class="di-price">${panier.prixPalier}€</span></div>`;
-  panier.modules.forEach(m => {
-    html += `<div class="di"><span class="di-name">${m.nom}</span><span class="di-price">+${m.prix}€</span></div>`;
+// ── MON PROJET
+function updateProjetProgress() {
+  const fields = ['p-probleme','p-client','p-canaux','p-objectif','p-manuel','p-message'];
+  let filled = 0;
+  fields.forEach((id, i) => {
+    const val = document.getElementById(id)?.value?.trim();
+    const dot = document.getElementById('pd' + i);
+    if (val && val.length > 5) { filled++; dot?.classList.add('filled'); }
+    else dot?.classList.remove('filled');
   });
-  document.getElementById('devisItems').innerHTML = html;
-  document.getElementById('devisTotalVal').textContent = panier.total.toLocaleString('fr-FR') + '€';
-  document.getElementById('devisModal').classList.add('show');
+  projetFilled = filled;
+  const pct = Math.round((filled / 6) * 100);
+  document.getElementById('projetPct').textContent = pct + '%';
+  document.getElementById('badge-projet').textContent = filled + '/6';
+  document.getElementById('badge-projet').style.background = filled >= 4 ? 'var(--green)' : '#555';
+  document.getElementById('projetComplete').style.display = filled >= 5 ? 'block' : 'none';
 }
 
-function fermerDevis() {
-  document.getElementById('devisModal').classList.remove('show');
+// ── ONGLET DEVIS
+function refreshDevisTab() {
+  const vide = document.getElementById('devis-vide');
+  const contenu = document.getElementById('devis-contenu');
+  if (sel.length === 0) { vide.style.display = 'block'; contenu.style.display = 'none'; return; }
+  vide.style.display = 'none'; contenu.style.display = 'block';
+
+  const total = getTotal();
+  const ft = finalTotal();
+  let html = '';
+  sel.forEach(m => {
+    html += `<div style="display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="color:#CCC;">${m.nom}</span><span style="font-family:'Space Mono',monospace;font-size:12px;color:var(--gold);font-weight:700;">${m.prix}€</span></div>`;
+  });
+  document.getElementById('devis-liste').innerHTML = html;
+  document.getElementById('devis-total-val').textContent = ft + '€';
+  const ecoEl = document.getElementById('devis-eco');
+  if (total >= 1000) {
+    ecoEl.style.display = 'block';
+    ecoEl.textContent = `🎁 Réduction fidélité −10% appliquée (économie de ${total - ft}€)`;
+  } else ecoEl.style.display = 'none';
 }
 
-async function confirmerDevis() {
+// ── MODAL
+function ouvrirModal() {
+  const prenom = document.getElementById('d-prenom').value.trim();
+  const email  = document.getElementById('d-email').value.trim();
+  if (!prenom) { toast('Entrez votre prénom', 'err'); return; }
+  if (!email || !email.includes('@')) { toast('Email invalide', 'err'); return; }
+  if (sel.length === 0) { toast('Sélectionnez au moins un module', 'err'); return; }
+
+  const total = getTotal();
+  const ft = finalTotal();
+  let html = '';
+  sel.forEach(m => {
+    html += `<div class="dr-item"><span class="dr-nm">${m.nom}</span><span class="dr-pr">${m.prix}€</span></div>`;
+  });
+  if (total !== ft) {
+    html += `<div class="dr-item"><span class="dr-nm" style="color:var(--green);">Réduction −10%</span><span class="dr-pr" style="color:var(--green);">−${total-ft}€</span></div>`;
+  }
+  html += `<div class="dr-total"><span class="dr-total-lbl">Total</span><span class="dr-total-val">${ft}€</span></div>`;
+  document.getElementById('modal-recap').innerHTML = html;
+  document.getElementById('modal').classList.add('open');
+}
+
+function fermerModal() { document.getElementById('modal').classList.remove('open'); }
+
+async function confirmer() {
+  const prenom = document.getElementById('d-prenom').value.trim();
+  const email  = document.getElementById('d-email').value.trim();
+  const wa     = document.getElementById('d-wa').value.trim();
+  const pays   = document.getElementById('d-pays').value;
+  const ft     = finalTotal();
+
   // Envoyer vers Apps Script
-  const palierNoms = { starter: 'Starter', growth: 'Growth', premium: 'Premium' };
-  const modulesStr = panier.modules.map(m => m.nom + ':' + m.prix + '€').join('|');
+  const modules = sel.map(m => m.nom + ':' + m.prix + '€').join('|');
   const params = new URLSearchParams({
-    action:    'devis',
-    prenom:    auditData.prenom || 'Prospect',
-    email:     auditData.email || '',
-    pays:      '',
-    modules:   'Palier ' + palierNoms[panier.palier] + ':' + panier.prixPalier + '€|' + modulesStr,
-    total:     panier.prixPalier + panier.modules.reduce((s,m)=>s+m.prix,0),
-    total_final: panier.total,
-    recurrent: panier.modules.some(m=>m.nom.includes('Bot Connecté')) ? 80 : 0,
-    reve:      localStorage.getItem('audit_reve') || ''
+    action: 'devis', prenom, email, pays,
+    modules, total: getTotal(), total_final: ft,
+    recurrent: sel.some(m=>m.recurrent>0) ? 80 : 0,
+    probleme: document.getElementById('p-probleme').value,
+    canaux: document.getElementById('p-canaux').value,
+    objectif: document.getElementById('p-objectif').value,
+    message_mac: document.getElementById('p-message').value,
+    reve: localStorage.getItem('audit_reve') || ''
   });
-
   try {
     await fetch(APPS_SCRIPT + '?' + params.toString(), {method:'GET', mode:'no-cors'});
   } catch(e) {}
 
-  // Rediriger vers WhatsApp
+  // WhatsApp
   const msg = encodeURIComponent(
-    'Bonjour Mac Arthur, je viens de configurer mon Système ATTRACTOR.\n\n' +
-    'Palier : ' + palierNoms[panier.palier] + ' (' + panier.prixPalier + '€)\n' +
-    (panier.modules.length > 0 ? 'Modules : ' + panier.modules.map(m=>m.nom).join(', ') + '\n' : '') +
-    'Total : ' + panier.total + '€\n\n' +
+    'Bonjour Mac Arthur,\n\nJe viens de configurer mon Système ATTRACTOR.\n\n' +
+    'Modules choisis :\n' + sel.map(m => '• ' + m.nom + ' (' + m.prix + '€)').join('\n') + '\n\n' +
+    'Total : ' + ft + '€\n\n' +
+    (document.getElementById('p-probleme').value ? 'Mon problème principal : ' + document.getElementById('p-probleme').value + '\n\n' : '') +
     'Je souhaite valider et démarrer.'
   );
   window.open('https://wa.me/33753902323?text=' + msg, '_blank');
-  fermerDevis();
+  fermerModal();
 }
 
 // TOAST
 function toast(msg, type) {
   const t = document.getElementById('toast');
-  t.className = 'toast ' + (type||'');
+  t.className = 'toast ' + type;
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  setTimeout(() => t.classList.remove('show'), 2200);
 }
 </script>
 </body>
