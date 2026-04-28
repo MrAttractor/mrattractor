@@ -183,7 +183,7 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
 <div class="progress-wrap">
   <div class="progress-info">
     <div class="progress-label" id="progressLabel">Étape 1 — Votre activité</div>
-    <div class="progress-steps" id="progressSteps">1 / 6</div>
+    <div class="progress-steps" id="progressSteps">1 / 5</div>
   </div>
   <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:16%"></div></div>
 </div>
@@ -347,105 +347,6 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
   <!-- ÉTAPE 4 — PALIERS + MODULES -->
   <div class="step" id="s4">
     <div class="step-header">
-      <div class="step-eyebrow"><div class="step-dot"></div>Votre système idéal</div>
-      <h1 class="step-h1">Choisissez votre<br><em>point de départ.</em></h1>
-      <p class="step-hint">Chaque palier est évolutif — vous commencez là où vous en êtes et vous montez en puissance.</p>
-    </div>
-
-    <!-- PALIERS -->
-    <div class="field">
-      <label class="field-label">Votre palier *</label>
-      <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px;" id="palierGrid">
-
-        <div class="palier-card" onclick="selectPalier(this,'starter')" id="palier-starter">
-          <div class="palier-header">
-            <div>
-              <div class="palier-tag">STARTER</div>
-              <div class="palier-name">L'essentiel pour démarrer</div>
-            </div>
-            <div class="palier-price">450€</div>
-          </div>
-          <div class="palier-modules">
-            <div class="pm">✓ Agenda & Briefing quotidien</div>
-            <div class="pm">✓ Suivi clients & Relances auto</div>
-            <div class="pm">✓ 1 module au choix</div>
-            <div class="pm">✓ Formation 1h incluse</div>
-          </div>
-          <div class="palier-ideal">Idéal pour : Démarrage · Activité solo · Premier système</div>
-        </div>
-
-        <div class="palier-card" onclick="selectPalier(this,'growth')" id="palier-growth">
-          <div class="palier-header">
-            <div>
-              <div class="palier-tag" style="background:rgba(61,220,132,0.1);color:var(--green);border-color:rgba(61,220,132,0.2);">GROWTH ⭐ Recommandé</div>
-              <div class="palier-name">Le système complet</div>
-            </div>
-            <div class="palier-price" style="color:var(--green);">800€</div>
-          </div>
-          <div class="palier-modules">
-            <div class="pm">✓ Tout le Starter</div>
-            <div class="pm">✓ Tableau de bord finances</div>
-            <div class="pm">✓ Chatbot WhatsApp (Bot Texte)</div>
-            <div class="pm">✓ Contenu réseaux sociaux</div>
-            <div class="pm">✓ 3 modules au choix</div>
-          </div>
-          <div class="palier-ideal">Idéal pour : Activité en croissance · +10 clients/mois · E-commerce</div>
-        </div>
-
-        <div class="palier-card" onclick="selectPalier(this,'premium')" id="palier-premium">
-          <div class="palier-header">
-            <div>
-              <div class="palier-tag" style="background:rgba(201,168,76,0.15);color:var(--gold);border-color:rgba(201,168,76,0.3);">PREMIUM</div>
-              <div class="palier-name">L'écosystème intelligent</div>
-            </div>
-            <div class="palier-price">1200€</div>
-          </div>
-          <div class="palier-modules">
-            <div class="pm">✓ Tout le Growth</div>
-            <div class="pm">✓ Bot Connecté WhatsApp + Instagram</div>
-            <div class="pm">✓ Site web professionnel</div>
-            <div class="pm">✓ Gestion assistantes</div>
-            <div class="pm">✓ Modules illimités</div>
-            <div class="pm">✓ Suivi 30 jours inclus</div>
-          </div>
-          <div class="palier-ideal">Idéal pour : Entreprise structurée · Équipe · Plusieurs canaux</div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- MODULES OPTIONNELS -->
-    <div class="field" style="margin-top:1.5rem;" id="modulesOptsWrap">
-      <label class="field-label">Modules additionnels (optionnel)</label>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">Ajoutez des modules selon vos besoins spécifiques.</p>
-      <div class="chips" id="modulesOpts">
-        <div class="chip" onclick="toggleModuleOpt(this,'Gestion assistantes',150)">🤝 Gestion assistantes +150€</div>
-        <div class="chip" onclick="toggleModuleOpt(this,'Bot Connecté WhatsApp+Instagram',900)">🤖 Bot Connecté +900€</div>
-        <div class="chip" onclick="toggleModuleOpt(this,'Site web basique',350)">🌐 Site web basique +350€</div>
-        <div class="chip" onclick="toggleModuleOpt(this,'Site agile + IA',800)">⚡ Site agile + IA +800€</div>
-        <div class="chip" onclick="toggleModuleOpt(this,'Finances avancées',100)">💰 Finances avancées +100€</div>
-        <div class="chip" onclick="toggleModuleOpt(this,'Réseaux sociaux',100)">📱 Réseaux sociaux +100€</div>
-      </div>
-    </div>
-
-    <!-- TOTAL DYNAMIQUE -->
-    <div style="background:var(--card);border:1px solid var(--border-g);border-radius:10px;padding:1.2rem 1.5rem;margin-top:1.5rem;" id="totalWrap">
-      <div style="display:flex;justify-content:space-between;align-items:baseline;">
-        <div style="font-size:13px;color:var(--muted);">Total estimé</div>
-        <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--gold);" id="totalDisplay">—</div>
-      </div>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px;" id="totalNote">Sélectionnez un palier pour voir votre total</div>
-    </div>
-
-    <div class="nav-btns">
-      <button class="btn-prev" onclick="goStep(3)">←</button>
-      <button class="btn-next" onclick="goStep(5)">Continuer →</button>
-    </div>
-  </div>
-
-  <!-- ÉTAPE 5 — RÊVE + CARELLE CHAT -->
-  <div class="step" id="s5">
-    <div class="step-header">
       <div class="step-eyebrow"><div class="step-dot"></div>Votre vision</div>
       <h1 class="step-h1">Dans 90 jours,<br>à quoi ressemble<br>votre <em>vie idéale ?</em></h1>
       <p class="step-hint">C'est la question la plus importante. Prenez le temps d'y répondre honnêtement.</p>
@@ -489,13 +390,13 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
     </div>
 
     <div class="nav-btns">
-      <button class="btn-prev" onclick="goStep(4)">←</button>
-      <button class="btn-next" onclick="goStep(6)">Voir le récapitulatif →</button>
+      <button class="btn-prev" onclick="goStep(3)">←</button>
+      <button class="btn-next" onclick="goStep(5)">Voir le récapitulatif →</button>
     </div>
   </div>
 
   <!-- ÉTAPE 6 — RÉCAP + ENVOI -->
-  <div class="step" id="s6">
+  <div class="step" id="s5">
     <div class="step-header">
       <div class="step-eyebrow"><div class="step-dot"></div>Récapitulatif</div>
       <h1 class="step-h1">Votre audit<br>est <em>prêt.</em></h1>
@@ -517,7 +418,7 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
       En soumettant cet audit, vous acceptez d'être contacté par Mac Arthur KOUASSI dans les 24h pour organiser votre call découverte. <strong style="color:var(--text);">L'offre est valable 72h.</strong>
     </div>
     <div class="nav-btns">
-      <button class="btn-prev" onclick="goStep(5)">←</button>
+      <button class="btn-prev" onclick="goStep(4)">←</button>
       <button class="btn-next" id="btnSubmit" onclick="submitAudit()">🚀 Envoyer mon audit →</button>
     </div>
   </div>
@@ -553,7 +454,7 @@ const state = {
 
 const stepLabels = [
   '', 'Votre activité', 'Votre profil',
-  'Vos douleurs', 'Votre système', 'Votre vision', 'Récapitulatif'
+  'Vos douleurs', 'Votre vision', 'Récapitulatif'
 ];
 let currentStep = 1;
 
@@ -569,10 +470,10 @@ function goStep(n) {
 }
 
 function updateProgress(n) {
-  const pct = Math.round((n/6)*100);
+  const pct = Math.round((n/5)*100);
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('progressLabel').textContent = 'Étape ' + n + ' — ' + stepLabels[n];
-  document.getElementById('progressSteps').textContent = n + ' / 6';
+  document.getElementById('progressSteps').textContent = n + ' / 5';
 }
 
 // ── VALIDATION
@@ -589,10 +490,8 @@ function validateStep(n) {
   if (n === 3) {
     if (state.douleurs.length === 0) { toast('Sélectionnez au moins une douleur', 'error'); return false; }
   }
+  
   if (n === 4) {
-    if (!state.budget) { toast('Choisissez un palier', 'error'); return false; }
-  }
-  if (n === 5) {
     if (!v('reve')) { shake('reve'); toast('Décrivez votre rêve', 'error'); return false; }
   }
   return true;
@@ -616,11 +515,6 @@ function selectRadio(el, group, val) {
   el.classList.add('selected');
   state[group] = val;
 }
-
-// ── PALIERS
-const PRIX_PALIER = { starter: 450, growth: 800, premium: 1200 };
-let modulesOpts = [];
-let prixTotal = 0;
 
 function selectPalier(el, palier) {
   document.querySelectorAll('.palier-card').forEach(c => {
