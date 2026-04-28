@@ -35,7 +35,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-dim));border-radius:3px;transition:width 0.5s ease;}
 
 /* MAIN */
-.main{max-width:640px;margin:0 auto;padding:152px 1.5rem 120px;position:relative;z-index:1;}
+.main{max-width:640px;margin:0 auto;padding:152px 1.5rem 120px;position:relative;}
 
 /* STEP */
 .step{display:none;animation:fadeUp 0.4s ease;}
@@ -63,7 +63,7 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
 
 /* RADIO CARDS — SECTEUR / STADE */
 .radio-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;}
-.radio-card{background:#1C1C1C;border:2px solid rgba(255,255,255,0.1);border-radius:10px;padding:1.1rem 1.2rem;cursor:pointer;transition:all 0.2s;position:relative;-webkit-tap-highlight-color:transparent;}
+.radio-card{background:#1C1C1C;border:2px solid rgba(255,255,255,0.1);border-radius:10px;padding:1.1rem 1.2rem;cursor:pointer;transition:all 0.2s;position:relative;z-index:10;-webkit-tap-highlight-color:transparent;}
 .radio-card:hover{border-color:rgba(201,168,76,0.4);background:#222;}
 .radio-card:active{transform:scale(0.98);}
 .radio-card.selected{border-color:var(--gold);background:rgba(201,168,76,0.08);}
@@ -74,13 +74,13 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
 
 /* CHIPS */
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;}
-.chip{padding:10px 16px;background:#1C1C1C;border:2px solid rgba(255,255,255,0.12);border-radius:100px;font-size:14px;font-weight:500;color:#CCC;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent;user-select:none;}
+.chip{padding:10px 16px;background:#1C1C1C;border:2px solid rgba(255,255,255,0.12);border-radius:100px;font-size:14px;font-weight:500;color:#CCC;cursor:pointer;transition:all 0.2s;position:relative;z-index:10;-webkit-tap-highlight-color:transparent;user-select:none;}
 .chip:hover{border-color:rgba(201,168,76,0.4);color:var(--text);}
 .chip:active{transform:scale(0.96);}
 .chip.selected{background:var(--gold-l);border-color:var(--gold);color:var(--gold);font-weight:700;}
 
 /* PALIERS */
-.palier-card{background:#1C1C1C;border:2px solid rgba(255,255,255,0.1);border-radius:12px;padding:1.4rem 1.5rem;cursor:pointer;transition:all 0.25s;position:relative;-webkit-tap-highlight-color:transparent;margin-bottom:4px;}
+.palier-card{background:#1C1C1C;border:2px solid rgba(255,255,255,0.1);border-radius:12px;padding:1.4rem 1.5rem;cursor:pointer;transition:all 0.25s;position:relative;z-index:10;-webkit-tap-highlight-color:transparent;margin-bottom:4px;}
 .palier-card:hover{border-color:rgba(201,168,76,0.4);background:#222;}
 .palier-card:active{transform:scale(0.99);}
 .palier-card.selected{border-color:var(--gold);background:rgba(201,168,76,0.06);}
@@ -99,7 +99,7 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
 /* URGENCE */
 .urgence-wrap{margin-top:8px;}
 .urgence-bar{display:flex;gap:8px;}
-.urg-btn{flex:1;height:44px;border-radius:8px;border:2px solid rgba(255,255,255,0.1);background:#1C1C1C;cursor:pointer;font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:#888;transition:all 0.2s;-webkit-tap-highlight-color:transparent;}
+.urg-btn{flex:1;height:44px;border-radius:8px;border:2px solid rgba(255,255,255,0.1);background:#1C1C1C;cursor:pointer;font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:#888;transition:all 0.2s;position:relative;z-index:10;-webkit-tap-highlight-color:transparent;}
 .urg-btn:hover{border-color:rgba(201,168,76,0.4);color:var(--gold);}
 .urg-btn.on{background:var(--gold-l);border-color:var(--gold);color:var(--gold);}
 .urgence-labels{display:flex;justify-content:space-between;font-size:12px;color:#888;margin-top:8px;}
@@ -609,6 +609,14 @@ function shake(id) {
 }
 
 // ── INTERACTIONS
+// ── RADIO CARDS (secteur, stade)
+function selectRadio(el, group, val) {
+  const grid = document.getElementById(group + 'Grid');
+  if (grid) grid.querySelectorAll('.radio-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state[group] = val;
+}
+
 // ── PALIERS
 const PRIX_PALIER = { starter: 450, growth: 800, premium: 1200 };
 let modulesOpts = [];
