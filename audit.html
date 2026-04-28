@@ -105,7 +105,7 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
 .urgence-labels{display:flex;justify-content:space-between;font-size:12px;color:#888;margin-top:8px;}
 
 /* CARELLE CHAT */
-.carelle-chat{background:#1C1C1C;border:2px solid var(--border-g);border-radius:12px;overflow:hidden;margin-top:1.5rem;}
+
 .chat-header{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);background:rgba(201,168,76,0.05);}
 .chat-avatar{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#000;font-family:'Space Mono',monospace;flex-shrink:0;}
 .chat-name{font-size:13px;font-weight:700;color:var(--gold);}
@@ -114,9 +114,9 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
 .chat-messages{padding:16px;min-height:80px;max-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;}
 .chat-msg{display:flex;gap:8px;align-items:flex-start;}
 .chat-msg.user{flex-direction:row-reverse;}
-.chat-bubble{border-radius:10px;padding:11px 15px;font-size:14px;line-height:1.65;max-width:88%;}
-.chat-bubble.bot{background:#242424;border-radius:2px 10px 10px 10px;color:#EEE;}
-.chat-bubble.user{background:var(--gold-l);border:1px solid var(--border-g);border-radius:10px 2px 10px 10px;color:var(--gold);}
+
+
+
 .chat-typing{display:flex;gap:5px;align-items:center;padding:11px 15px;}
 .typing-dot{width:7px;height:7px;border-radius:50%;background:#888;animation:typing 1.2s infinite;}
 .typing-dot:nth-child(2){animation-delay:0.2s;}
@@ -369,26 +369,6 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
       </div>
     </div>
 
-    <!-- CARELLE CHAT -->
-    <div class="carelle-chat" id="carelleChat">
-      <div class="chat-header">
-        <div class="chat-avatar">CA</div>
-        <div>
-          <div class="chat-name">Carelle — Agence Mr Attractor</div>
-          <div class="chat-status"><span>●</span> En ligne — posez-moi vos questions</div>
-        </div>
-      </div>
-      <div class="chat-messages" id="chatMessages">
-        <div class="chat-msg">
-          <div class="chat-bubble bot">Bonjour ! Je suis Carelle, l'assistante de l'Agence Mr Attractor. Vous avez des questions sur les modules, les prix, ou ce qui convient le mieux à votre activité ? Je suis là pour vous aider avant que vous finalisiez votre audit.</div>
-        </div>
-      </div>
-      <div class="chat-input-wrap">
-        <input class="chat-input" id="chatInput" type="text" placeholder="Posez votre question..." onkeydown="if(event.key==='Enter')sendChat()">
-        <button class="chat-send" onclick="sendChat()">➤</button>
-      </div>
-    </div>
-
     <div class="nav-btns">
       <button class="btn-prev" onclick="goStep(3)">←</button>
       <button class="btn-next" onclick="goStep(5)">Voir le récapitulatif →</button>
@@ -566,7 +546,6 @@ function suggererModules(palier) {
     // Envoyer suggestion à Carelle
     setTimeout(() => {
       addChatMsg(s[palier], 'bot');
-      const msgs = document.getElementById('chatMessages');
       if (msgs) msgs.scrollTop = msgs.scrollHeight;
     }, 800);
   }
@@ -621,119 +600,13 @@ function buildRecap() {
 }
 
 // ── CARELLE CHAT
-async function sendChat() {
-  const input = document.getElementById('chatInput');
-  const msg = input.value.trim();
-  if (!msg) return;
-  input.value = '';
 
-  addChatMsg(msg, 'user');
-  showTyping();
 
-  state.chatHistory.push({role:'user', content: msg});
 
-  try {
-    // Appel via Apps Script proxy — clé API sécurisée côté serveur
-    const params = new URLSearchParams({
-      action: 'chat',
-      message: msg,
-      prenom: v('prenom') || '',
-      secteur: state.secteur || '',
-      stade: state.stade || '',
-      douleurs: state.douleurs.join(', ') || '',
-      reve: v('reve') || '',
-      history: JSON.stringify(state.chatHistory.slice(-6)) // 3 derniers échanges
-    });
 
-    const res = await fetch(APPS_SCRIPT + '?' + params.toString(), {
-      method: 'GET',
-      mode: 'no-cors'
-    });
 
-    // no-cors ne permet pas de lire la réponse directement
-    // On utilise un fallback intelligent basé sur le contexte
-    await new Promise(r => setTimeout(r, 1800));
-    hideTyping();
 
-    // Réponses contextuelles intelligentes basées sur les mots-clés
-    const reply = genererReponseLocale(msg);
-    state.chatHistory.push({role:'assistant', content: reply});
-    addChatMsg(reply, 'bot');
 
-  } catch(e) {
-    hideTyping();
-    addChatMsg("Une question sur les modules ou les prix ? Écrivez-moi sur WhatsApp : +33 7 53 90 23 23", 'bot');
-  }
-}
-
-// Réponses intelligentes côté client (fallback sécurisé)
-function genererReponseLocale(msg) {
-  const m = msg.toLowerCase();
-
-  // Hors sujet
-  const horsSupjet = ['météo','recette','politique','sport','blague','bonjour','salut','comment tu','qui es-tu','qui êtes'];
-  if (horsSupjet.some(h => m.includes(h)) && !m.includes('prix') && !m.includes('module') && !m.includes('système')) {
-    return "Je suis uniquement là pour vous aider à configurer votre Système ATTRACTOR. Une question sur les modules ou les prix ?";
-  }
-
-  // Prix
-  if (m.includes('prix') || m.includes('coût') || m.includes('combien') || m.includes('tarif')) {
-    return "Le Système ATTRACTOR démarre à **450€**. Voici les modules :\n\n• Agenda & Briefing : 80€\n• Suivi clients & Relances : 80€\n• Finances : 100€\n• Gestion assistantes : 150€\n• Réseaux sociaux : 100€\n• Chatbot WhatsApp : 350€\n• Site web : à partir de 350€\n\nSelon votre profil, je peux vous recommander la combinaison idéale.";
-  }
-
-  // Délai / livraison
-  if (m.includes('délai') || m.includes('livrai') || m.includes('quand') || m.includes('combien de temps')) {
-    return "Le système est **opérationnel en 48h** après réception de vos assets. Formation incluse — 1h en direct avec Mac Arthur pour vous rendre autonome immédiatement.";
-  }
-
-  // Chatbot
-  if (m.includes('chatbot') || m.includes('bot') || m.includes('whatsapp') || m.includes('répondre')) {
-    return "Le **Bot Texte** (350€) répond automatiquement à vos clients 24h/24 sur WhatsApp. Le **Bot Connecté** (900€) gère WhatsApp + Instagram simultanément. Les deux sont configurés sur mesure pour votre activité — vos FAQ, votre catalogue, vos tarifs.";
-  }
-
-  // Site web
-  if (m.includes('site') || m.includes('web') || m.includes('vitrine') || m.includes('e-commerce')) {
-    return "Le **Mini site basique** (350€) vous donne une présence professionnelle immédiate. Le **Site agile + assistant IA** (800€) intègre votre assistant directement sur le site. Les deux sont livrés en 48h et optimisés mobile.";
-  }
-
-  // Finances
-  if (m.includes('finance') || m.includes('ca ') || m.includes('chiffre') || m.includes('argent') || m.includes('paiement')) {
-    return "Le module **Tableau de bord finances** (100€) vous donne votre CA en temps réel, suit vos paiements et vous alerte sur les impayés. En 10 secondes, vous savez tout sur votre argent — sans tableur ni calcul manuel.";
-  }
-
-  // Comment ça marche
-  if (m.includes('comment') || m.includes('fonctionne') || m.includes('marche') || m.includes('explique')) {
-    return "Le Système ATTRACTOR fonctionne en 3 temps :\n\n1. **Audit** (maintenant) — vous décrivez votre réalité\n2. **Configuration** — Mac Arthur installe votre système en 48h\n3. **Formation 1h** — vous pilotez à la voix depuis votre téléphone\n\nEnsuite le système gère, relance et organise — vous, vous décidez.";
-  }
-
-  // Garantie / confiance
-  if (m.includes('garanti') || m.includes('confiance') || m.includes('sérieux') || m.includes('remboursement')) {
-    return "Mac Arthur KOUASSI accompagne des entrepreneurs depuis plus de 10 ans. La formation 1h est incluse — vous repartez autonome. Et si vous avez des questions après la livraison, WhatsApp est toujours ouvert.";
-  }
-
-  // Réponse générale
-  return "Bonne question. Pour vous donner la recommandation la plus précise, terminez votre audit — Mac Arthur analysera votre situation et vous contactera sous 24h avec la configuration idéale pour votre activité. Ou posez-moi une question plus précise sur un module en particulier.";
-}
-
-function addChatMsg(text, who) {
-  const msgs = document.getElementById('chatMessages');
-  const div = document.createElement('div');
-  div.className = 'chat-msg ' + who;
-  div.innerHTML = `<div class="chat-bubble ${who}">${text}</div>`;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-let typingEl = null;
-function showTyping() {
-  const msgs = document.getElementById('chatMessages');
-  typingEl = document.createElement('div');
-  typingEl.className = 'chat-msg';
-  typingEl.innerHTML = '<div class="chat-bubble bot"><div class="chat-typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>';
-  msgs.appendChild(typingEl);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-function hideTyping() { if (typingEl) { typingEl.remove(); typingEl = null; } }
 
 // ── SUBMIT
 async function submitAudit() {

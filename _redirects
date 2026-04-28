@@ -1,4 +1,10 @@
-/api/starter  https://mrattractor.app.n8n.cloud/webhook/starter-attractor  200
-/lead-magnet  /lead-magnet.html  200
-/challenge    /challenge.html    200
-/audit        /audit.html        200
+/api/starter       https://mrattractor.app.n8n.cloud/webhook/starter-attractor  200
+/lead-magnet       /lead-magnet.html      200
+/challenge         /challenge.html        200
+/audit             /audit.html            200
+/configurateur     /configurateur.html    200
+/notre-histoire    /notre-histoire.html   200
+/consulting        /consulting.html       200
+/assistant-ia-pro  /assistant-ia-pro.html 200
+/audit-ia-pro      /audit.html            200
+/chatbot           /configurateur.html    200
