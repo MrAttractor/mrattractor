@@ -60,7 +60,21 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 textarea.field-input{resize:none;min-height:90px;line-height:1.65;}
 select.field-input{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23777' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
 
-/* CHIPS */
+/* PALIERS */
+.palier-card{background:var(--card);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:1.2rem 1.5rem;cursor:pointer;transition:all 0.2s;position:relative;}
+.palier-card:hover{border-color:rgba(201,168,76,0.25);}
+.palier-card.selected{border-color:var(--gold);background:rgba(201,168,76,0.04);}
+.palier-card.selected::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);border-radius:2px 2px 0 0;}
+.palier-card.selected-green{border-color:var(--green);background:rgba(61,220,132,0.04);}
+.palier-card.selected-green::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),transparent);border-radius:2px 2px 0 0;}
+.palier-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.8rem;}
+.palier-tag{display:inline-block;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:3px;padding:2px 10px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:4px;}
+.palier-name{font-size:14px;font-weight:600;color:var(--text);}
+.palier-price{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--gold);flex-shrink:0;}
+.palier-modules{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:0.8rem;}
+.pm{font-size:12px;color:var(--muted);line-height:1.5;}
+.palier-ideal{font-size:11px;color:rgba(119,119,119,0.6);border-top:1px solid var(--border);padding-top:8px;font-style:italic;}
+@media(max-width:480px){.palier-modules{grid-template-columns:1fr;}}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;}
 .chip{padding:7px 14px;background:var(--card);border:1px solid rgba(255,255,255,0.08);border-radius:100px;font-size:13px;cursor:pointer;transition:all 0.2s;user-select:none;}
 .chip:hover{border-color:rgba(201,168,76,0.3);}
@@ -320,51 +334,99 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
     </div>
   </div>
 
-  <!-- ÉTAPE 4 — BESOINS SYSTÈME -->
+  <!-- ÉTAPE 4 — PALIERS + MODULES -->
   <div class="step" id="s4">
     <div class="step-header">
       <div class="step-eyebrow"><div class="step-dot"></div>Votre système idéal</div>
-      <h1 class="step-h1">Qu'est-ce que vous<br>voulez <em>automatiser</em> ?</h1>
-      <p class="step-hint">Cochez ce que le système doit gérer à votre place.</p>
+      <h1 class="step-h1">Choisissez votre<br><em>point de départ.</em></h1>
+      <p class="step-hint">Chaque palier est évolutif — vous commencez là où vous en êtes et vous montez en puissance.</p>
     </div>
+
+    <!-- PALIERS -->
     <div class="field">
-      <label class="field-label">Besoins prioritaires *</label>
-      <div class="chips" id="besoinsChips">
-        <div class="chip" onclick="toggleChip(this)">Répondre aux clients 24h/24</div>
-        <div class="chip" onclick="toggleChip(this)">Organiser mon agenda</div>
-        <div class="chip" onclick="toggleChip(this)">Suivre mes finances</div>
-        <div class="chip" onclick="toggleChip(this)">Relancer automatiquement</div>
-        <div class="chip" onclick="toggleChip(this)">Un site web professionnel</div>
-        <div class="chip" onclick="toggleChip(this)">Gérer mes assistantes</div>
-        <div class="chip" onclick="toggleChip(this)">Poster sur les réseaux</div>
-        <div class="chip" onclick="toggleChip(this)">Un chatbot WhatsApp</div>
-        <div class="chip" onclick="toggleChip(this)">Catalogue en ligne</div>
-        <div class="chip" onclick="toggleChip(this)">Prise de rendez-vous auto</div>
-        <div class="chip" onclick="toggleChip(this)">Tunnel de vente</div>
-        <div class="chip" onclick="toggleChip(this)">Emails automatiques</div>
+      <label class="field-label">Votre palier *</label>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px;" id="palierGrid">
+
+        <div class="palier-card" onclick="selectPalier(this,'starter')" id="palier-starter">
+          <div class="palier-header">
+            <div>
+              <div class="palier-tag">STARTER</div>
+              <div class="palier-name">L'essentiel pour démarrer</div>
+            </div>
+            <div class="palier-price">450€</div>
+          </div>
+          <div class="palier-modules">
+            <div class="pm">✓ Agenda & Briefing quotidien</div>
+            <div class="pm">✓ Suivi clients & Relances auto</div>
+            <div class="pm">✓ 1 module au choix</div>
+            <div class="pm">✓ Formation 1h incluse</div>
+          </div>
+          <div class="palier-ideal">Idéal pour : Démarrage · Activité solo · Premier système</div>
+        </div>
+
+        <div class="palier-card" onclick="selectPalier(this,'growth')" id="palier-growth">
+          <div class="palier-header">
+            <div>
+              <div class="palier-tag" style="background:rgba(61,220,132,0.1);color:var(--green);border-color:rgba(61,220,132,0.2);">GROWTH ⭐ Recommandé</div>
+              <div class="palier-name">Le système complet</div>
+            </div>
+            <div class="palier-price" style="color:var(--green);">800€</div>
+          </div>
+          <div class="palier-modules">
+            <div class="pm">✓ Tout le Starter</div>
+            <div class="pm">✓ Tableau de bord finances</div>
+            <div class="pm">✓ Chatbot WhatsApp (Bot Texte)</div>
+            <div class="pm">✓ Contenu réseaux sociaux</div>
+            <div class="pm">✓ 3 modules au choix</div>
+          </div>
+          <div class="palier-ideal">Idéal pour : Activité en croissance · +10 clients/mois · E-commerce</div>
+        </div>
+
+        <div class="palier-card" onclick="selectPalier(this,'premium')" id="palier-premium">
+          <div class="palier-header">
+            <div>
+              <div class="palier-tag" style="background:rgba(201,168,76,0.15);color:var(--gold);border-color:rgba(201,168,76,0.3);">PREMIUM</div>
+              <div class="palier-name">L'écosystème intelligent</div>
+            </div>
+            <div class="palier-price">1200€</div>
+          </div>
+          <div class="palier-modules">
+            <div class="pm">✓ Tout le Growth</div>
+            <div class="pm">✓ Bot Connecté WhatsApp + Instagram</div>
+            <div class="pm">✓ Site web professionnel</div>
+            <div class="pm">✓ Gestion assistantes</div>
+            <div class="pm">✓ Modules illimités</div>
+            <div class="pm">✓ Suivi 30 jours inclus</div>
+          </div>
+          <div class="palier-ideal">Idéal pour : Entreprise structurée · Équipe · Plusieurs canaux</div>
+        </div>
+
       </div>
     </div>
-    <div class="field" style="margin-top:1rem;">
-      <label class="field-label">Budget disponible</label>
-      <div class="radio-grid" id="budgetGrid" style="grid-template-columns:repeat(2,1fr);">
-        <div class="radio-card" onclick="selectRadio(this,'budget','starter')">
-          <div class="rc-label">450 — 600€</div>
-          <div class="rc-desc">Démarrer avec l'essentiel</div>
-        </div>
-        <div class="radio-card" onclick="selectRadio(this,'budget','growth')">
-          <div class="rc-label">600 — 900€</div>
-          <div class="rc-desc">Système complet</div>
-        </div>
-        <div class="radio-card" onclick="selectRadio(this,'budget','premium')">
-          <div class="rc-label">900 — 1200€+</div>
-          <div class="rc-desc">Écosystème premium</div>
-        </div>
-        <div class="radio-card" onclick="selectRadio(this,'budget','flexible')">
-          <div class="rc-label">Flexible</div>
-          <div class="rc-desc">Selon la recommandation</div>
-        </div>
+
+    <!-- MODULES OPTIONNELS -->
+    <div class="field" style="margin-top:1.5rem;" id="modulesOptsWrap">
+      <label class="field-label">Modules additionnels (optionnel)</label>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">Ajoutez des modules selon vos besoins spécifiques.</p>
+      <div class="chips" id="modulesOpts">
+        <div class="chip" onclick="toggleModuleOpt(this,'Gestion assistantes',150)">🤝 Gestion assistantes +150€</div>
+        <div class="chip" onclick="toggleModuleOpt(this,'Bot Connecté WhatsApp+Instagram',900)">🤖 Bot Connecté +900€</div>
+        <div class="chip" onclick="toggleModuleOpt(this,'Site web basique',350)">🌐 Site web basique +350€</div>
+        <div class="chip" onclick="toggleModuleOpt(this,'Site agile + IA',800)">⚡ Site agile + IA +800€</div>
+        <div class="chip" onclick="toggleModuleOpt(this,'Finances avancées',100)">💰 Finances avancées +100€</div>
+        <div class="chip" onclick="toggleModuleOpt(this,'Réseaux sociaux',100)">📱 Réseaux sociaux +100€</div>
       </div>
     </div>
+
+    <!-- TOTAL DYNAMIQUE -->
+    <div style="background:var(--card);border:1px solid var(--border-g);border-radius:10px;padding:1.2rem 1.5rem;margin-top:1.5rem;" id="totalWrap">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;">
+        <div style="font-size:13px;color:var(--muted);">Total estimé</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--gold);" id="totalDisplay">—</div>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;" id="totalNote">Sélectionnez un palier pour voir votre total</div>
+    </div>
+
     <div class="nav-btns">
       <button class="btn-prev" onclick="goStep(3)">←</button>
       <button class="btn-next" onclick="goStep(5)">Continuer →</button>
@@ -396,18 +458,18 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
       </div>
     </div>
 
-    <!-- CLAUDE CHAT -->
+    <!-- CARELLE CHAT -->
     <div class="claude-chat" id="claudeChat">
       <div class="chat-header">
-        <div class="chat-avatar">C</div>
+        <div class="chat-avatar">CA</div>
         <div>
-          <div class="chat-name">Claude — Système ATTRACTOR</div>
+          <div class="chat-name">Carelle — Agence Mr Attractor</div>
           <div class="chat-status"><span>●</span> En ligne — posez-moi vos questions</div>
         </div>
       </div>
       <div class="chat-messages" id="chatMessages">
         <div class="chat-msg">
-          <div class="chat-bubble bot">Bonjour ! Je suis Claude, l'assistant du Système ATTRACTOR. Vous avez des questions sur les modules, les prix, ou ce qui convient le mieux à votre activité ? Je suis là pour vous aider avant que vous finalisiez votre audit.</div>
+          <div class="chat-bubble bot">Bonjour ! Je suis Carelle, l'assistante de l'Agence Mr Attractor. Vous avez des questions sur les modules, les prix, ou ce qui convient le mieux à votre activité ? Je suis là pour vous aider avant que vous finalisiez votre audit.</div>
         </div>
       </div>
       <div class="chat-input-wrap">
@@ -518,7 +580,7 @@ function validateStep(n) {
     if (state.douleurs.length === 0) { toast('Sélectionnez au moins une douleur', 'error'); return false; }
   }
   if (n === 4) {
-    if (state.besoins.length === 0) { toast('Sélectionnez au moins un besoin', 'error'); return false; }
+    if (!state.budget) { toast('Choisissez un palier', 'error'); return false; }
   }
   if (n === 5) {
     if (!v('reve')) { shake('reve'); toast('Décrivez votre rêve', 'error'); return false; }
@@ -537,10 +599,65 @@ function shake(id) {
 }
 
 // ── INTERACTIONS
-function selectRadio(el, group, val) {
-  document.querySelectorAll('#' + group + 'Grid .radio-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state[group] = val;
+// ── PALIERS
+const PRIX_PALIER = { starter: 450, growth: 800, premium: 1200 };
+let modulesOpts = [];
+let prixTotal = 0;
+
+function selectPalier(el, palier) {
+  document.querySelectorAll('.palier-card').forEach(c => {
+    c.classList.remove('selected','selected-green');
+  });
+  if (palier === 'growth') el.classList.add('selected-green');
+  else el.classList.add('selected');
+  state.budget = palier;
+  prixTotal = PRIX_PALIER[palier];
+  updateTotal();
+  // Suggestion dynamique selon secteur
+  suggererModules(palier);
+}
+
+function toggleModuleOpt(el, nom, prix) {
+  el.classList.toggle('selected');
+  const idx = modulesOpts.findIndex(m => m.nom === nom);
+  if (idx > -1) {
+    modulesOpts.splice(idx, 1);
+    prixTotal -= prix;
+  } else {
+    modulesOpts.push({nom, prix});
+    prixTotal += prix;
+  }
+  updateTotal();
+}
+
+function updateTotal() {
+  if (!state.budget) return;
+  const el = document.getElementById('totalDisplay');
+  const note = document.getElementById('totalNote');
+  el.textContent = prixTotal.toLocaleString('fr-FR') + '€';
+  const palierNom = {starter:'Starter',growth:'Growth',premium:'Premium'}[state.budget];
+  const extras = modulesOpts.length > 0 ? ' + ' + modulesOpts.length + ' module(s) additionnel(s)' : '';
+  note.textContent = palierNom + extras + ' · Formation 1h incluse · Livraison 48h';
+  state.besoins = [palierNom, ...modulesOpts.map(m => m.nom)];
+}
+
+function suggererModules(palier) {
+  // Suggestion basée sur le secteur détecté
+  const suggestions = {
+    ecommerce: { growth: 'Pour votre boutique, le Bot Connecté WhatsApp+Instagram est fortement recommandé — vos clientes commandent souvent le soir.', premium: 'Le Premium avec Site web est idéal pour une boutique e-commerce sérieuse.' },
+    restaurant: { growth: 'Pour la restauration, le chatbot gère les réservations et commandes automatiquement 24h/24.', premium: 'Le Premium avec site intégré vous donne une présence professionnelle complète.' },
+    service: { starter: 'Pour démarrer en consulting, le Starter suffit. Vous monterez en puissance rapidement.', growth: 'Le Growth avec finances et relances est parfait pour un consultant qui veut scaler.' },
+    beaute: { growth: 'Le Bot WhatsApp pour votre salon gère les RDV et relance automatiquement les clientes.', premium: 'Le Premium vous donne tout — réseaux, site, chatbot, gestion agenda.' }
+  };
+  const s = suggestions[state.secteur];
+  if (s && s[palier]) {
+    // Envoyer suggestion à Carelle
+    setTimeout(() => {
+      addChatMsg(s[palier], 'bot');
+      const msgs = document.getElementById('chatMessages');
+      if (msgs) msgs.scrollTop = msgs.scrollHeight;
+    }, 800);
+  }
 }
 
 function toggleChip(el) {
