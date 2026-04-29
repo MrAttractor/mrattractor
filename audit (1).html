@@ -35,7 +35,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-dim));border-radius:3px;transition:width 0.5s ease;}
 
 /* MAIN */
-.main{max-width:640px;margin:0 auto;padding:152px 1.5rem 120px;position:relative;z-index:1;}
+.main{max-width:640px;margin:0 auto;padding:152px 1.5rem 120px;position:relative;}
 
 /* STEP */
 .step{display:none;animation:fadeUp 0.4s ease;}
@@ -63,7 +63,7 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
 
 /* RADIO CARDS — SECTEUR / STADE */
 .radio-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;}
-.radio-card{background:#1C1C1C;border:2px solid rgba(255,255,255,0.1);border-radius:10px;padding:1.1rem 1.2rem;cursor:pointer;transition:all 0.2s;position:relative;-webkit-tap-highlight-color:transparent;}
+.radio-card{background:#1C1C1C;border:2px solid rgba(255,255,255,0.1);border-radius:10px;padding:1.1rem 1.2rem;cursor:pointer;transition:all 0.2s;position:relative;z-index:10;-webkit-tap-highlight-color:transparent;}
 .radio-card:hover{border-color:rgba(201,168,76,0.4);background:#222;}
 .radio-card:active{transform:scale(0.98);}
 .radio-card.selected{border-color:var(--gold);background:rgba(201,168,76,0.08);}
@@ -74,13 +74,13 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
 
 /* CHIPS */
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;}
-.chip{padding:10px 16px;background:#1C1C1C;border:2px solid rgba(255,255,255,0.12);border-radius:100px;font-size:14px;font-weight:500;color:#CCC;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent;user-select:none;}
+.chip{padding:10px 16px;background:#1C1C1C;border:2px solid rgba(255,255,255,0.12);border-radius:100px;font-size:14px;font-weight:500;color:#CCC;cursor:pointer;transition:all 0.2s;position:relative;z-index:10;-webkit-tap-highlight-color:transparent;user-select:none;}
 .chip:hover{border-color:rgba(201,168,76,0.4);color:var(--text);}
 .chip:active{transform:scale(0.96);}
 .chip.selected{background:var(--gold-l);border-color:var(--gold);color:var(--gold);font-weight:700;}
 
 /* PALIERS */
-.palier-card{background:#1C1C1C;border:2px solid rgba(255,255,255,0.1);border-radius:12px;padding:1.4rem 1.5rem;cursor:pointer;transition:all 0.25s;position:relative;-webkit-tap-highlight-color:transparent;margin-bottom:4px;}
+.palier-card{background:#1C1C1C;border:2px solid rgba(255,255,255,0.1);border-radius:12px;padding:1.4rem 1.5rem;cursor:pointer;transition:all 0.25s;position:relative;z-index:10;-webkit-tap-highlight-color:transparent;margin-bottom:4px;}
 .palier-card:hover{border-color:rgba(201,168,76,0.4);background:#222;}
 .palier-card:active{transform:scale(0.99);}
 .palier-card.selected{border-color:var(--gold);background:rgba(201,168,76,0.06);}
@@ -99,13 +99,13 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
 /* URGENCE */
 .urgence-wrap{margin-top:8px;}
 .urgence-bar{display:flex;gap:8px;}
-.urg-btn{flex:1;height:44px;border-radius:8px;border:2px solid rgba(255,255,255,0.1);background:#1C1C1C;cursor:pointer;font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:#888;transition:all 0.2s;-webkit-tap-highlight-color:transparent;}
+.urg-btn{flex:1;height:44px;border-radius:8px;border:2px solid rgba(255,255,255,0.1);background:#1C1C1C;cursor:pointer;font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:#888;transition:all 0.2s;position:relative;z-index:10;-webkit-tap-highlight-color:transparent;}
 .urg-btn:hover{border-color:rgba(201,168,76,0.4);color:var(--gold);}
 .urg-btn.on{background:var(--gold-l);border-color:var(--gold);color:var(--gold);}
 .urgence-labels{display:flex;justify-content:space-between;font-size:12px;color:#888;margin-top:8px;}
 
 /* CARELLE CHAT */
-.carelle-chat{background:#1C1C1C;border:2px solid var(--border-g);border-radius:12px;overflow:hidden;margin-top:1.5rem;}
+
 .chat-header{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);background:rgba(201,168,76,0.05);}
 .chat-avatar{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--gold-dim));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#000;font-family:'Space Mono',monospace;flex-shrink:0;}
 .chat-name{font-size:13px;font-weight:700;color:var(--gold);}
@@ -114,9 +114,9 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
 .chat-messages{padding:16px;min-height:80px;max-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;}
 .chat-msg{display:flex;gap:8px;align-items:flex-start;}
 .chat-msg.user{flex-direction:row-reverse;}
-.chat-bubble{border-radius:10px;padding:11px 15px;font-size:14px;line-height:1.65;max-width:88%;}
-.chat-bubble.bot{background:#242424;border-radius:2px 10px 10px 10px;color:#EEE;}
-.chat-bubble.user{background:var(--gold-l);border:1px solid var(--border-g);border-radius:10px 2px 10px 10px;color:var(--gold);}
+
+
+
 .chat-typing{display:flex;gap:5px;align-items:center;padding:11px 15px;}
 .typing-dot{width:7px;height:7px;border-radius:50%;background:#888;animation:typing 1.2s infinite;}
 .typing-dot:nth-child(2){animation-delay:0.2s;}
@@ -183,7 +183,7 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
 <div class="progress-wrap">
   <div class="progress-info">
     <div class="progress-label" id="progressLabel">Étape 1 — Votre activité</div>
-    <div class="progress-steps" id="progressSteps">1 / 6</div>
+    <div class="progress-steps" id="progressSteps">1 / 5</div>
   </div>
   <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:16%"></div></div>
 </div>
@@ -347,105 +347,6 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
   <!-- ÉTAPE 4 — PALIERS + MODULES -->
   <div class="step" id="s4">
     <div class="step-header">
-      <div class="step-eyebrow"><div class="step-dot"></div>Votre système idéal</div>
-      <h1 class="step-h1">Choisissez votre<br><em>point de départ.</em></h1>
-      <p class="step-hint">Chaque palier est évolutif — vous commencez là où vous en êtes et vous montez en puissance.</p>
-    </div>
-
-    <!-- PALIERS -->
-    <div class="field">
-      <label class="field-label">Votre palier *</label>
-      <div style="display:flex;flex-direction:column;gap:12px;margin-top:8px;" id="palierGrid">
-
-        <div class="palier-card" onclick="selectPalier(this,'starter')" id="palier-starter">
-          <div class="palier-header">
-            <div>
-              <div class="palier-tag">STARTER</div>
-              <div class="palier-name">L'essentiel pour démarrer</div>
-            </div>
-            <div class="palier-price">450€</div>
-          </div>
-          <div class="palier-modules">
-            <div class="pm">✓ Agenda & Briefing quotidien</div>
-            <div class="pm">✓ Suivi clients & Relances auto</div>
-            <div class="pm">✓ 1 module au choix</div>
-            <div class="pm">✓ Formation 1h incluse</div>
-          </div>
-          <div class="palier-ideal">Idéal pour : Démarrage · Activité solo · Premier système</div>
-        </div>
-
-        <div class="palier-card" onclick="selectPalier(this,'growth')" id="palier-growth">
-          <div class="palier-header">
-            <div>
-              <div class="palier-tag" style="background:rgba(61,220,132,0.1);color:var(--green);border-color:rgba(61,220,132,0.2);">GROWTH ⭐ Recommandé</div>
-              <div class="palier-name">Le système complet</div>
-            </div>
-            <div class="palier-price" style="color:var(--green);">800€</div>
-          </div>
-          <div class="palier-modules">
-            <div class="pm">✓ Tout le Starter</div>
-            <div class="pm">✓ Tableau de bord finances</div>
-            <div class="pm">✓ Chatbot WhatsApp (Bot Texte)</div>
-            <div class="pm">✓ Contenu réseaux sociaux</div>
-            <div class="pm">✓ 3 modules au choix</div>
-          </div>
-          <div class="palier-ideal">Idéal pour : Activité en croissance · +10 clients/mois · E-commerce</div>
-        </div>
-
-        <div class="palier-card" onclick="selectPalier(this,'premium')" id="palier-premium">
-          <div class="palier-header">
-            <div>
-              <div class="palier-tag" style="background:rgba(201,168,76,0.15);color:var(--gold);border-color:rgba(201,168,76,0.3);">PREMIUM</div>
-              <div class="palier-name">L'écosystème intelligent</div>
-            </div>
-            <div class="palier-price">1200€</div>
-          </div>
-          <div class="palier-modules">
-            <div class="pm">✓ Tout le Growth</div>
-            <div class="pm">✓ Bot Connecté WhatsApp + Instagram</div>
-            <div class="pm">✓ Site web professionnel</div>
-            <div class="pm">✓ Gestion assistantes</div>
-            <div class="pm">✓ Modules illimités</div>
-            <div class="pm">✓ Suivi 30 jours inclus</div>
-          </div>
-          <div class="palier-ideal">Idéal pour : Entreprise structurée · Équipe · Plusieurs canaux</div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- MODULES OPTIONNELS -->
-    <div class="field" style="margin-top:1.5rem;" id="modulesOptsWrap">
-      <label class="field-label">Modules additionnels (optionnel)</label>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">Ajoutez des modules selon vos besoins spécifiques.</p>
-      <div class="chips" id="modulesOpts">
-        <div class="chip" onclick="toggleModuleOpt(this,'Gestion assistantes',150)">🤝 Gestion assistantes +150€</div>
-        <div class="chip" onclick="toggleModuleOpt(this,'Bot Connecté WhatsApp+Instagram',900)">🤖 Bot Connecté +900€</div>
-        <div class="chip" onclick="toggleModuleOpt(this,'Site web basique',350)">🌐 Site web basique +350€</div>
-        <div class="chip" onclick="toggleModuleOpt(this,'Site agile + IA',800)">⚡ Site agile + IA +800€</div>
-        <div class="chip" onclick="toggleModuleOpt(this,'Finances avancées',100)">💰 Finances avancées +100€</div>
-        <div class="chip" onclick="toggleModuleOpt(this,'Réseaux sociaux',100)">📱 Réseaux sociaux +100€</div>
-      </div>
-    </div>
-
-    <!-- TOTAL DYNAMIQUE -->
-    <div style="background:var(--card);border:1px solid var(--border-g);border-radius:10px;padding:1.2rem 1.5rem;margin-top:1.5rem;" id="totalWrap">
-      <div style="display:flex;justify-content:space-between;align-items:baseline;">
-        <div style="font-size:13px;color:var(--muted);">Total estimé</div>
-        <div style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--gold);" id="totalDisplay">—</div>
-      </div>
-      <div style="font-size:11px;color:var(--muted);margin-top:4px;" id="totalNote">Sélectionnez un palier pour voir votre total</div>
-    </div>
-
-    <div class="nav-btns">
-      <button class="btn-prev" onclick="goStep(3)">←</button>
-      <button class="btn-next" onclick="goStep(5)">Continuer →</button>
-    </div>
-  </div>
-
-  <!-- ÉTAPE 5 — RÊVE + CARELLE CHAT -->
-  <div class="step" id="s5">
-    <div class="step-header">
       <div class="step-eyebrow"><div class="step-dot"></div>Votre vision</div>
       <h1 class="step-h1">Dans 90 jours,<br>à quoi ressemble<br>votre <em>vie idéale ?</em></h1>
       <p class="step-hint">C'est la question la plus importante. Prenez le temps d'y répondre honnêtement.</p>
@@ -468,34 +369,14 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
       </div>
     </div>
 
-    <!-- CARELLE CHAT -->
-    <div class="carelle-chat" id="carelleChat">
-      <div class="chat-header">
-        <div class="chat-avatar">CA</div>
-        <div>
-          <div class="chat-name">Carelle — Agence Mr Attractor</div>
-          <div class="chat-status"><span>●</span> En ligne — posez-moi vos questions</div>
-        </div>
-      </div>
-      <div class="chat-messages" id="chatMessages">
-        <div class="chat-msg">
-          <div class="chat-bubble bot">Bonjour ! Je suis Carelle, l'assistante de l'Agence Mr Attractor. Vous avez des questions sur les modules, les prix, ou ce qui convient le mieux à votre activité ? Je suis là pour vous aider avant que vous finalisiez votre audit.</div>
-        </div>
-      </div>
-      <div class="chat-input-wrap">
-        <input class="chat-input" id="chatInput" type="text" placeholder="Posez votre question..." onkeydown="if(event.key==='Enter')sendChat()">
-        <button class="chat-send" onclick="sendChat()">➤</button>
-      </div>
-    </div>
-
     <div class="nav-btns">
-      <button class="btn-prev" onclick="goStep(4)">←</button>
-      <button class="btn-next" onclick="goStep(6)">Voir le récapitulatif →</button>
+      <button class="btn-prev" onclick="goStep(3)">←</button>
+      <button class="btn-next" onclick="goStep(5)">Voir le récapitulatif →</button>
     </div>
   </div>
 
   <!-- ÉTAPE 6 — RÉCAP + ENVOI -->
-  <div class="step" id="s6">
+  <div class="step" id="s5">
     <div class="step-header">
       <div class="step-eyebrow"><div class="step-dot"></div>Récapitulatif</div>
       <h1 class="step-h1">Votre audit<br>est <em>prêt.</em></h1>
@@ -517,7 +398,7 @@ select.field-input{cursor:pointer;appearance:none;background-image:url("data:ima
       En soumettant cet audit, vous acceptez d'être contacté par Mac Arthur KOUASSI dans les 24h pour organiser votre call découverte. <strong style="color:var(--text);">L'offre est valable 72h.</strong>
     </div>
     <div class="nav-btns">
-      <button class="btn-prev" onclick="goStep(5)">←</button>
+      <button class="btn-prev" onclick="goStep(4)">←</button>
       <button class="btn-next" id="btnSubmit" onclick="submitAudit()">🚀 Envoyer mon audit →</button>
     </div>
   </div>
@@ -553,7 +434,7 @@ const state = {
 
 const stepLabels = [
   '', 'Votre activité', 'Votre profil',
-  'Vos douleurs', 'Votre système', 'Votre vision', 'Récapitulatif'
+  'Vos douleurs', 'Votre vision', 'Récapitulatif'
 ];
 let currentStep = 1;
 
@@ -564,15 +445,15 @@ function goStep(n) {
   currentStep = n;
   document.getElementById('s'+n).classList.add('active');
   updateProgress(n);
-  if (n === 6) buildRecap();
+  if (n === 5) buildRecap();
   window.scrollTo({top:0, behavior:'smooth'});
 }
 
 function updateProgress(n) {
-  const pct = Math.round((n/6)*100);
+  const pct = Math.round((n/5)*100);
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('progressLabel').textContent = 'Étape ' + n + ' — ' + stepLabels[n];
-  document.getElementById('progressSteps').textContent = n + ' / 6';
+  document.getElementById('progressSteps').textContent = n + ' / 5';
 }
 
 // ── VALIDATION
@@ -589,10 +470,8 @@ function validateStep(n) {
   if (n === 3) {
     if (state.douleurs.length === 0) { toast('Sélectionnez au moins une douleur', 'error'); return false; }
   }
+  
   if (n === 4) {
-    if (!state.budget) { toast('Choisissez un palier', 'error'); return false; }
-  }
-  if (n === 5) {
     if (!v('reve')) { shake('reve'); toast('Décrivez votre rêve', 'error'); return false; }
   }
   return true;
@@ -616,11 +495,6 @@ function selectRadio(el, group, val) {
   el.classList.add('selected');
   state[group] = val;
 }
-
-// ── PALIERS
-const PRIX_PALIER = { starter: 450, growth: 800, premium: 1200 };
-let modulesOpts = [];
-let prixTotal = 0;
 
 function selectPalier(el, palier) {
   document.querySelectorAll('.palier-card').forEach(c => {
@@ -672,7 +546,6 @@ function suggererModules(palier) {
     // Envoyer suggestion à Carelle
     setTimeout(() => {
       addChatMsg(s[palier], 'bot');
-      const msgs = document.getElementById('chatMessages');
       if (msgs) msgs.scrollTop = msgs.scrollHeight;
     }, 800);
   }
@@ -696,146 +569,44 @@ function setUrgence(n) {
 
 // ── RÉCAP
 function buildRecap() {
-  document.getElementById('recapIdentite').innerHTML = `
-    <div class="recap-label">Identité</div>
-    <div class="recap-row"><span class="recap-key">Prénom</span><span class="recap-val">${v('prenom')}</span></div>
-    <div class="recap-row"><span class="recap-key">Email</span><span class="recap-val">${v('email')}</span></div>
-    <div class="recap-row"><span class="recap-key">WhatsApp</span><span class="recap-val">${v('whatsapp') || '—'}</span></div>
-    <div class="recap-row"><span class="recap-key">Pays</span><span class="recap-val">${v('pays') || '—'}</span></div>
-  `;
-  document.getElementById('recapProfil').innerHTML = `
-    <div class="recap-label">Profil</div>
-    <div class="recap-row"><span class="recap-key">Activité</span><span class="recap-val">${v('activite')}</span></div>
-    <div class="recap-row"><span class="recap-key">Secteur</span><span class="recap-val">${state.secteur}</span></div>
-    <div class="recap-row"><span class="recap-key">Stade</span><span class="recap-val">${state.stade}</span></div>
-    <div class="recap-row"><span class="recap-key">Budget</span><span class="recap-val">${state.budget || '—'}</span></div>
-  `;
-  document.getElementById('recapDouleurs').innerHTML = `
-    <div class="recap-label">Douleurs & Besoins</div>
-    <div class="recap-row"><span class="recap-key">Douleurs</span><span class="recap-val">${state.douleurs.join(', ') || '—'}</span></div>
-    <div class="recap-row"><span class="recap-key">Besoins</span><span class="recap-val">${state.besoins.join(', ') || '—'}</span></div>
-    <div class="recap-row"><span class="recap-key">Urgence</span><span class="recap-val">${state.urgence}/5</span></div>
-  `;
-  document.getElementById('recapReve').innerHTML = `
-    <div class="recap-label">Votre rêve</div>
-    <div style="font-size:14px;color:var(--gold);font-style:italic;line-height:1.7;">"${v('reve')}"</div>
-  `;
+  const secteurLabels = {ecommerce:'E-commerce / Mode',restaurant:'Restauration / Food',service:'Services / Consulting',beaute:'Beauté / Bien-être',immobilier:'Immobilier / BTP',autre:'Autre'};
+  const stadeLabels = {demarrage:'Démarrage',croissance:'En croissance',optimisation:'Optimisation',relance:'Relance'};
+
+  document.getElementById('recapIdentite').innerHTML =
+    '<div class="recap-label">Identité</div>' +
+    '<div class="recap-row"><span class="recap-key">Prénom</span><span class="recap-val">' + (v('prenom')||'—') + '</span></div>' +
+    '<div class="recap-row"><span class="recap-key">Email</span><span class="recap-val">' + (v('email')||'—') + '</span></div>' +
+    '<div class="recap-row"><span class="recap-key">WhatsApp</span><span class="recap-val">' + (v('whatsapp')||'—') + '</span></div>' +
+    '<div class="recap-row"><span class="recap-key">Pays</span><span class="recap-val">' + (v('pays')||'—') + '</span></div>';
+
+  document.getElementById('recapProfil').innerHTML =
+    '<div class="recap-label">Profil</div>' +
+    '<div class="recap-row"><span class="recap-key">Activité</span><span class="recap-val">' + (v('activite')||'—') + '</span></div>' +
+    '<div class="recap-row"><span class="recap-key">Secteur</span><span class="recap-val">' + (secteurLabels[state.secteur]||state.secteur||'—') + '</span></div>' +
+    '<div class="recap-row"><span class="recap-key">Stade</span><span class="recap-val">' + (stadeLabels[state.stade]||state.stade||'—') + '</span></div>';
+
+  document.getElementById('recapDouleurs').innerHTML =
+    '<div class="recap-label">Douleurs & Blocages</div>' +
+    '<div class="recap-row"><span class="recap-key">Identifiés</span><span class="recap-val">' + (state.douleurs.join(', ')||'—') + '</span></div>' +
+    (v('douleurLibre') ? '<div class="recap-row"><span class="recap-key">En vos mots</span><span class="recap-val">' + v('douleurLibre') + '</span></div>' : '') +
+    '<div class="recap-row"><span class="recap-key">Urgence</span><span class="recap-val">' + (state.urgence||0) + '/5</span></div>';
+
+  const reve = v('reve');
+  document.getElementById('recapReve').innerHTML =
+    '<div class="recap-label">Votre rêve</div>' +
+    '<div style="font-size:15px;color:var(--gold);font-style:italic;line-height:1.75;margin-top:4px;">' +
+    (reve ? '"' + reve + '"' : '<span style="color:var(--muted)">Non renseigné</span>') +
+    '</div>';
 }
 
 // ── CARELLE CHAT
-async function sendChat() {
-  const input = document.getElementById('chatInput');
-  const msg = input.value.trim();
-  if (!msg) return;
-  input.value = '';
 
-  addChatMsg(msg, 'user');
-  showTyping();
 
-  state.chatHistory.push({role:'user', content: msg});
 
-  try {
-    // Appel via Apps Script proxy — clé API sécurisée côté serveur
-    const params = new URLSearchParams({
-      action: 'chat',
-      message: msg,
-      prenom: v('prenom') || '',
-      secteur: state.secteur || '',
-      stade: state.stade || '',
-      douleurs: state.douleurs.join(', ') || '',
-      reve: v('reve') || '',
-      history: JSON.stringify(state.chatHistory.slice(-6)) // 3 derniers échanges
-    });
 
-    const res = await fetch(APPS_SCRIPT + '?' + params.toString(), {
-      method: 'GET',
-      mode: 'no-cors'
-    });
 
-    // no-cors ne permet pas de lire la réponse directement
-    // On utilise un fallback intelligent basé sur le contexte
-    await new Promise(r => setTimeout(r, 1800));
-    hideTyping();
 
-    // Réponses contextuelles intelligentes basées sur les mots-clés
-    const reply = genererReponseLocale(msg);
-    state.chatHistory.push({role:'assistant', content: reply});
-    addChatMsg(reply, 'bot');
 
-  } catch(e) {
-    hideTyping();
-    addChatMsg("Une question sur les modules ou les prix ? Écrivez-moi sur WhatsApp : +33 7 53 90 23 23", 'bot');
-  }
-}
-
-// Réponses intelligentes côté client (fallback sécurisé)
-function genererReponseLocale(msg) {
-  const m = msg.toLowerCase();
-
-  // Hors sujet
-  const horsSupjet = ['météo','recette','politique','sport','blague','bonjour','salut','comment tu','qui es-tu','qui êtes'];
-  if (horsSupjet.some(h => m.includes(h)) && !m.includes('prix') && !m.includes('module') && !m.includes('système')) {
-    return "Je suis uniquement là pour vous aider à configurer votre Système ATTRACTOR. Une question sur les modules ou les prix ?";
-  }
-
-  // Prix
-  if (m.includes('prix') || m.includes('coût') || m.includes('combien') || m.includes('tarif')) {
-    return "Le Système ATTRACTOR démarre à **450€**. Voici les modules :\n\n• Agenda & Briefing : 80€\n• Suivi clients & Relances : 80€\n• Finances : 100€\n• Gestion assistantes : 150€\n• Réseaux sociaux : 100€\n• Chatbot WhatsApp : 350€\n• Site web : à partir de 350€\n\nSelon votre profil, je peux vous recommander la combinaison idéale.";
-  }
-
-  // Délai / livraison
-  if (m.includes('délai') || m.includes('livrai') || m.includes('quand') || m.includes('combien de temps')) {
-    return "Le système est **opérationnel en 48h** après réception de vos assets. Formation incluse — 1h en direct avec Mac Arthur pour vous rendre autonome immédiatement.";
-  }
-
-  // Chatbot
-  if (m.includes('chatbot') || m.includes('bot') || m.includes('whatsapp') || m.includes('répondre')) {
-    return "Le **Bot Texte** (350€) répond automatiquement à vos clients 24h/24 sur WhatsApp. Le **Bot Connecté** (900€) gère WhatsApp + Instagram simultanément. Les deux sont configurés sur mesure pour votre activité — vos FAQ, votre catalogue, vos tarifs.";
-  }
-
-  // Site web
-  if (m.includes('site') || m.includes('web') || m.includes('vitrine') || m.includes('e-commerce')) {
-    return "Le **Mini site basique** (350€) vous donne une présence professionnelle immédiate. Le **Site agile + assistant IA** (800€) intègre votre assistant directement sur le site. Les deux sont livrés en 48h et optimisés mobile.";
-  }
-
-  // Finances
-  if (m.includes('finance') || m.includes('ca ') || m.includes('chiffre') || m.includes('argent') || m.includes('paiement')) {
-    return "Le module **Tableau de bord finances** (100€) vous donne votre CA en temps réel, suit vos paiements et vous alerte sur les impayés. En 10 secondes, vous savez tout sur votre argent — sans tableur ni calcul manuel.";
-  }
-
-  // Comment ça marche
-  if (m.includes('comment') || m.includes('fonctionne') || m.includes('marche') || m.includes('explique')) {
-    return "Le Système ATTRACTOR fonctionne en 3 temps :\n\n1. **Audit** (maintenant) — vous décrivez votre réalité\n2. **Configuration** — Mac Arthur installe votre système en 48h\n3. **Formation 1h** — vous pilotez à la voix depuis votre téléphone\n\nEnsuite le système gère, relance et organise — vous, vous décidez.";
-  }
-
-  // Garantie / confiance
-  if (m.includes('garanti') || m.includes('confiance') || m.includes('sérieux') || m.includes('remboursement')) {
-    return "Mac Arthur KOUASSI accompagne des entrepreneurs depuis plus de 10 ans. La formation 1h est incluse — vous repartez autonome. Et si vous avez des questions après la livraison, WhatsApp est toujours ouvert.";
-  }
-
-  // Réponse générale
-  return "Bonne question. Pour vous donner la recommandation la plus précise, terminez votre audit — Mac Arthur analysera votre situation et vous contactera sous 24h avec la configuration idéale pour votre activité. Ou posez-moi une question plus précise sur un module en particulier.";
-}
-
-function addChatMsg(text, who) {
-  const msgs = document.getElementById('chatMessages');
-  const div = document.createElement('div');
-  div.className = 'chat-msg ' + who;
-  div.innerHTML = `<div class="chat-bubble ${who}">${text}</div>`;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-let typingEl = null;
-function showTyping() {
-  const msgs = document.getElementById('chatMessages');
-  typingEl = document.createElement('div');
-  typingEl.className = 'chat-msg';
-  typingEl.innerHTML = '<div class="chat-bubble bot"><div class="chat-typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>';
-  msgs.appendChild(typingEl);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-function hideTyping() { if (typingEl) { typingEl.remove(); typingEl = null; } }
 
 // ── SUBMIT
 async function submitAudit() {
@@ -848,31 +619,55 @@ async function submitAudit() {
     email:        v('email'),
     whatsapp:     v('whatsapp'),
     pays:         v('pays'),
-    activite:     v('activite'),
+    activite:     v('activite').substring(0, 300),
     secteur:      state.secteur,
     stade:        state.stade,
-    budget:       state.budget,
-    urgence:      state.urgence,
+    budget:       state.budget || '—',
+    urgence:      state.urgence || 0,
     douleurs:     state.douleurs.join(' | '),
-    douleur_libre:v('douleurLibre'),
-    besoins:      state.besoins.join(' | '),
-    reve:         v('reve'),
+    douleur_libre:v('douleurLibre').substring(0, 300),
+    besoins:      '—',
+    reve:         v('reve').substring(0, 400),
     source:       'audit-universel',
-    formule:      'Système ATTRACTOR — À définir'
+    formule:      'Systeme ATTRACTOR'
   };
 
+  // Sauvegarder localement pour le configurateur
   try {
-    const params = new URLSearchParams(payload).toString();
-    await fetch(APPS_SCRIPT + '?' + params, {method:'GET', mode:'no-cors'});
-    await new Promise(r => setTimeout(r, 1500));
-    document.getElementById('s6').classList.remove('active');
-    document.getElementById('confirmation').classList.add('show');
-    window.scrollTo({top:0, behavior:'smooth'});
-  } catch(e) {
-    toast('Erreur — réessayez ou contactez-nous sur WhatsApp', 'error');
-    btn.disabled = false;
-    btn.textContent = '🚀 Envoyer mon audit →';
+    localStorage.setItem('audit_prenom', payload.prenom);
+    localStorage.setItem('audit_email', payload.email);
+    localStorage.setItem('audit_secteur', payload.secteur);
+    localStorage.setItem('audit_reve', payload.reve);
+  } catch(e) {}
+
+  // Essai 1 — POST (évite la limite de longueur URL)
+  let success = false;
+  try {
+    await fetch(APPS_SCRIPT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    success = true;
+  } catch(e1) {
+    // Essai 2 — GET si POST échoue
+    try {
+      const params = new URLSearchParams(payload).toString();
+      await fetch(APPS_SCRIPT + '?' + params, {method:'GET', mode:'no-cors'});
+      success = true;
+    } catch(e2) {
+      success = false;
+    }
   }
+
+  await new Promise(r => setTimeout(r, 1200));
+
+  // Afficher la confirmation même si erreur réseau
+  // (no-cors ne permet pas de lire la réponse — on suppose succès)
+  document.getElementById('s5').classList.remove('active');
+  document.getElementById('confirmation').classList.add('show');
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
 // ── UTILS
