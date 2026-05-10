@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Merci pour votre audit — Système ATTRACTOR. Vous recevrez votre recommandation personnalisée sous 24h.">
+    <title>Merci ! — Système ATTRACTOR</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .merci-hero {
+            background: linear-gradient(135deg, var(--color-bg-alt) 0%, var(--color-bg) 100%);
+            padding: var(--spacing-xxl) 0;
+            text-align: center;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .merci-icon {
+            font-size: 80px;
+            margin-bottom: var(--spacing-md);
+            animation: bounce 1s ease infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .next-steps {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        
+        .step-item {
+            display: flex;
+            gap: var(--spacing-md);
+            padding: var(--spacing-lg);
+            background: rgba(26, 21, 0, 0.3);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .step-number {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-gold);
+            color: #0A0A0A;
+            font-weight: 700;
+            border-radius: 50%;
+        }
+        
+        .step-content h3 {
+            color: var(--color-text);
+            font-size: 18px;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .step-content p {
+            color: var(--color-text-alt);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        
+        .contact-info {
+            background: var(--color-bg-alt);
+            border: 1px solid var(--color-gold);
+            border-radius: 8px;
+            padding: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+        
+        .contact-info h3 {
+            color: var(--color-gold);
+            margin-bottom: var(--spacing-md);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) 0;
+            color: var(--color-text-alt);
+            font-size: 14px;
+        }
+        
+        .contact-item a {
+            color: var(--color-gold);
+            text-decoration: none;
+        }
+        
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    <span class="logo-text">MA</span>
+                    <div class="logo-label">
+                        <span>Mr Attractor</span>
+                        <small>Système ATTRACTOR</small>
+                    </div>
+                </a>
+                
+                <nav class="nav-desktop">
+                    <a href="/#modules">Modules techniques</a>
+                    <a href="/#accompagnements">Accompagnements</a>
+                    <a href="/#processus">Comment ça marche</a>
+                    <a href="/lead-magnet">Guide offert</a>
+                    <a href="/notre-histoire">Notre histoire</a>
+                </nav>
+                
+                <a href="/" class="btn btn-primary">← Retour accueil</a>
+                
+                <button class="menu-toggle" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+        
+        <nav class="nav-mobile">
+            <a href="/">🏠 Accueil</a>
+            <a href="/#modules">🔧 Modules techniques</a>
+            <a href="/#accompagnements">🧠 Accompagnements</a>
+            <a href="/#processus">⚡ Comment ça marche</a>
+            <a href="/lead-magnet">📖 Guide offert</a>
+            <a href="/notre-histoire">📖 Notre histoire</a>
+        </nav>
+    </header>
+
+    <!-- HERO MERCI -->
+    <section class="merci-hero">
+        <div class="container">
+            <div class="merci-icon">✅</div>
+            <h1 class="hero-title" style="font-size: clamp(32px, 5vw, 48px);">
+                Merci ! <br>
+                <em>Votre audit est en cours d'analyse.</em>
+            </h1>
+            <p class="hero-subtitle" style="max-width: 600px; margin: var(--spacing-md) auto 0;">
+                Vous recevrez votre recommandation personnalisée <strong>sous 24h maximum</strong> par email.
+            </p>
+        </div>
+    </section>
+
+    <!-- PROCHAINES ÉTAPES -->
+    <section class="section">
+        <div class="container">
+            <div class="next-steps">
+                <h2 style="text-align: center; font-size: 28px; color: var(--color-text); margin-bottom: var(--spacing-xl);">
+                    Ce qui se passe <em style="color: var(--color-gold);">maintenant</em>
+                </h2>
+                
+                <div class="step-item">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <h3>Analyse de votre situation</h3>
+                        <p>Mac Arthur analyse personnellement votre audit. Il identifie vos points urgents, vos failles et la solution la plus adaptée à votre réalité.</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <h3>Recommandation sur mesure</h3>
+                        <p>Vous recevez un email avec une recommandation personnalisée. Modules techniques, accompagnement stratégique ou les deux — avec le plan exact pour démarrer.</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <h3>Call découverte gratuit (si souhaité)</h3>
+                        <p>Si vous avez coché la case "Call découverte", Mac Arthur vous contactera directement pour planifier un échange de 15 minutes. Valeur : 80€. Offert.</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">04</div>
+                    <div class="step-content">
+                        <h3>Démarrage sous 48h (si vous validez)</h3>
+                        <p>Dès que vous validez la recommandation et effectuez le paiement, on démarre. Prise en charge immédiate. Configuration lancée. Vous savez exactement où on va.</p>
+                    </div>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="contact-info">
+                    <h3>📞 Besoin de nous contacter maintenant ?</h3>
+                    
+                    <div class="contact-item">
+                        <span>📧 Email :</span>
+                        <a href="mailto:myattractor1@gmail.com">myattractor1@gmail.com</a>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <span>📱 WhatsApp :</span>
+                        <a href="https://wa.me/33753902323">+33 7 53 90 23 23</a>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <span>🌍 Côte d'Ivoire :</span>
+                        <a href="tel:+2250576877070">+225 05 76 87 70 70</a>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <span>💼 LinkedIn :</span>
+                        <a href="https://www.linkedin.com/in/macarthurkouassi/" target="_blank">Mac Arthur KOUASSI</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EN ATTENDANT -->
+    <section class="section" style="background: rgba(26, 21, 0, 0.2);">
+        <div class="container">
+            <div style="max-width: 700px; margin: 0 auto; text-align: center;">
+                <h2 style="font-size: 28px; color: var(--color-text); margin-bottom: var(--spacing-md);">
+                    En attendant votre recommandation…
+                </h2>
+                <p style="color: var(--color-text-alt); font-size: 16px; margin-bottom: var(--spacing-xl); line-height: 1.8;">
+                    Découvrez comment organiser et piloter votre entreprise sans vous épuiser. Guide offert.
+                </p>
+                
+                <div style="display: flex; flex-direction: column; align-items: center; gap: var(--spacing-lg);">
+                    <div style="max-width: 200px;">
+                        <img src="affiche-lead-magnet.png" alt="Guide Méthode ATTRACTOR" style="width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    </div>
+                    
+                    <div>
+                        <h3 style="color: var(--color-text); font-size: 20px; margin-bottom: var(--spacing-sm);">
+                            L'histoire de Koffi. 7 étapes. Le plan.
+                        </h3>
+                        <ul style="list-style: none; padding: 0; margin: var(--spacing-md) 0; text-align: left; max-width: 400px;">
+                            <li style="padding: var(--spacing-xs) 0; color: var(--color-text-alt); font-size: 14px;">✓ Les 4 pièges du fondateur épuisé</li>
+                            <li style="padding: var(--spacing-xs) 0; color: var(--color-text-alt); font-size: 14px;">✓ Les 3 fuites qui vous coûtent chaque mois</li>
+                            <li style="padding: var(--spacing-xs) 0; color: var(--color-text-alt); font-size: 14px;">✓ Le plan 7 jours pour transformer votre organisation</li>
+                        </ul>
+                        <a href="/lead-magnet" class="btn btn-primary-large">📖 Télécharger gratuitement →</a>
+                        <p style="font-size: 13px; color: var(--color-text-dim); margin-top: var(--spacing-sm);">32 pages · Gratuit · Sans engagement</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span class="logo-text">MA</span>
+                        <div class="logo-label">
+                            <span>Mr Attractor</span>
+                            <small>Système ATTRACTOR</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="/notre-histoire">Notre histoire</a>
+                    <a href="/lead-magnet">Guide offert</a>
+                    <a href="/solutions">Solutions</a>
+                    <a href="https://www.linkedin.com/in/macarthurkouassi/" target="_blank">LinkedIn</a>
+                    <a href="#cgv-modal">CGV & RGPD</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2025 Mr Attractor — Mac Arthur KOUASSI</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL CGV -->
+    <div id="cgv-modal" class="modal">
+        <div class="modal-content">
+            <a href="#" class="modal-close">✕</a>
+            <h2>CGV & RGPD</h2>
+            <p><strong>Prestataire :</strong> Mac Arthur KOUASSI — Mr Attractor. myattractor1@gmail.com · +337.53.90.23.23 · Paris.</p>
+            <p><strong>Paiement :</strong> Intégral avant démarrage. Aucun remboursement après démarrage sauf défaut prouvé du prestataire.</p>
+            <p><strong>RGPD :</strong> Données utilisées exclusivement dans la relation commerciale. Jamais revendues. Conservation 3 ans. myattractor1@gmail.com</p>
+            <p><strong>Droit applicable :</strong> Droit français · Tribunaux de Paris.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
